@@ -15,39 +15,42 @@ const formattedDate = new Date(post.data.pubDate).toLocaleDateString('en-US', {
 });
 ---
 
-<article style="border: 1px solid var(--color-border); border-radius: 0.5rem; padding: 1.5rem; margin-bottom: 1.5rem; background: white;">
-  <a href={`/blog/${post.id}`} style="text-decoration: none; color: inherit;">
-    <h2 style="color: var(--color-primary); margin-bottom: 0.5rem;">
+<article class="border border-gray-200 rounded-lg p-4 sm:p-6 mb-4 sm:mb-6 bg-white hover:shadow-lg transition-shadow duration-200">
+  <a href={`/blog/${post.id}`} class="no-underline group">
+    <h2 class="text-xl sm:text-2xl font-bold text-blue-600 group-hover:text-blue-700 mb-2 leading-tight">
       {post.data.title}
     </h2>
   </a>
 
-  <div style="display: flex; gap: 1rem; margin-bottom: 0.75rem; font-size: 0.9rem; color: var(--color-text-light);">
-    <time datetime={post.data.pubDate.toISOString()}>
+  <div class="flex flex-wrap gap-2 sm:gap-4 mb-3 text-sm sm:text-base text-gray-600">
+    <time datetime={post.data.pubDate.toISOString()} class="flex items-center">
       {formattedDate}
     </time>
-    <span>•</span>
-    <span>by {author.data.name}</span>
-    <span>•</span>
-    <span>{post.data.category}</span>
+    <span class="hidden sm:inline">•</span>
+    <span class="flex items-center">by {author.data.name}</span>
+    <span class="hidden sm:inline">•</span>
+    <span class="flex items-center text-gray-700 font-medium">{post.data.category}</span>
   </div>
 
-  <p style="margin-bottom: 1rem; color: var(--color-text);">
+  <p class="mb-4 text-gray-700 leading-relaxed">
     {post.data.description}
   </p>
 
-  <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
+  <div class="flex flex-wrap gap-2 mb-4">
     {post.data.tags.map(tag => (
       <a
         href={`/tags/${tag}`}
-        style="background-color: var(--color-bg-alt); padding: 0.25rem 0.75rem; border-radius: 1rem; font-size: 0.85rem; text-decoration: none; color: var(--color-text);"
+        class="bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-full text-xs sm:text-sm text-gray-700 no-underline transition-colors"
       >
         #{tag}
       </a>
     ))}
   </div>
 
-  <a href={`/blog/${post.id}`} style="color: var(--color-primary); font-weight: 500;">
-    Read more →
+  <a href={`/blog/${post.id}`} class="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium no-underline group">
+    Read more
+    <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+    </svg>
   </a>
 </article>

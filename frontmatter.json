@@ -1,0 +1,85 @@
+{
+  "$schema": "https://frontmatter.codes/frontmatter.schema.json",
+  "frontMatter.taxonomy.contentTypes": [
+    {
+      "name": "Blog Post",
+      "pageBundle": false,
+      "previewPath": "/blog",
+      "filePrefix": null,
+      "fields": [
+        {
+          "title": "Title",
+          "name": "title",
+          "type": "string",
+          "single": true
+        },
+        {
+          "title": "Description",
+          "name": "description",
+          "type": "string",
+          "single": true
+        },
+        {
+          "title": "Publication Date",
+          "name": "pubDate",
+          "type": "datetime",
+          "default": "{{now}}",
+          "isPublishDate": true
+        },
+        {
+          "title": "Updated Date",
+          "name": "updatedDate",
+          "type": "datetime"
+        },
+        {
+          "title": "Author",
+          "name": "author",
+          "type": "string",
+          "single": true
+        },
+        {
+          "title": "Cover Image",
+          "name": "coverImage",
+          "type": "image"
+        },
+        {
+          "title": "Tags",
+          "name": "tags",
+          "type": "tags"
+        },
+        {
+          "title": "Category",
+          "name": "category",
+          "type": "string",
+          "single": true
+        },
+        {
+          "title": "Draft",
+          "name": "draft",
+          "type": "draft",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "frontMatter.content.publicFolder": "public",
+  "frontMatter.content.pageFolders": [
+    {
+      "title": "Blog Posts",
+      "path": "[[workspace]]/src/content/blog",
+      "contentTypes": [
+        "Blog Post"
+      ]
+    }
+  ],
+  "frontMatter.content.supportedFileTypes": [
+    "md",
+    "mdx"
+  ],
+  "frontMatter.preview.host": "http://localhost:4321",
+  "frontMatter.framework.id": "astro",
+  "frontMatter.content.draftField": {
+    "name": "draft",
+    "type": "boolean"
+  }
+}

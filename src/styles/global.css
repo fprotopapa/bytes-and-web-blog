@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+@theme {
+  /* Custom color palette matching original design */
+  --color-primary: #2563eb;
+  --color-primary-dark: #1e40af;
+  --color-text: #1f2937;
+  --color-text-light: #6b7280;
+  --color-bg: #ffffff;
+  --color-bg-alt: #f9fafb;
+  --color-border: #e5e7eb;
+
+  /* Custom spacing */
+  --max-width: 1200px;
+}
+
+/* Code block styling for blog posts */
+.prose pre {
+  @apply bg-gray-800 text-gray-100 rounded-lg overflow-x-auto mb-4;
+}
+
+.prose code {
+  @apply bg-gray-100 px-1.5 py-0.5 rounded text-sm;
+  font-family: 'Courier New', monospace;
+}
+
+.prose pre code {
+  @apply bg-transparent p-0;
+}

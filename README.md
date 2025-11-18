@@ -7,7 +7,9 @@ A static blog built with Astro, focused on embedded Linux topics including kerne
 - **Multi-author support** - Multiple collaborators can contribute
 - **Content organization** - Posts organized by tags and categories
 - **Author profiles** - Each author has a profile page with bio, avatar, and social links
-- **Responsive design** - Works on all devices
+- **Mobile-first responsive design** - Tailwind CSS with fully responsive components
+- **Built-in search** - Pagefind integration for fast client-side search
+- **Content management** - Frontmatter CMS for easy content editing in VS Code
 - **RSS feed** - Subscribe to updates at `/rss.xml`
 - **Syntax highlighting** - Code blocks with GitHub Dark theme
 - **SEO optimized** - Meta tags, sitemap, and semantic HTML
@@ -200,8 +202,45 @@ This is a static site and can be deployed to:
 
 - [Astro](https://astro.build) - Static site framework
 - [TypeScript](https://www.typescriptlang.org/) - Type safety
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
+- [Pagefind](https://pagefind.app/) - Static site search
+- [Front Matter CMS](https://frontmatter.codes/) - Content management in VS Code
 - [MDX](https://mdxjs.com/) - Markdown with components
 - [Shiki](https://shiki.matsu.io/) - Syntax highlighting
+
+## Using the Search Feature
+
+The blog includes a built-in search powered by Pagefind. After building the site, search will automatically index all blog posts, titles, and content.
+
+- Click the search icon in the navbar (desktop or mobile)
+- Type your query to search across all posts
+- Results appear instantly with relevant excerpts
+- Search works entirely client-side with no backend needed
+
+## Using Frontmatter CMS
+
+Frontmatter CMS provides a content management interface directly in VS Code:
+
+### Installation
+
+1. Install the [Front Matter CMS extension](https://marketplace.visualstudio.com/items?itemName=eliostruyf.vscode-front-matter) in VS Code
+2. Open your project in VS Code
+3. The CMS will automatically detect the `frontmatter.json` configuration
+
+### Managing Content
+
+- Open the Front Matter panel in VS Code (icon in the sidebar)
+- Browse your blog posts in the dashboard
+- Create new posts with the "Create content" button
+- Edit frontmatter fields with a visual interface
+- Preview posts before publishing
+- Manage drafts and published status
+- Upload and manage images
+
+### Content Types
+
+The blog is configured with one content type:
+- **Blog Post**: Includes title, description, dates, author, tags, category, and draft status
 
 ## License
 

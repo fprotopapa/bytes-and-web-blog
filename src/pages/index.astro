@@ -17,53 +17,58 @@ const recentPosts = sortedPosts.slice(0, 5);
 ---
 
 <Layout title="Home - Embedded Linux Blog">
-  <div style="text-align: center; margin-bottom: 3rem;">
-    <h1 style="font-size: 3rem; margin-bottom: 1rem; color: var(--color-text);">
+  <!-- Hero Section -->
+  <div class="text-center mb-8 sm:mb-12 lg:mb-16">
+    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-gray-900 leading-tight">
       Welcome to Embedded Linux Blog
     </h1>
-    <p style="font-size: 1.25rem; color: var(--color-text-light); max-width: 700px; margin: 0 auto;">
+    <p class="text-base sm:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto px-4 leading-relaxed">
       Your source for embedded Linux, kernel development, build systems, and everything in between.
       Written by experienced engineers for the embedded community.
     </p>
   </div>
 
-  <section>
-    <h2 style="margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--color-primary);">
+  <!-- Latest Posts Section -->
+  <section class="mb-12 sm:mb-16">
+    <h2 class="text-2xl sm:text-3xl font-bold mb-6 pb-2 border-b-2 border-blue-600">
       Latest Posts
     </h2>
 
-    {recentPosts.map(post => (
-      <PostCard post={post} />
-    ))}
+    <div class="space-y-4 sm:space-y-6">
+      {recentPosts.map(post => (
+        <PostCard post={post} />
+      ))}
+    </div>
 
-    <div style="text-align: center; margin-top: 2rem;">
+    <div class="text-center mt-8">
       <a
         href="/blog"
-        style="display: inline-block; background-color: var(--color-primary); color: white; padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none;"
+        class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 sm:px-8 py-3 rounded-lg font-semibold no-underline transition-colors duration-200 shadow-md hover:shadow-lg"
       >
         View All Posts
       </a>
     </div>
   </section>
 
-  <section style="margin-top: 4rem; padding: 2rem; background-color: var(--color-bg-alt); border-radius: 0.5rem;">
-    <h2 style="margin-bottom: 1rem;">Topics We Cover</h2>
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
-      <div>
-        <h3 style="color: var(--color-primary); font-size: 1.25rem;">Kernel Development</h3>
-        <p style="color: var(--color-text-light);">Device drivers, kernel modules, and low-level programming</p>
+  <!-- Topics Section -->
+  <section class="mt-12 sm:mt-16 p-6 sm:p-8 lg:p-10 bg-gray-50 rounded-lg">
+    <h2 class="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-center sm:text-left">Topics We Cover</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="text-center sm:text-left">
+        <h3 class="text-blue-600 text-lg sm:text-xl font-semibold mb-2">Kernel Development</h3>
+        <p class="text-gray-600 leading-relaxed">Device drivers, kernel modules, and low-level programming</p>
       </div>
-      <div>
-        <h3 style="color: var(--color-primary); font-size: 1.25rem;">Build Systems</h3>
-        <p style="color: var(--color-text-light);">Yocto, Buildroot, and custom distribution building</p>
+      <div class="text-center sm:text-left">
+        <h3 class="text-blue-600 text-lg sm:text-xl font-semibold mb-2">Build Systems</h3>
+        <p class="text-gray-600 leading-relaxed">Yocto, Buildroot, and custom distribution building</p>
       </div>
-      <div>
-        <h3 style="color: var(--color-primary); font-size: 1.25rem;">Bootloaders</h3>
-        <p style="color: var(--color-text-light);">U-Boot, firmware, and system initialization</p>
+      <div class="text-center sm:text-left">
+        <h3 class="text-blue-600 text-lg sm:text-xl font-semibold mb-2">Bootloaders</h3>
+        <p class="text-gray-600 leading-relaxed">U-Boot, firmware, and system initialization</p>
       </div>
-      <div>
-        <h3 style="color: var(--color-primary); font-size: 1.25rem;">Hardware Integration</h3>
-        <p style="color: var(--color-text-light);">Device trees, board bring-up, and peripherals</p>
+      <div class="text-center sm:text-left">
+        <h3 class="text-blue-600 text-lg sm:text-xl font-semibold mb-2">Hardware Integration</h3>
+        <p class="text-gray-600 leading-relaxed">Device trees, board bring-up, and peripherals</p>
       </div>
     </div>
   </section>

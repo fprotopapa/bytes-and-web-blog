@@ -1,0 +1,51 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { getCollection } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths = (async () => {
+  const allPosts = await getCollection('blog', ({ data }) => {
+    return data.draft !== true;
+  });
+
+  const uniqueTags = [...new Set(allPosts.flatMap(post => post.data.tags))];
+
+  return uniqueTags.map(tag => {
+    const filteredPosts = allPosts.filter(post =>
+      post.data.tags.includes(tag)
+    );
+    return {
+      params: { tag },
+      props: { posts: filteredPosts, tag },
+    };
+  });
+}) satisfies GetStaticPaths;
+
+const { posts, tag } = Astro.props;
+
+const sortedPosts = posts.sort((a, b) =>
+  b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<Layout title={`Tag: ${tag} - Embedded Linux Blog`}>
+  <div style="margin-bottom: 2rem;">
+    <a href="/tags" style="color: var(--color-text-light); text-decoration: none;">
+      ← Back to all tags
+    </a>
+  </div>
+
+  <h1 style="margin-bottom: 1rem;">
+    Posts tagged with
+    <span style="color: var(--color-primary);">#{tag}</span>
+  </h1>
+
+  <p style="color: var(--color-text-light); margin-bottom: 2rem;">
+    {sortedPosts.length} {sortedPosts.length === 1 ? 'post' : 'posts'} found
+  </p>
+
+  {sortedPosts.map(post => (
+    <PostCard post={post} />
+  ))}
+</Layout>

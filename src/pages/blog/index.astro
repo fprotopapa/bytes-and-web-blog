@@ -1,0 +1,68 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { getCollection } from 'astro:content';
+
+// Get all published blog posts, sorted by date (newest first)
+const allPosts = await getCollection('blog', ({ data }) => {
+  return data.draft !== true;
+});
+
+const sortedPosts = allPosts.sort((a, b) =>
+  b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+// Get unique categories and tags for the sidebar
+const categories = [...new Set(allPosts.map(post => post.data.category))].sort();
+const allTags = allPosts.flatMap(post => post.data.tags);
+const uniqueTags = [...new Set(allTags)].sort();
+---
+
+<Layout title="All Posts - Embedded Linux Blog">
+  <div style="display: grid; grid-template-columns: 1fr 300px; gap: 2rem;">
+    <section>
+      <h1 style="margin-bottom: 2rem;">All Blog Posts</h1>
+      <p style="color: var(--color-text-light); margin-bottom: 2rem;">
+        {sortedPosts.length} {sortedPosts.length === 1 ? 'post' : 'posts'} about embedded Linux, kernel development, and more.
+      </p>
+
+      {sortedPosts.map(post => (
+        <PostCard post={post} />
+      ))}
+    </section>
+
+    <aside>
+      <div style="position: sticky; top: 2rem;">
+        <div style="background-color: var(--color-bg-alt); padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 1.5rem;">
+          <h3 style="margin-bottom: 1rem; font-size: 1.25rem;">Categories</h3>
+          <ul style="list-style: none;">
+            {categories.map(category => {
+              const count = allPosts.filter(p => p.data.category === category).length;
+              return (
+                <li style="margin-bottom: 0.5rem;">
+                  <a href={`/categories/${category.toLowerCase().replace(/\s+/g, '-')}`}>
+                    {category} ({count})
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+
+        <div style="background-color: var(--color-bg-alt); padding: 1.5rem; border-radius: 0.5rem;">
+          <h3 style="margin-bottom: 1rem; font-size: 1.25rem;">Popular Tags</h3>
+          <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+            {uniqueTags.slice(0, 15).map(tag => (
+              <a
+                href={`/tags/${tag}`}
+                style="background-color: white; padding: 0.25rem 0.75rem; border-radius: 1rem; font-size: 0.85rem; text-decoration: none; color: var(--color-text); border: 1px solid var(--color-border);"
+              >
+                #{tag}
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</Layout>

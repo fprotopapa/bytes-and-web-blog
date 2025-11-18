@@ -1,0 +1,49 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { getCollection } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths = (async () => {
+  const allPosts = await getCollection('blog', ({ data }) => {
+    return data.draft !== true;
+  });
+
+  const uniqueCategories = [...new Set(allPosts.map(post => post.data.category))];
+
+  return uniqueCategories.map(category => {
+    const filteredPosts = allPosts.filter(post => post.data.category === category);
+    const slug = category.toLowerCase().replace(/\s+/g, '-');
+    return {
+      params: { category: slug },
+      props: { posts: filteredPosts, category },
+    };
+  });
+}) satisfies GetStaticPaths;
+
+const { posts, category } = Astro.props;
+
+const sortedPosts = posts.sort((a, b) =>
+  b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<Layout title={`${category} - Embedded Linux Blog`}>
+  <div style="margin-bottom: 2rem;">
+    <a href="/categories" style="color: var(--color-text-light); text-decoration: none;">
+      ← Back to all categories
+    </a>
+  </div>
+
+  <h1 style="margin-bottom: 1rem;">
+    <span style="color: var(--color-primary);">{category}</span>
+  </h1>
+
+  <p style="color: var(--color-text-light); margin-bottom: 2rem;">
+    {sortedPosts.length} {sortedPosts.length === 1 ? 'post' : 'posts'} in this category
+  </p>
+
+  {sortedPosts.map(post => (
+    <PostCard post={post} />
+  ))}
+</Layout>

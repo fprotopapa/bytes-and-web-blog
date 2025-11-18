@@ -40,69 +40,71 @@ const relatedPosts = allPosts
 ---
 
 <Layout title={`${post.data.title} - Embedded Linux Blog`} description={post.data.description}>
-  <article>
-    <header style="margin-bottom: 2rem;">
-      <div style="margin-bottom: 1rem;">
+  <article class="max-w-4xl mx-auto">
+    <header class="mb-8">
+      <div class="mb-4">
         <a
           href={`/categories/${post.data.category.toLowerCase().replace(/\s+/g, '-')}`}
-          style="color: var(--color-primary); font-weight: 600; text-transform: uppercase; font-size: 0.875rem;"
+          class="font-semibold uppercase text-sm hover:underline hover:opacity-80 transition-opacity"
+          style="color: var(--color-primary);"
         >
           {post.data.category}
         </a>
       </div>
 
-      <h1 style="font-size: 2.5rem; margin-bottom: 1rem; line-height: 1.2;">
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight" style="color: var(--color-text);">
         {post.data.title}
       </h1>
 
-      <p style="font-size: 1.25rem; color: var(--color-text-light); margin-bottom: 1.5rem;">
+      <p class="text-lg sm:text-xl mb-6 leading-relaxed" style="color: var(--color-text-light);">
         {post.data.description}
       </p>
 
-      <div style="display: flex; gap: 1rem; align-items: center; color: var(--color-text-light); font-size: 0.95rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--color-border);">
+      <div class="flex flex-wrap gap-2 sm:gap-4 items-center text-sm sm:text-base pb-6 border-b" style="color: var(--color-text-light); border-color: var(--color-border);">
         <time datetime={post.data.pubDate.toISOString()}>
           {formattedDate}
         </time>
-        <span>•</span>
+        <span class="hidden sm:inline">•</span>
         <span>by {author.data.name}</span>
         {post.data.updatedDate && (
           <>
-            <span>•</span>
-            <span>Updated {new Date(post.data.updatedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+            <span class="hidden sm:inline">•</span>
+            <span class="text-xs sm:text-base">Updated {new Date(post.data.updatedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
           </>
         )}
       </div>
     </header>
 
-    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem;">
+    <div class="flex flex-wrap gap-2 mb-8">
       {post.data.tags.map(tag => (
         <a
           href={`/tags/${tag}`}
-          style="background-color: var(--color-bg-alt); padding: 0.25rem 0.75rem; border-radius: 1rem; font-size: 0.85rem; text-decoration: none; color: var(--color-text); border: 1px solid var(--color-border);"
+          class="px-3 py-1 rounded-full text-sm no-underline transition-colors hover:opacity-80"
+          style="background-color: var(--color-bg-alt); color: var(--color-text); border: 1px solid var(--color-border);"
         >
           #{tag}
         </a>
       ))}
     </div>
 
-    <div class="prose" style="max-width: none; margin-bottom: 3rem;">
+    <div class="prose prose-lg max-w-none mb-12">
       <Content />
     </div>
 
     <AuthorCard author={author} />
 
     {relatedPosts.length > 0 && (
-      <section style="margin-top: 3rem; padding-top: 2rem; border-top: 2px solid var(--color-border);">
-        <h2 style="margin-bottom: 1.5rem;">Related Posts</h2>
-        <div style="display: grid; gap: 1rem;">
+      <section class="mt-12 pt-8 border-t-2" style="border-color: var(--color-border);">
+        <h2 class="text-2xl font-bold mb-6" style="color: var(--color-text);">Related Posts</h2>
+        <div class="grid gap-4">
           {relatedPosts.map(related => (
-            <article style="border: 1px solid var(--color-border); border-radius: 0.5rem; padding: 1rem;">
-              <a href={`/blog/${related.id}`} style="text-decoration: none; color: inherit;">
-                <h3 style="color: var(--color-primary); margin-bottom: 0.5rem;">
+            <article class="rounded-lg p-4 sm:p-6 hover:shadow-md transition-shadow" style="border: 1px solid var(--color-border);">
+              <a href={`/blog/${related.id}`} class="no-underline group">
+                <h3 class="text-lg sm:text-xl font-semibold mb-2 hover:opacity-80 transition-opacity" style="color: var(--color-primary);">
                   {related.data.title}
                 </h3>
               </a>
-              <p style="color: var(--color-text-light); font-size: 0.9rem;">
+              <p class="text-sm sm:text-base" style="color: var(--color-text-light);">
                 {related.data.description}
               </p>
             </article>
@@ -111,75 +113,4 @@ const relatedPosts = allPosts
       </section>
     )}
   </article>
-
-  <style>
-    .prose {
-      font-size: 1.125rem;
-      line-height: 1.75;
-    }
-
-    .prose h2 {
-      margin-top: 2rem;
-      margin-bottom: 1rem;
-      font-size: 1.875rem;
-    }
-
-    .prose h3 {
-      margin-top: 1.5rem;
-      margin-bottom: 0.75rem;
-      font-size: 1.5rem;
-    }
-
-    .prose h4 {
-      margin-top: 1.25rem;
-      margin-bottom: 0.5rem;
-      font-size: 1.25rem;
-    }
-
-    .prose p {
-      margin-bottom: 1.25rem;
-    }
-
-    .prose ul, .prose ol {
-      margin-bottom: 1.25rem;
-      padding-left: 1.5rem;
-    }
-
-    .prose li {
-      margin-bottom: 0.5rem;
-    }
-
-    .prose blockquote {
-      border-left: 4px solid var(--color-primary);
-      padding-left: 1rem;
-      margin: 1.5rem 0;
-      font-style: italic;
-      color: var(--color-text-light);
-    }
-
-    .prose table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 1.5rem 0;
-    }
-
-    .prose th,
-    .prose td {
-      border: 1px solid var(--color-border);
-      padding: 0.75rem;
-      text-align: left;
-    }
-
-    .prose th {
-      background-color: var(--color-bg-alt);
-      font-weight: 600;
-    }
-
-    .prose img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 0.5rem;
-      margin: 1.5rem 0;
-    }
-  </style>
 </Layout>

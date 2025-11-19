@@ -27,7 +27,7 @@ const formattedDate = new Date(post.data.pubDate).toLocaleDateString('en-US', {
       {formattedDate}
     </time>
     <span class="hidden sm:inline">•</span>
-    <span class="flex items-center">by {author.data.name}</span>
+    <span class="flex items-center">by <a href={`/authors/${post.data.author.id}`} class="no-underline hover:underline transition-opacity hover:opacity-80 ml-1" style="color: var(--color-primary);">{author.data.name}</a></span>
     <span class="hidden sm:inline">•</span>
     <span class="flex items-center font-medium" style="color: var(--color-text);">{post.data.category}</span>
   </div>

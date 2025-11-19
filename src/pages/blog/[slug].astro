@@ -65,7 +65,7 @@ const relatedPosts = allPosts
           {formattedDate}
         </time>
         <span class="hidden sm:inline">•</span>
-        <span>by {author.data.name}</span>
+        <span>by <a href={`/authors/${post.data.author.id}`} class="no-underline hover:underline transition-opacity hover:opacity-80" style="color: var(--color-primary);">{author.data.name}</a></span>
         {post.data.updatedDate && (
           <>
             <span class="hidden sm:inline">•</span>

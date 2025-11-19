@@ -5,7 +5,7 @@ User-agent: *
 Allow: /
 
 # Sitemap location (update with your actual domain)
-Sitemap: https://example.com/sitemap-index.xml
+Sitemap: https://bytesandweb.pl/sitemap-index.xml
 
 # Optional: Crawl delay (uncomment if needed)
 # Crawl-delay: 10

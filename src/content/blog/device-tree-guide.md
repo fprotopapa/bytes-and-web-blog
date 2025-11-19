@@ -10,6 +10,8 @@ category: "Kernel Development"
 
 Device Tree is a data structure for describing hardware. Instead of hardcoding device information in the kernel, we use a separate, architecture-independent description.
 
+![Yocto layer structure](/images/posts/jane-smith.jpg)
+
 ## Why Device Trees?
 
 Before Device Trees:

@@ -50,6 +50,7 @@ body {
 .prose {
   max-width: 65ch;
   color: var(--color-text);
+  counter-reset: line;
 }
 
 .prose h1, .prose h2, .prose h3, .prose h4 {
@@ -95,7 +96,6 @@ body {
   color: inherit;
   padding: 0;
   font-size: 0.875rem;
-  counter-reset: line;
 }
 
 /* Line numbers styling */

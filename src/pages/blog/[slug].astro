@@ -40,7 +40,12 @@ const relatedPosts = allPosts
 ---
 
 <Layout title={`${post.data.title} - Embedded Linux Blog`} description={post.data.description}>
-  <article class="max-w-4xl mx-auto">
+  <!-- Reading Progress Bar -->
+  <div id="reading-progress" class="fixed top-0 left-0 h-1 z-50 transition-all duration-150" style="width: 0%; background: linear-gradient(90deg, var(--color-primary) 0%, #9333ea 100%);"></div>
+
+  <!-- Sidebar TOC Layout -->
+  <div class="max-w-7xl mx-auto flex gap-8">
+    <article class="flex-1 max-w-4xl">
     <header class="mb-8">
       <div class="mb-4">
         <a
@@ -75,16 +80,41 @@ const relatedPosts = allPosts
       </div>
     </header>
 
-    <div class="flex flex-wrap gap-2 mb-8">
-      {post.data.tags.map(tag => (
-        <a
-          href={`/tags/${tag}`}
-          class="px-3 py-1 rounded-full text-sm no-underline transition-colors hover:opacity-80"
-          style="background-color: var(--color-bg-alt); color: var(--color-text); border: 1px solid var(--color-border);"
+    <!-- Interactive tag pills and share buttons -->
+    <div class="flex flex-wrap gap-3 mb-8 items-center">
+      <div class="flex flex-wrap gap-2">
+        {post.data.tags.map(tag => (
+          <a
+            href={`/tags/${tag}`}
+            class="px-4 py-2 rounded-full text-sm no-underline transition-all hover:scale-105 hover:shadow-md"
+            style="background-color: var(--color-bg-alt); color: var(--color-text); border: 1px solid var(--color-border);"
+          >
+            #{tag}
+          </a>
+        ))}
+      </div>
+      <div class="flex gap-2 ml-auto">
+        <button
+          id="share-btn"
+          class="p-2 rounded-lg transition-all hover:scale-110 hover:shadow-md"
+          style="background-color: var(--color-bg-alt); border: 1px solid var(--color-border);"
+          title="Share this post"
         >
-          #{tag}
-        </a>
-      ))}
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: var(--color-text);">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+          </svg>
+        </button>
+        <button
+          id="bookmark-btn"
+          class="p-2 rounded-lg transition-all hover:scale-110 hover:shadow-md"
+          style="background-color: var(--color-bg-alt); border: 1px solid var(--color-border);"
+          title="Bookmark this post"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: var(--color-text);">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+          </svg>
+        </button>
+      </div>
     </div>
 
     <div class="prose prose-lg max-w-none mb-12">
@@ -113,4 +143,99 @@ const relatedPosts = allPosts
       </section>
     )}
   </article>
+
+  <!-- Sticky Table of Contents Sidebar -->
+  {headings.length > 0 && (
+    <aside class="hidden lg:block w-64 flex-shrink-0">
+      <div class="sticky top-24 p-4 rounded-lg" style="background-color: var(--color-bg-alt); border: 1px solid var(--color-border);">
+        <h3 class="font-bold mb-4 text-sm uppercase" style="color: var(--color-text);">Table of Contents</h3>
+        <nav class="space-y-2">
+          {headings.map(heading => (
+            <a
+              href={`#${heading.slug}`}
+              class="block text-sm no-underline hover:underline transition-opacity hover:opacity-80"
+              style={`color: var(--color-text-light); padding-left: ${(heading.depth - 1) * 0.75}rem;`}
+            >
+              {heading.text}
+            </a>
+          ))}
+        </nav>
+      </div>
+    </aside>
+  )}
+  </div>
+
+  <script>
+    // Reading progress indicator
+    function updateReadingProgress() {
+      const article = document.querySelector('article');
+      const progressBar = document.getElementById('reading-progress');
+
+      if (!article || !progressBar) return;
+
+      const articleTop = article.offsetTop;
+      const articleHeight = article.offsetHeight;
+      const windowHeight = window.innerHeight;
+      const scrollTop = window.scrollY;
+
+      const progress = Math.min(
+        100,
+        Math.max(0, ((scrollTop - articleTop + windowHeight) / articleHeight) * 100)
+      );
+
+      progressBar.style.width = `${progress}%`;
+    }
+
+    window.addEventListener('scroll', updateReadingProgress);
+    window.addEventListener('resize', updateReadingProgress);
+    updateReadingProgress();
+
+    // Share functionality
+    document.getElementById('share-btn')?.addEventListener('click', async () => {
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: document.title,
+            url: window.location.href
+          });
+        } catch (err) {
+          console.log('Share cancelled');
+        }
+      } else {
+        // Fallback: copy to clipboard
+        navigator.clipboard.writeText(window.location.href);
+        alert('Link copied to clipboard!');
+      }
+    });
+
+    // Bookmark functionality
+    document.getElementById('bookmark-btn')?.addEventListener('click', () => {
+      const btn = document.getElementById('bookmark-btn');
+      const svg = btn?.querySelector('svg');
+      if (svg) {
+        const isFilled = svg.getAttribute('fill') === 'currentColor';
+        svg.setAttribute('fill', isFilled ? 'none' : 'currentColor');
+        // Store in localStorage
+        const postUrl = window.location.pathname;
+        const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+        if (isFilled) {
+          localStorage.setItem('bookmarks', JSON.stringify(bookmarks.filter((b: string) => b !== postUrl)));
+        } else {
+          bookmarks.push(postUrl);
+          localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+        }
+      }
+    });
+
+    // Check if already bookmarked on load
+    const checkBookmark = () => {
+      const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+      const postUrl = window.location.pathname;
+      if (bookmarks.includes(postUrl)) {
+        const svg = document.getElementById('bookmark-btn')?.querySelector('svg');
+        if (svg) svg.setAttribute('fill', 'currentColor');
+      }
+    };
+    checkBookmark();
+  </script>
 </Layout>

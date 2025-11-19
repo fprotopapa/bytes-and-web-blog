@@ -197,5 +197,61 @@ const relatedPosts = allPosts
         alert('Link copied to clipboard!');
       }
     });
+
+    // Add copy buttons to code blocks
+    function addCopyButtonsToCodeBlocks() {
+      const codeBlocks = document.querySelectorAll('.prose pre');
+
+      codeBlocks.forEach((pre) => {
+        // Skip if button already exists
+        if (pre.querySelector('.code-copy-btn')) return;
+
+        const button = document.createElement('button');
+        button.className = 'code-copy-btn';
+        button.textContent = 'Copy';
+        button.setAttribute('aria-label', 'Copy code to clipboard');
+
+        button.addEventListener('click', async () => {
+          const code = pre.querySelector('code');
+          if (!code) return;
+
+          // Get text content without line numbers
+          const lines = code.querySelectorAll('.line');
+          let textToCopy = '';
+
+          if (lines.length > 0) {
+            // Extract text from each line (skipping line number pseudo-element)
+            textToCopy = Array.from(lines)
+              .map(line => line.textContent)
+              .join('\n');
+          } else {
+            // Fallback to entire code text
+            textToCopy = code.textContent || '';
+          }
+
+          try {
+            await navigator.clipboard.writeText(textToCopy);
+            button.textContent = 'Copied!';
+            button.classList.add('copied');
+
+            setTimeout(() => {
+              button.textContent = 'Copy';
+              button.classList.remove('copied');
+            }, 2000);
+          } catch (err) {
+            console.error('Failed to copy code:', err);
+            button.textContent = 'Error';
+            setTimeout(() => {
+              button.textContent = 'Copy';
+            }, 2000);
+          }
+        });
+
+        pre.appendChild(button);
+      });
+    }
+
+    // Initialize copy buttons
+    addCopyButtonsToCodeBlocks();
   </script>
 </Layout>

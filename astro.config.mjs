@@ -16,7 +16,19 @@ export default defineConfig({
   markdown: {
     shikiConfig: {
       theme: 'github-dark',
-      wrap: true
+      wrap: true,
+      transformers: [
+        {
+          pre(node) {
+            // Add relative positioning for copy button placement
+            this.addClassToHast(node, 'relative');
+          },
+          line(node, line) {
+            // Add line numbers as data attribute
+            node.properties['data-line'] = line;
+          }
+        }
+      ]
     }
   },
 

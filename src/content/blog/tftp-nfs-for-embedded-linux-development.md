@@ -1,16 +1,11 @@
 ---
-date: '2024-10-02 17:38:49'
-modified: '2024-10-02 18:09:57'
-slug: tftp-nfs-for-embedded-linux-development
-id: 312
-type: post
-excerpt: 'In this article, we’re going to set up a TFTP (Trivial File Transfer Protocol) and NFS (Network File System) server and use it to boot a Raspberry Pi 4 (RPI). To make our lives easier, we’ll use U-Boot as our bootloader. Why would we need it? In the early (and beyond) stages of development, we [&hellip;]'
-permalink: 'https://bytesandweb.pl/tftp-nfs-for-embedded-linux-development/'
-category:
-    - 'Systemy wbudowane'
+title: "TFTP & NFS for Embedded Linux Development"
+pubDate: 2024-10-02
+author: jane-smith
+description: 'In this article, we’re going to set up a TFTP (Trivial File Transfer Protocol) and NFS (Network File System) server and use it to boot a Raspberry Pi 4 (RPI). To make our lives easier, we’ll use U-Boot as our bootloader. Why would we need it? In the early (and beyond) stages of development, we [&hellip;]'
+tags: ["yocto", "build-systems", "embedded-linux"]
+category: "Systemy wbudowane"
 ---
-
-# TFTP &amp; NFS for Embedded Linux Development
 
 In this article, we’re going to set up a TFTP (Trivial File Transfer Protocol) and NFS (Network File System) server and use it to boot a Raspberry Pi 4 (RPI). To make our lives easier, we’ll use U-Boot as our bootloader.
 

@@ -1,0 +1,188 @@
+---
+// GDPR Cookie Consent Banner Component
+---
+
+<div
+  id="consent-banner"
+  class="fixed bottom-0 left-0 right-0 z-50 hidden transform transition-transform duration-300 translate-y-full"
+  role="dialog"
+  aria-labelledby="consent-title"
+  aria-describedby="consent-description"
+>
+  <div class="bg-[var(--color-bg)] border-t border-[var(--color-border)] shadow-lg">
+    <div class="max-w-6xl mx-auto p-4 md:p-6">
+      <div class="flex flex-col gap-4">
+        <!-- Header -->
+        <div>
+          <h2 id="consent-title" class="text-lg font-semibold text-[var(--color-text)]">
+            Cookie Preferences
+          </h2>
+          <p id="consent-description" class="text-sm text-[var(--color-text-light)] mt-1">
+            We use cookies to enhance your experience. You can customize your preferences below.
+            <a href="/privacy" class="text-[var(--color-primary)] hover:underline">Learn more</a>
+          </p>
+        </div>
+
+        <!-- Consent Categories -->
+        <div class="grid gap-3 md:grid-cols-3">
+          <!-- Essential -->
+          <div class="flex items-center justify-between p-3 rounded-lg bg-[var(--color-bg-alt)] border border-[var(--color-border)]">
+            <div class="flex-1">
+              <span class="text-sm font-medium text-[var(--color-text)]">Essential</span>
+              <p class="text-xs text-[var(--color-text-light)]">Required for site functionality</p>
+            </div>
+            <label class="relative inline-flex items-center cursor-not-allowed">
+              <input
+                type="checkbox"
+                checked
+                disabled
+                class="sr-only peer"
+              />
+              <div class="w-9 h-5 bg-[var(--color-primary)] rounded-full opacity-50"></div>
+              <div class="absolute left-0.5 top-0.5 bg-white w-4 h-4 rounded-full transition-transform translate-x-4"></div>
+            </label>
+          </div>
+
+          <!-- Analytics -->
+          <div class="flex items-center justify-between p-3 rounded-lg bg-[var(--color-bg-alt)] border border-[var(--color-border)]">
+            <div class="flex-1">
+              <span class="text-sm font-medium text-[var(--color-text)]">Analytics</span>
+              <p class="text-xs text-[var(--color-text-light)]">Help us improve our site</p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                id="consent-analytics"
+                class="sr-only peer"
+              />
+              <div class="w-9 h-5 bg-gray-300 dark:bg-gray-600 peer-checked:bg-[var(--color-primary)] rounded-full transition-colors"></div>
+              <div class="absolute left-0.5 top-0.5 bg-white w-4 h-4 rounded-full transition-transform peer-checked:translate-x-4"></div>
+            </label>
+          </div>
+
+          <!-- YouTube -->
+          <div class="flex items-center justify-between p-3 rounded-lg bg-[var(--color-bg-alt)] border border-[var(--color-border)]">
+            <div class="flex-1">
+              <span class="text-sm font-medium text-[var(--color-text)]">YouTube</span>
+              <p class="text-xs text-[var(--color-text-light)]">Embedded video content</p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                id="consent-youtube"
+                class="sr-only peer"
+              />
+              <div class="w-9 h-5 bg-gray-300 dark:bg-gray-600 peer-checked:bg-[var(--color-primary)] rounded-full transition-colors"></div>
+              <div class="absolute left-0.5 top-0.5 bg-white w-4 h-4 rounded-full transition-transform peer-checked:translate-x-4"></div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex flex-col sm:flex-row gap-2 sm:justify-end">
+          <button
+            id="consent-reject"
+            class="px-4 py-2 text-sm font-medium text-[var(--color-text)] bg-transparent border border-[var(--color-border)] rounded-lg hover:bg-[var(--color-bg-alt)] transition-colors"
+          >
+            Reject All
+          </button>
+          <button
+            id="consent-save"
+            class="px-4 py-2 text-sm font-medium text-[var(--color-text)] bg-transparent border border-[var(--color-border)] rounded-lg hover:bg-[var(--color-bg-alt)] transition-colors"
+          >
+            Save Preferences
+          </button>
+          <button
+            id="consent-accept"
+            class="px-4 py-2 text-sm font-medium text-white bg-[var(--color-primary)] rounded-lg hover:opacity-90 transition-opacity"
+          >
+            Accept All
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { getConsent, setConsent, acceptAll, rejectAll, hasInteracted } from '../utils/consent';
+
+  function initConsentBanner() {
+    const banner = document.getElementById('consent-banner');
+    const analyticsCheckbox = document.getElementById('consent-analytics') as HTMLInputElement;
+    const youtubeCheckbox = document.getElementById('consent-youtube') as HTMLInputElement;
+    const acceptBtn = document.getElementById('consent-accept');
+    const rejectBtn = document.getElementById('consent-reject');
+    const saveBtn = document.getElementById('consent-save');
+
+    if (!banner || !analyticsCheckbox || !youtubeCheckbox) return;
+
+    // Show banner if no consent given yet
+    if (!hasInteracted()) {
+      banner.classList.remove('hidden');
+      // Small delay to trigger animation
+      requestAnimationFrame(() => {
+        banner.classList.remove('translate-y-full');
+      });
+    }
+
+    // Load existing preferences if any
+    const consent = getConsent();
+    if (consent) {
+      analyticsCheckbox.checked = consent.analytics;
+      youtubeCheckbox.checked = consent.youtube;
+    }
+
+    // Hide banner function
+    function hideBanner() {
+      banner.classList.add('translate-y-full');
+      setTimeout(() => {
+        banner.classList.add('hidden');
+      }, 300);
+    }
+
+    // Accept all
+    acceptBtn?.addEventListener('click', () => {
+      acceptAll();
+      analyticsCheckbox.checked = true;
+      youtubeCheckbox.checked = true;
+      hideBanner();
+    });
+
+    // Reject all
+    rejectBtn?.addEventListener('click', () => {
+      rejectAll();
+      analyticsCheckbox.checked = false;
+      youtubeCheckbox.checked = false;
+      hideBanner();
+    });
+
+    // Save preferences
+    saveBtn?.addEventListener('click', () => {
+      setConsent({
+        analytics: analyticsCheckbox.checked,
+        youtube: youtubeCheckbox.checked,
+      });
+      hideBanner();
+    });
+
+    // Allow reopening banner via custom event
+    window.addEventListener('open-consent-banner', () => {
+      const consent = getConsent();
+      if (consent) {
+        analyticsCheckbox.checked = consent.analytics;
+        youtubeCheckbox.checked = consent.youtube;
+      }
+      banner.classList.remove('hidden');
+      requestAnimationFrame(() => {
+        banner.classList.remove('translate-y-full');
+      });
+    });
+  }
+
+  // Initialize on page load
+  document.addEventListener('DOMContentLoaded', initConsentBanner);
+
+  // Re-initialize on Astro page transitions (View Transitions)
+  document.addEventListener('astro:page-load', initConsentBanner);
+</script>

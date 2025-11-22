@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import Search from '../components/Search.astro';
+import ConsentBanner from '../components/ConsentBanner.astro';
 
 interface Props {
   title: string;
@@ -120,8 +121,24 @@ const { title, description = "A blog about embedded Linux, kernel development, a
     <footer class="border-t mt-16" style="background-color: var(--color-bg-alt); border-color: var(--color-border);">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center" style="color: var(--color-text-light);">
         <p>&copy; {new Date().getFullYear()} Embedded Linux Blog. All rights reserved.</p>
+        <div class="mt-4 flex justify-center gap-4 text-sm">
+          <a href="/privacy" class="hover:text-[var(--color-primary)] transition-colors no-underline" style="color: var(--color-text-light);">
+            Privacy Policy
+          </a>
+          <span style="color: var(--color-border);">|</span>
+          <button
+            id="cookie-settings-btn"
+            class="hover:text-[var(--color-primary)] transition-colors"
+            style="color: var(--color-text-light); background: none; border: none; cursor: pointer;"
+          >
+            Cookie Settings
+          </button>
+        </div>
       </div>
     </footer>
+
+    <!-- GDPR Consent Banner -->
+    <ConsentBanner />
 
     <script is:inline>
       // Theme switching logic (must run before page renders)
@@ -195,6 +212,12 @@ const { title, description = "A blog about embedded Linux, kernel development, a
 
       themeToggle?.addEventListener('click', toggleTheme);
       themeToggleMobile?.addEventListener('click', toggleTheme);
+
+      // Cookie settings button
+      const cookieSettingsBtn = document.getElementById('cookie-settings-btn');
+      cookieSettingsBtn?.addEventListener('click', () => {
+        window.dispatchEvent(new CustomEvent('open-consent-banner'));
+      });
     </script>
   </body>
 </html>

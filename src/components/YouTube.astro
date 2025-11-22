@@ -12,16 +12,41 @@ let embedUrl = `https://www.youtube-nocookie.com/embed/${id}`;
 if (start) {
   embedUrl += `?start=${start}`;
 }
+
+// YouTube thumbnail URL
+const thumbnailUrl = `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
 ---
 
-<div class="youtube-embed">
-  <iframe
-    src={embedUrl}
-    title={title}
-    frameborder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-    allowfullscreen
-  ></iframe>
+<div class="youtube-embed" data-video-id={id} data-embed-url={embedUrl} data-title={title}>
+  <!-- Placeholder shown when consent not given -->
+  <div class="youtube-placeholder">
+    <img
+      src={thumbnailUrl}
+      alt={`Thumbnail for ${title}`}
+      class="youtube-thumbnail"
+      loading="lazy"
+    />
+    <div class="youtube-overlay">
+      <div class="youtube-consent-message">
+        <svg class="youtube-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+        </svg>
+        <p class="youtube-notice">This video is hosted on YouTube</p>
+        <p class="youtube-privacy-text">
+          Playing this video will set cookies and send data to YouTube/Google.
+        </p>
+        <button class="youtube-accept-btn" type="button">
+          Accept & Play Video
+        </button>
+        <a href={`https://www.youtube.com/watch?v=${id}`} class="youtube-external-link" target="_blank" rel="noopener noreferrer">
+          Watch on YouTube
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Iframe container (iframe created dynamically after consent) -->
+  <div class="youtube-iframe-container" style="display: none;"></div>
 </div>
 
 <style>
@@ -34,14 +59,173 @@ if (start) {
     margin: 2rem 0;
     border-radius: 0.5rem;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    background: #000;
   }
 
-  .youtube-embed iframe {
+  .youtube-placeholder {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+  }
+
+  .youtube-thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0.5rem;
+  }
+
+  .youtube-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+  }
+
+  .youtube-consent-message {
+    text-align: center;
+    padding: 1.5rem;
+    max-width: 320px;
+  }
+
+  .youtube-icon {
+    width: 48px;
+    height: 48px;
+    color: #ff0000;
+    margin: 0 auto 1rem;
+  }
+
+  .youtube-notice {
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem;
+  }
+
+  .youtube-privacy-text {
+    color: #d1d5db;
+    font-size: 0.75rem;
+    margin: 0 0 1rem;
+    line-height: 1.4;
+  }
+
+  .youtube-accept-btn {
+    display: block;
+    width: 100%;
+    padding: 0.625rem 1rem;
+    background: #ff0000;
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: none;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .youtube-accept-btn:hover {
+    background: #cc0000;
+  }
+
+  .youtube-external-link {
+    display: block;
+    margin-top: 0.75rem;
+    color: #9ca3af;
+    font-size: 0.75rem;
+    text-decoration: underline;
+  }
+
+  .youtube-external-link:hover {
+    color: #fff;
+  }
+
+  .youtube-iframe-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .youtube-iframe-container iframe {
+    width: 100%;
+    height: 100%;
     border-radius: 0.5rem;
   }
 </style>
+
+<script>
+  import { hasConsent, setConsent } from '../utils/consent';
+
+  function initYouTubeEmbeds() {
+    const embeds = document.querySelectorAll('.youtube-embed');
+
+    embeds.forEach((embed) => {
+      const placeholder = embed.querySelector('.youtube-placeholder') as HTMLElement;
+      const iframeContainer = embed.querySelector('.youtube-iframe-container') as HTMLElement;
+      const acceptBtn = embed.querySelector('.youtube-accept-btn');
+
+      if (!placeholder || !iframeContainer) return;
+
+      const embedUrl = embed.getAttribute('data-embed-url');
+      const videoTitle = embed.getAttribute('data-title') || 'YouTube video player';
+      let videoLoaded = false;
+
+      function loadVideo() {
+        if (!embedUrl || videoLoaded) return;
+
+        // Create iframe dynamically
+        const iframe = document.createElement('iframe');
+        iframe.src = embedUrl;
+        iframe.title = videoTitle;
+        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+        iframe.allowFullscreen = true;
+
+        // Apply styles directly for proper sizing
+        iframe.style.cssText = 'width: 100%; height: 100%; border: none; border-radius: 0.5rem;';
+
+        // Clear container and append iframe
+        iframeContainer.innerHTML = '';
+        iframeContainer.appendChild(iframe);
+
+        // Show iframe, hide placeholder
+        placeholder.style.display = 'none';
+        iframeContainer.style.display = 'block';
+        videoLoaded = true;
+      }
+
+      // Check if consent already given
+      if (hasConsent('youtube')) {
+        loadVideo();
+      }
+
+      // Handle accept button click
+      acceptBtn?.addEventListener('click', () => {
+        setConsent({ youtube: true });
+        loadVideo();
+      });
+
+      // Listen for consent updates (from banner)
+      window.addEventListener('consent-updated', (e: Event) => {
+        const detail = (e as CustomEvent).detail;
+        if (detail?.youtube) {
+          loadVideo();
+        }
+      });
+    });
+  }
+
+  // Initialize on page load
+  document.addEventListener('DOMContentLoaded', initYouTubeEmbeds);
+
+  // Re-initialize on Astro page transitions
+  document.addEventListener('astro:page-load', initYouTubeEmbeds);
+</script>

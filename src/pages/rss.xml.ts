@@ -24,14 +24,14 @@ export async function GET(context: APIContext) {
     b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
   );
 
-  const siteUrl = context.site?.toString() || siteConfig.site.url;
+  const siteUrl = (context.site?.toString() || siteConfig.site.url).replace(/\/$/, '');
 
   return rss({
     title: 'Blog o Embedded Linux',
     description: 'Blog o embedded Linux, rozwoju kernela, systemach budowania i nie tylko',
     site: siteUrl,
     items: await Promise.all(sortedPosts.map(async (post) => {
-      const postUrl = `${siteUrl}/blog/${getSlugWithoutLang(post.slug)}/`;
+      const postUrl = `${siteUrl}/blog/${getSlugWithoutLang(post.slug)}`;
       // Use canonical URL if it's an external post, otherwise use local URL
       const canonicalUrl = post.data.canonicalUrl || postUrl;
 

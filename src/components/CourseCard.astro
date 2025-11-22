@@ -18,9 +18,11 @@ const allLessons = await getCollection('lessons', ({ data }) => {
   return data.draft !== true;
 });
 
+// course.id includes .json extension, lesson reference does not
+const courseIdWithoutExt = course.id.replace(/\.json$/, '');
 const courseLessons = allLessons.filter(lesson => {
   const lessonLang = getLangFromId(lesson.id);
-  return lesson.data.course.id === course.id && lessonLang === lang;
+  return lesson.data.course.id === courseIdWithoutExt && lessonLang === lang;
 });
 
 const lessonCount = courseLessons.length;

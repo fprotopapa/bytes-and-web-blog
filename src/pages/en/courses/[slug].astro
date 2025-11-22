@@ -35,8 +35,10 @@ const allLessons = await getCollection('lessons', ({ id, data }) => {
 });
 
 // Filter lessons for this course and sort by order
+// course.id is "en/yocto-fundamentals.json", lesson reference is "en/yocto-fundamentals"
+const courseIdWithoutExt = course.id.replace(/\.json$/, '');
 const courseLessons = allLessons
-  .filter(lesson => lesson.data.course.id === course.id)
+  .filter(lesson => lesson.data.course.id === courseIdWithoutExt)
   .sort((a, b) => a.data.order - b.data.order);
 
 // Difficulty badge colors

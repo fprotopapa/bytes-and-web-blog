@@ -20,13 +20,14 @@ export const getStaticPaths = (async () => {
   });
 
   return lessons.map(lesson => {
-    // Extract course slug from lesson id (e.g., "pl/yocto-fundamentals/01-introduction" -> "yocto-fundamentals")
+    // Extract course slug from lesson id (e.g., "pl/yocto-fundamentals/01-introduction.mdx" -> "yocto-fundamentals")
     const parts = lesson.id.split('/');
     const courseSlug = parts[1]; // After language prefix
-    const lessonSlug = parts[2]?.replace('.mdx', '').replace('.md', '');
+    const lessonSlug = parts[2]?.replace(/\.(mdx?|md)$/, '');
 
-    // Find the course
-    const course = courses.find(c => c.id === `pl/${courseSlug}.json`);
+    // Find the course - course reference is like "pl/yocto-fundamentals"
+    const courseRef = lesson.data.course.id;
+    const course = courses.find(c => c.id === courseRef);
 
     return {
       params: { course: courseSlug, lesson: lessonSlug },
@@ -49,11 +50,12 @@ const allLessons = await getCollection('lessons', ({ id, data }) => {
   return data.draft !== true && getLangFromId(id) === lang;
 });
 
+const courseIdWithoutExt = course.id.replace(/\.json$/, '');
 const courseLessons = allLessons
-  .filter(l => l.data.course.id === course.id)
+  .filter(l => l.data.course.id === courseIdWithoutExt)
   .sort((a, b) => a.data.order - b.data.order)
   .map(l => ({
-    slug: l.id.split('/').pop()?.replace('.mdx', '').replace('.md', '') || '',
+    slug: l.id.split('/').pop()?.replace(/\.(mdx?|md)$/, '') || '',
     title: l.data.title,
     order: l.data.order,
   }));

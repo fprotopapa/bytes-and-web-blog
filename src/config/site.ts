@@ -42,6 +42,18 @@ export const siteConfig = {
   // Site metadata
   site: {
     url: 'https://example.com',
+    name: 'Your Blog Name',
+    defaultImage: '/images/default-og.png', // Default image for social sharing
+    defaultImageAlt: 'Blog logo',
+  },
+
+  // Social media accounts (all optional - leave empty if not used)
+  social: {
+    twitter: '', // e.g., '@yourhandle'
+    facebook: '', // e.g., 'https://facebook.com/yourpage'
+    linkedin: '', // e.g., 'https://linkedin.com/company/yourcompany'
+    instagram: '', // e.g., 'https://instagram.com/yourhandle'
+    reddit: '', // e.g., 'https://reddit.com/r/yoursubreddit' or 'https://reddit.com/user/yourname'
   },
 } as const;
 

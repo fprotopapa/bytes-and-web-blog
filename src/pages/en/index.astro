@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import PostCard from '../../components/PostCard.astro';
+import SchemaOrg from '../../components/SchemaOrg.astro';
 import { getCollection } from 'astro:content';
 import { getLangFromId } from '../../content/config';
 import { useTranslations } from '../../i18n/utils';
@@ -22,6 +23,8 @@ const recentPosts = sortedPosts.slice(0, 5);
 ---
 
 <Layout title={`${t('nav.home')} - ${t('site.title')}`} lang={lang}>
+  <SchemaOrg type="WebSite" />
+
   <div style="max-width: 860px; margin: 0 auto;">
   <!-- Hero Section -->
   <div class="text-center mb-8 sm:mb-12 lg:mb-16">

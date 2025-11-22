@@ -1,0 +1,144 @@
+---
+/**
+ * SchemaOrg component for JSON-LD structured data
+ * Supports Article, Organization, BreadcrumbList, and WebSite schemas
+ */
+
+import { siteConfig } from '../config/site';
+
+interface BreadcrumbItem {
+  name: string;
+  url: string;
+}
+
+interface Props {
+  type: 'Article' | 'Organization' | 'WebSite';
+  // Article props
+  title?: string;
+  description?: string;
+  image?: string;
+  datePublished?: string;
+  dateModified?: string;
+  authorName?: string;
+  authorUrl?: string;
+  // Breadcrumbs
+  breadcrumbs?: BreadcrumbItem[];
+  // WebSite props
+  searchUrl?: string;
+}
+
+const {
+  type,
+  title,
+  description,
+  image,
+  datePublished,
+  dateModified,
+  authorName,
+  authorUrl,
+  breadcrumbs,
+  searchUrl,
+} = Astro.props;
+
+const siteUrl = siteConfig.site.url.replace(/\/$/, '');
+
+// Build schemas based on type
+const schemas: object[] = [];
+
+// Organization schema (used by all types)
+const organizationSchema = {
+  '@type': 'Organization',
+  '@id': `${siteUrl}/#organization`,
+  name: siteConfig.site.name,
+  url: siteUrl,
+  logo: {
+    '@type': 'ImageObject',
+    url: `${siteUrl}${siteConfig.site.defaultImage}`,
+  },
+  sameAs: [
+    siteConfig.social.twitter ? `https://twitter.com/${siteConfig.social.twitter.replace('@', '')}` : null,
+    siteConfig.social.facebook || null,
+    siteConfig.social.linkedin || null,
+    siteConfig.social.instagram || null,
+    siteConfig.social.reddit || null,
+  ].filter(Boolean),
+};
+
+// WebSite schema
+const webSiteSchema = {
+  '@type': 'WebSite',
+  '@id': `${siteUrl}/#website`,
+  url: siteUrl,
+  name: siteConfig.site.name,
+  publisher: {
+    '@id': `${siteUrl}/#organization`,
+  },
+  ...(searchUrl && {
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: `${siteUrl}${searchUrl}?q={search_term_string}`,
+      },
+      'query-input': 'required name=search_term_string',
+    },
+  }),
+};
+
+if (type === 'Organization' || type === 'WebSite') {
+  schemas.push(organizationSchema);
+  schemas.push(webSiteSchema);
+}
+
+if (type === 'Article' && title) {
+  const articleImage = image
+    ? (image.startsWith('http') ? image : `${siteUrl}${image}`)
+    : `${siteUrl}${siteConfig.site.defaultImage}`;
+
+  const articleSchema = {
+    '@type': 'Article',
+    '@id': `${Astro.url.href}#article`,
+    headline: title,
+    description: description,
+    image: articleImage,
+    datePublished: datePublished,
+    dateModified: dateModified || datePublished,
+    author: {
+      '@type': 'Person',
+      name: authorName || siteConfig.site.name,
+      ...(authorUrl && { url: authorUrl }),
+    },
+    publisher: {
+      '@id': `${siteUrl}/#organization`,
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': Astro.url.href,
+    },
+  };
+
+  schemas.push(organizationSchema);
+  schemas.push(articleSchema);
+}
+
+// Breadcrumb schema
+if (breadcrumbs && breadcrumbs.length > 0) {
+  const breadcrumbSchema = {
+    '@type': 'BreadcrumbList',
+    itemListElement: breadcrumbs.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.name,
+      item: item.url.startsWith('http') ? item.url : `${siteUrl}${item.url}`,
+    })),
+  };
+  schemas.push(breadcrumbSchema);
+}
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': schemas,
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

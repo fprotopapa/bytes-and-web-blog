@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import AuthorCard from '../../components/AuthorCard.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import SchemaOrg from '../../components/SchemaOrg.astro';
 import { getCollection, getEntry } from 'astro:content';
 import type { GetStaticPaths } from 'astro';
 import { getLangFromId, getSlugWithoutLang } from '../../content/config';
@@ -72,9 +73,45 @@ const breadcrumbItems = [
   { label: post.data.category, href: `/categories/${post.data.category.toLowerCase().replace(/\s+/g, '-')}` },
   { label: post.data.title },
 ];
+
+// SEO data
+const authorName = author?.data.name || post.data.originalAuthor || siteConfig.site.name;
+const siteUrl = siteConfig.site.url.replace(/\/$/, '');
+
+// Breadcrumbs for schema
+const schemaBreadcrumbs = [
+  { name: t('nav.home'), url: '/' },
+  { name: t('nav.blog'), url: '/blog' },
+  { name: post.data.category, url: `/categories/${post.data.category.toLowerCase().replace(/\s+/g, '-')}` },
+  { name: post.data.title, url: `/blog/${getSlugWithoutLang(post.slug)}` },
+];
 ---
 
-<Layout title={`${post.data.title} - ${t('site.title')}`} description={post.data.description} lang={lang} translationUrls={translationUrls} canonicalUrl={post.data.canonicalUrl}>
+<Layout
+  title={`${post.data.title} - ${t('site.title')}`}
+  description={post.data.description}
+  lang={lang}
+  translationUrls={translationUrls}
+  canonicalUrl={post.data.canonicalUrl}
+  image={post.data.coverImage}
+  type="article"
+  publishedTime={post.data.pubDate.toISOString()}
+  modifiedTime={post.data.updatedDate?.toISOString()}
+  author={authorName}
+  tags={post.data.tags}
+>
+  <SchemaOrg
+    type="Article"
+    title={post.data.title}
+    description={post.data.description}
+    image={post.data.coverImage}
+    datePublished={post.data.pubDate.toISOString()}
+    dateModified={post.data.updatedDate?.toISOString() || post.data.pubDate.toISOString()}
+    authorName={authorName}
+    authorUrl={author ? `${siteUrl}/authors/${post.data.author?.id.split('/')[1]}` : undefined}
+    breadcrumbs={schemaBreadcrumbs}
+  />
+
   <!-- Reading Progress Bar -->
   <div id="reading-progress" class="fixed top-0 left-0 h-1 z-50 transition-all duration-150" style="width: 0%; background: linear-gradient(90deg, var(--color-primary) 0%, #9333ea 100%);"></div>
 

@@ -4,7 +4,8 @@ import AuthorCard from '../../../components/AuthorCard.astro';
 import { getCollection, getEntry } from 'astro:content';
 import type { GetStaticPaths } from 'astro';
 import { getLangFromId, getSlugWithoutLang } from '../../../content/config';
-import { useTranslations, formatDate } from '../../../i18n/utils';
+import { useTranslations, formatDate, getPostTranslations } from '../../../i18n/utils';
+import { languages, getLocalizedPath } from '../../../i18n/config';
 
 const lang = 'en';
 const t = useTranslations(lang);
@@ -26,12 +27,27 @@ const author = await getEntry(post.data.author);
 
 const formattedDate = formatDate(post.data.pubDate, lang);
 
-// Get related posts (same category or tags, same language)
-const allPosts = await getCollection('blog', ({ id, data }) => {
-  return data.draft !== true && getLangFromId(id) === lang;
+// Get all posts for translations and related posts
+const allPosts = await getCollection('blog', ({ data }) => {
+  return data.draft !== true;
 });
 
-const relatedPosts = allPosts
+// Get translations of this post
+const translations = getPostTranslations(post, allPosts);
+
+// Build translation URLs for the language switcher
+import type { Lang } from '../../../i18n/config';
+const translationUrls: Record<Lang, string> = {
+  en: `/en/blog/${getSlugWithoutLang(post.slug)}`,
+  pl: translations.find(t => t.lang === 'pl')
+    ? `/blog/${translations.find(t => t.lang === 'pl')!.slug}`
+    : `/blog/${getSlugWithoutLang(post.slug)}`,
+};
+
+// Get related posts (same category or tags, same language)
+const sameLangPosts = allPosts.filter(p => getLangFromId(p.id) === lang);
+
+const relatedPosts = sameLangPosts
   .filter(p => p.slug !== post.slug)
   .filter(p =>
     p.data.category === post.data.category ||
@@ -40,7 +56,7 @@ const relatedPosts = allPosts
   .slice(0, 3);
 ---
 
-<Layout title={`${post.data.title} - ${t('site.title')}`} description={post.data.description} lang={lang}>
+<Layout title={`${post.data.title} - ${t('site.title')}`} description={post.data.description} lang={lang} translationUrls={translationUrls}>
   <!-- Reading Progress Bar -->
   <div id="reading-progress" class="fixed top-0 left-0 h-1 z-50 transition-all duration-150" style="width: 0%; background: linear-gradient(90deg, var(--color-primary) 0%, #9333ea 100%);"></div>
 
@@ -79,6 +95,28 @@ const relatedPosts = allPosts
           </>
         )}
       </div>
+
+      {/* Language switcher for translations */}
+      {translations.length > 0 && (
+        <div class="flex items-center gap-2 mt-4 text-sm" style="color: var(--color-text-light);">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
+          </svg>
+          <span>Also available in:</span>
+          {translations.map((trans, i) => (
+            <>
+              <a
+                href={getLocalizedPath(`/blog/${trans.slug}`, trans.lang)}
+                class="font-medium hover:underline"
+                style="color: var(--color-primary);"
+              >
+                {languages[trans.lang]}
+              </a>
+              {i < translations.length - 1 && <span>,</span>}
+            </>
+          ))}
+        </div>
+      )}
     </header>
 
     <!-- Interactive tag pills and share buttons -->

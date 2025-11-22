@@ -3,9 +3,10 @@ import { languages, type Lang, getLocalizedPath, getPathWithoutLang } from '../i
 
 interface Props {
   lang: Lang;
+  translationUrls?: Record<Lang, string>;
 }
 
-const { lang } = Astro.props;
+const { lang, translationUrls } = Astro.props;
 const currentPath = Astro.url.pathname;
 const pathWithoutLang = getPathWithoutLang(currentPath);
 ---
@@ -13,7 +14,8 @@ const pathWithoutLang = getPathWithoutLang(currentPath);
 <div class="language-switcher flex items-center gap-1">
   {Object.entries(languages).map(([code, name]) => {
     const isActive = code === lang;
-    const href = getLocalizedPath(pathWithoutLang, code as Lang);
+    // Use translation URL if available, otherwise fall back to default path conversion
+    const href = translationUrls?.[code as Lang] || getLocalizedPath(pathWithoutLang, code as Lang);
 
     return (
       <a

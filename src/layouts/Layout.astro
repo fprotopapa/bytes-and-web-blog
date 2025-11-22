@@ -10,9 +10,10 @@ interface Props {
   title: string;
   description?: string;
   lang?: Lang;
+  translationUrls?: Record<Lang, string>;
 }
 
-const { title, lang = defaultLang } = Astro.props;
+const { title, lang = defaultLang, translationUrls } = Astro.props;
 const t = useTranslations(lang);
 const description = Astro.props.description || t('site.description');
 
@@ -33,9 +34,9 @@ const htmlLang = lang === 'pl' ? 'pl' : 'en';
     <title>{title}</title>
 
     <!-- Hreflang tags for SEO -->
-    <link rel="alternate" hreflang="pl" href={getLocalizedPath(Astro.url.pathname, 'pl')} />
-    <link rel="alternate" hreflang="en" href={getLocalizedPath(Astro.url.pathname, 'en')} />
-    <link rel="alternate" hreflang="x-default" href={getLocalizedPath(Astro.url.pathname, 'pl')} />
+    <link rel="alternate" hreflang="pl" href={translationUrls?.pl || getLocalizedPath(Astro.url.pathname, 'pl')} />
+    <link rel="alternate" hreflang="en" href={translationUrls?.en || getLocalizedPath(Astro.url.pathname, 'en')} />
+    <link rel="alternate" hreflang="x-default" href={translationUrls?.pl || getLocalizedPath(Astro.url.pathname, 'pl')} />
   </head>
   <body class="min-h-screen flex flex-col font-sans leading-relaxed">
     <header class="sticky top-0 z-50 border-b shadow-sm" style="background-color: var(--color-bg); border-color: var(--color-border);">
@@ -52,7 +53,7 @@ const htmlLang = lang === 'pl' ? 'pl' : 'en';
             <a href={localePath('/blog')} class="hover:text-blue-600 transition-colors no-underline" style="color: var(--color-text-light);">{t('nav.blog')}</a>
             <a href={localePath('/tags')} class="hover:text-blue-600 transition-colors no-underline" style="color: var(--color-text-light);">{t('nav.tags')}</a>
             <a href={localePath('/categories')} class="hover:text-blue-600 transition-colors no-underline" style="color: var(--color-text-light);">{t('nav.categories')}</a>
-            <LanguageSwitcher lang={lang} />
+            <LanguageSwitcher lang={lang} translationUrls={translationUrls} />
             <button
               id="search-toggle"
               class="p-2 rounded-lg transition-colors"
@@ -127,7 +128,7 @@ const htmlLang = lang === 'pl' ? 'pl' : 'en';
           <a href={localePath('/tags')} class="block py-2 rounded px-3 transition-colors no-underline hover:opacity-80" style="color: var(--color-text); background-color: transparent;">{t('nav.tags')}</a>
           <a href={localePath('/categories')} class="block py-2 rounded px-3 transition-colors no-underline hover:opacity-80" style="color: var(--color-text); background-color: transparent;">{t('nav.categories')}</a>
           <div class="px-3 pt-2">
-            <LanguageSwitcher lang={lang} />
+            <LanguageSwitcher lang={lang} translationUrls={translationUrls} />
           </div>
         </div>
       </nav>

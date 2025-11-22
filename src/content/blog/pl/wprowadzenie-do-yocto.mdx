@@ -1,0 +1,172 @@
+---
+title: "Wprowadzenie do Yocto Project"
+description: "Kompleksowy przewodnik po tworzeniu niestandardowych dystrybucji Linux z Yocto Project dla systemów embedded."
+pubDate: 2024-11-20
+author: pl/john-doe
+coverImage: "/images/posts/yocto-getting-started.jpg"
+tags: ["yocto", "build-system", "embedded", "tutorial"]
+category: "Tutorials"
+draft: false
+translationId: "yocto-getting-started"
+---
+
+Yocto Project to potężny system budowania do tworzenia niestandardowych dystrybucji Linux dla urządzeń embedded. W tym przewodniku przeprowadzimy Cię przez podstawy konfiguracji i używania Yocto w Twoich projektach embedded.
+
+## Czym jest Yocto Project?
+
+Yocto Project to projekt współpracy open-source, który dostarcza szablony, narzędzia i metody do tworzenia niestandardowych systemów opartych na Linux dla aplikacji embedded i IoT. Sam w sobie nie jest dystrybucją Linux, ale zestawem narzędzi do tworzenia własnej.
+
+## Wymagania wstępne
+
+Przed rozpoczęciem upewnij się, że masz:
+
+- Maszynę deweloperską z Linux (zalecane Ubuntu 20.04+)
+- Co najmniej 50GB wolnego miejsca na dysku
+- Minimum 8GB RAM (zalecane 16GB)
+- Zainstalowany Git
+- Podstawowe narzędzia do budowania
+
+Zainstaluj wymagane pakiety na Ubuntu:
+
+```bash
+sudo apt-get install gawk wget git diffstat unzip texinfo gcc build-essential \
+    chrpath socat cpio python3 python3-pip python3-pexpect xz-utils debianutils \
+    iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev pylint \
+    xterm python3-subunit mesa-common-dev zstd liblz4-tool
+```
+
+## Konfiguracja pierwszego buildu
+
+### 1. Sklonuj Poky
+
+Poky to referencyjna dystrybucja Yocto Project:
+
+```bash
+git clone git://git.yoctoproject.org/poky
+cd poky
+git checkout -b kirkstone origin/kirkstone
+```
+
+### 2. Zainicjalizuj środowisko budowania
+
+Wykonaj skrypt inicjalizacji środowiska:
+
+```bash
+source oe-init-build-env
+```
+
+Tworzy to katalog `build` i ustawia zmienne środowiskowe.
+
+### 3. Skonfiguruj swój build
+
+Edytuj `conf/local.conf` aby ustawić docelową maszynę:
+
+```bash
+# Ustaw docelową maszynę (np. qemu, beaglebone, raspberry pi)
+MACHINE = "qemux86-64"
+
+# Liczba równoległych zadań
+BB_NUMBER_THREADS = "8"
+PARALLEL_MAKE = "-j 8"
+```
+
+### 4. Zbuduj swój obraz
+
+Rozpocznij proces budowania:
+
+```bash
+bitbake core-image-minimal
+```
+
+Za pierwszym razem zajmie to trochę czasu, ponieważ system pobiera źródła i buduje wszystko od podstaw.
+
+## Zrozumienie koncepcji Yocto
+
+### Warstwy
+
+Yocto używa architektury warstwowej. Warstwy to repozytoria zawierające powiązane metadane:
+
+- **meta** - Podstawowe metadane Yocto
+- **meta-poky** - Metadane dystrybucji Poky
+- **meta-yocto-bsp** - Referencyjna warstwa BSP
+
+Dodaj niestandardowe warstwy za pomocą:
+
+```bash
+bitbake-layers add-layer ../meta-custom
+```
+
+### Przepisy (Recipes)
+
+Przepisy (pliki `.bb`) definiują jak zbudować pakiet:
+
+```bitbake
+SUMMARY = "Aplikacja Hello World"
+LICENSE = "MIT"
+LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=..."
+
+SRC_URI = "file://hello.c"
+
+do_compile() {
+    ${CC} ${CFLAGS} ${LDFLAGS} -o hello ${WORKDIR}/hello.c
+}
+
+do_install() {
+    install -d ${D}${bindir}
+    install -m 0755 hello ${D}${bindir}
+}
+```
+
+### Obrazy
+
+Obrazy definiują jakie pakiety są zawarte w finalnym systemie:
+
+```bitbake
+# W swoim niestandardowym przepisie na obraz
+IMAGE_INSTALL += "hello"
+IMAGE_FEATURES += "ssh-server-openssh"
+```
+
+## Uruchamianie obrazu
+
+Dla celów QEMU uruchom:
+
+```bash
+runqemu qemux86-64
+```
+
+Dla celów sprzętowych, wgraj wynikowy obraz na pamięć masową urządzenia.
+
+## Następne kroki
+
+- Zapoznaj się z [dokumentacją Yocto Project](https://docs.yoctoproject.org/)
+- Stwórz niestandardowe warstwy dla swojego projektu
+- Poznaj zarządzanie pakietami z `opkg` lub `dnf`
+- Zrozum system budowania BitBake
+
+## Rozwiązywanie problemów
+
+### Częste problemy
+
+**Build kończy się błędami pobierania:**
+Sprawdź połączenie internetowe i ustawienia proxy w `conf/local.conf`.
+
+**Brak miejsca na dysku:**
+Buildy Yocto wymagają znacznej ilości miejsca na dysku. Wyczyść stare buildy za pomocą:
+
+```bash
+bitbake -c cleanall <recipe>
+```
+
+**Błędy uprawnień:**
+Upewnij się, że Twój użytkownik ma odpowiednie uprawnienia i unikaj uruchamiania jako root.
+
+## Podsumowanie
+
+Yocto Project to niezwykle potężne narzędzie do budowania niestandardowych dystrybucji embedded Linux. Chociaż krzywa uczenia się może być stroma, elastyczność i kontrola, które zapewnia, czynią go nieocenionym dla profesjonalnego rozwoju systemów embedded.
+
+## Powiązane zasoby
+
+- [Yocto Project Quick Start](https://docs.yoctoproject.org/brief-yoctoprojectqs/index.html)
+- [Podręcznik użytkownika BitBake](https://docs.yoctoproject.org/bitbake/)
+- [Yocto Project Mega Manual](https://docs.yoctoproject.org/singleindex.html)

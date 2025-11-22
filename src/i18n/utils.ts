@@ -41,3 +41,36 @@ export function getPostCountText(count: number, lang: Lang): string {
 export function getAlternateLang(lang: Lang): Lang {
   return lang === 'pl' ? 'en' : 'pl';
 }
+
+// Get translations of a post by translationId
+import type { CollectionEntry } from 'astro:content';
+import { getLangFromId, getSlugWithoutLang } from '../content/config';
+
+export interface PostTranslation {
+  lang: Lang;
+  slug: string;
+  title: string;
+}
+
+export function getPostTranslations(
+  currentPost: CollectionEntry<'blog'>,
+  allPosts: CollectionEntry<'blog'>[]
+): PostTranslation[] {
+  const translationId = currentPost.data.translationId;
+
+  if (!translationId) {
+    return [];
+  }
+
+  return allPosts
+    .filter(post =>
+      post.data.translationId === translationId &&
+      post.id !== currentPost.id &&
+      post.data.draft !== true
+    )
+    .map(post => ({
+      lang: getLangFromId(post.id) as Lang,
+      slug: getSlugWithoutLang(post.slug),
+      title: post.data.title,
+    }));
+}

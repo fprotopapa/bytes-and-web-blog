@@ -27,6 +27,7 @@ const blog = defineCollection({
     tags: z.array(z.string()),
     category: z.string(),
     draft: z.boolean().default(false),
+    translationId: z.string().optional(), // Links translations of the same post
   }),
 });
 

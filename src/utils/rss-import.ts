@@ -33,7 +33,7 @@ export interface ImportedPost {
 
 export interface ImportOptions {
   sourceName: string;
-  defaultCategory?: string;
+  defaultCategory?: string; // Fallback if no category in RSS
   defaultAuthor?: string; // Local author reference (e.g., "pl/john-doe") - optional
   lang: 'pl' | 'en';
   maxPosts?: number;
@@ -134,10 +134,16 @@ export function convertToPost(
     ? item.contentSnippet.substring(0, 200).trim() + '...'
     : content.substring(0, 200).trim() + '...';
 
-  // Extract tags from categories or use empty array
-  const tags = item.categories?.map(cat =>
-    cat.toLowerCase().replace(/\s+/g, '-')
-  ) || [];
+  // Extract category from RSS (first category) or use default
+  const rssCategories = item.categories || [];
+  const category = rssCategories[0] || options.defaultCategory || 'Imported';
+
+  // Use remaining categories as tags, or create from first category
+  const tags = rssCategories.length > 1
+    ? rssCategories.slice(1).map(cat => cat.toLowerCase().replace(/\s+/g, '-'))
+    : rssCategories.length === 1
+      ? [rssCategories[0].toLowerCase().replace(/\s+/g, '-')]
+      : ['imported'];
 
   return {
     title: item.title,
@@ -147,8 +153,8 @@ export function convertToPost(
     externalSource: options.sourceName,
     isExternal: true,
     originalAuthor: item.creator,
-    tags: tags.length > 0 ? tags : ['imported'],
-    category: options.defaultCategory || 'Imported',
+    tags,
+    category,
     content,
     slug: generateSlug(item.title),
   };

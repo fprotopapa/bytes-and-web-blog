@@ -9,6 +9,11 @@ import MarkdownIt from 'markdown-it';
 const parser = new MarkdownIt();
 
 export async function GET(context: APIContext) {
+  // Check if RSS is enabled
+  if (!siteConfig.enableRss) {
+    return new Response(null, { status: 404 });
+  }
+
   // English RSS feed
   // Filter out MDX files as they contain JSX that won't render properly
   const posts = await getCollection('blog', ({ id, data }) => {

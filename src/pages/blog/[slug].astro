@@ -10,7 +10,7 @@ export const getStaticPaths = (async () => {
   });
 
   return blogPosts.map(post => ({
-    params: { slug: post.id },
+    params: { slug: post.slug },
     props: { post },
   }));
 }) satisfies GetStaticPaths;
@@ -31,7 +31,7 @@ const allPosts = await getCollection('blog', ({ data }) => {
 });
 
 const relatedPosts = allPosts
-  .filter(p => p.id !== post.id)
+  .filter(p => p.slug !== post.slug)
   .filter(p =>
     p.data.category === post.data.category ||
     p.data.tags.some(tag => post.data.tags.includes(tag))
@@ -119,7 +119,7 @@ const relatedPosts = allPosts
         <div class="grid gap-4">
           {relatedPosts.map(related => (
             <article class="rounded-lg p-4 sm:p-6 hover:shadow-md transition-shadow" style="border: 1px solid var(--color-border);">
-              <a href={`/blog/${related.id}`} class="no-underline group">
+              <a href={`/blog/${related.slug}`} class="no-underline group">
                 <h3 class="text-lg sm:text-xl font-semibold mb-2 hover:opacity-80 transition-opacity" style="color: var(--color-primary);">
                   {related.data.title}
                 </h3>

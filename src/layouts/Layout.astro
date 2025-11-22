@@ -12,11 +12,17 @@ interface Props {
   description?: string;
   lang?: Lang;
   translationUrls?: Record<Lang, string>;
+  canonicalUrl?: string;
 }
 
-const { title, lang = defaultLang, translationUrls } = Astro.props;
+const { title, lang = defaultLang, translationUrls, canonicalUrl } = Astro.props;
 const t = useTranslations(lang);
 const description = Astro.props.description || t('site.description');
+
+// Determine canonical URL - use provided one or generate from current URL
+const siteUrl = siteConfig.site.url;
+const defaultCanonical = `${siteUrl}${Astro.url.pathname}`;
+const canonical = canonicalUrl || defaultCanonical;
 
 // Helper to get language-aware URLs
 const localePath = (path: string) => getLocalizedPath(path, lang);
@@ -33,6 +39,9 @@ const htmlLang = lang === 'pl' ? 'pl' : 'en';
     <link rel="alternate" type="application/rss+xml" title={t('footer.rssFeed')} href={localePath('/rss.xml')} />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href={canonical} />
 
     <!-- Hreflang tags for SEO -->
     <link rel="alternate" hreflang="pl" href={translationUrls?.pl || getLocalizedPath(Astro.url.pathname, 'pl')} />

@@ -11,6 +11,12 @@ export const siteConfig = {
   // Enable or disable courses feature
   enableCourses: true,
 
+  // Enable external/imported posts features
+  enableExternalPosts: true,
+
+  // Show "external" badge on imported posts
+  showExternalBadge: true,
+
   // Site metadata
   site: {
     url: 'https://example.com',

@@ -54,6 +54,8 @@ export const ui = {
     'post.sharePost': 'Udostępnij ten wpis',
     'post.linkCopied': 'Link skopiowany do schowka!',
     'post.updated': 'Zaktualizowano',
+    'post.originallyPublished': 'Oryginalnie opublikowano na',
+    'post.externalSource': 'zewnętrznym blogu',
 
     // Categories
     'categories.all': 'Wszystkie kategorie',
@@ -175,6 +177,8 @@ export const ui = {
     'post.sharePost': 'Share this post',
     'post.linkCopied': 'Link copied to clipboard!',
     'post.updated': 'Updated',
+    'post.originallyPublished': 'Originally published on',
+    'post.externalSource': 'external blog',
 
     // Categories
     'categories.all': 'All Categories',

@@ -22,12 +22,17 @@ const blog = defineCollection({
     description: z.string(),
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
-    author: reference('authors'),
+    author: reference('authors').optional(), // Optional for external posts
     coverImage: z.string().optional(),
     tags: z.array(z.string()),
     category: z.string(),
     draft: z.boolean().default(false),
     translationId: z.string().optional(), // Links translations of the same post
+    // External/imported post fields
+    canonicalUrl: z.string().url().optional(), // Original source URL for imported posts
+    externalSource: z.string().optional(), // Name of the source blog/site
+    isExternal: z.boolean().default(false), // Flag for imported posts
+    originalAuthor: z.string().optional(), // Original author name (for external posts)
   }),
 });
 

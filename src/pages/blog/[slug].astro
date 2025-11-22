@@ -25,7 +25,7 @@ export const getStaticPaths = (async () => {
 
 const { post } = Astro.props;
 const { Content, headings } = await post.render();
-const author = await getEntry(post.data.author);
+const author = post.data.author ? await getEntry(post.data.author) : null;
 
 const formattedDate = formatDate(post.data.pubDate, lang);
 
@@ -74,7 +74,7 @@ const breadcrumbItems = [
 ];
 ---
 
-<Layout title={`${post.data.title} - ${t('site.title')}`} description={post.data.description} lang={lang} translationUrls={translationUrls}>
+<Layout title={`${post.data.title} - ${t('site.title')}`} description={post.data.description} lang={lang} translationUrls={translationUrls} canonicalUrl={post.data.canonicalUrl}>
   <!-- Reading Progress Bar -->
   <div id="reading-progress" class="fixed top-0 left-0 h-1 z-50 transition-all duration-150" style="width: 0%; background: linear-gradient(90deg, var(--color-primary) 0%, #9333ea 100%);"></div>
 
@@ -108,7 +108,11 @@ const breadcrumbItems = [
           {formattedDate}
         </time>
         <span class="hidden sm:inline">•</span>
-        <span>{t('blog.by')} <a href={`/authors/${post.data.author.id.split('/')[1]}`} class="no-underline hover:underline transition-opacity hover:opacity-80" style="color: var(--color-primary);">{author.data.name}</a></span>
+        {author ? (
+          <span>{t('blog.by')} <a href={`/authors/${post.data.author.id.split('/')[1]}`} class="no-underline hover:underline transition-opacity hover:opacity-80" style="color: var(--color-primary);">{author.data.name}</a></span>
+        ) : post.data.originalAuthor ? (
+          <span>{t('blog.by')} {post.data.originalAuthor}</span>
+        ) : null}
         {post.data.updatedDate && (
           <>
             <span class="hidden sm:inline">•</span>
@@ -136,6 +140,27 @@ const breadcrumbItems = [
               {i < translations.length - 1 && <span>,</span>}
             </>
           ))}
+        </div>
+      )}
+
+      {/* External post indicator */}
+      {siteConfig.enableExternalPosts && post.data.isExternal && post.data.canonicalUrl && (
+        <div class="flex items-center gap-2 mt-4 p-3 rounded-lg text-sm" style="background-color: var(--color-bg-alt); border: 1px solid var(--color-border);">
+          <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: var(--color-primary);">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+          </svg>
+          <span style="color: var(--color-text-light);">
+            {t('post.originallyPublished')}
+            <a
+              href={post.data.canonicalUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="font-medium hover:underline ml-1"
+              style="color: var(--color-primary);"
+            >
+              {post.data.externalSource || t('post.externalSource')}
+            </a>
+          </span>
         </div>
       )}
     </header>
@@ -171,7 +196,7 @@ const breadcrumbItems = [
       <Content />
     </div>
 
-    <AuthorCard author={author} />
+    {author && <AuthorCard author={author} />}
 
     {relatedPosts.length > 0 && (
       <section class="mt-12 pt-8 border-t-2" style="border-color: var(--color-border);">

@@ -5,6 +5,7 @@ import ConsentBanner from '../components/ConsentBanner.astro';
 import LanguageSwitcher from '../components/LanguageSwitcher.astro';
 import { useTranslations } from '../i18n/utils';
 import { defaultLang, type Lang, getLocalizedPath } from '../i18n/config';
+import { siteConfig } from '../config/site';
 
 interface Props {
   title: string;
@@ -53,7 +54,7 @@ const htmlLang = lang === 'pl' ? 'pl' : 'en';
             <a href={localePath('/blog')} class="hover:text-blue-600 transition-colors no-underline" style="color: var(--color-text-light);">{t('nav.blog')}</a>
             <a href={localePath('/tags')} class="hover:text-blue-600 transition-colors no-underline" style="color: var(--color-text-light);">{t('nav.tags')}</a>
             <a href={localePath('/categories')} class="hover:text-blue-600 transition-colors no-underline" style="color: var(--color-text-light);">{t('nav.categories')}</a>
-            <LanguageSwitcher lang={lang} translationUrls={translationUrls} />
+            {siteConfig.enableLanguageSwitcher && <LanguageSwitcher lang={lang} translationUrls={translationUrls} />}
             <button
               id="search-toggle"
               class="p-2 rounded-lg transition-colors"
@@ -127,9 +128,11 @@ const htmlLang = lang === 'pl' ? 'pl' : 'en';
           <a href={localePath('/blog')} class="block py-2 rounded px-3 transition-colors no-underline hover:opacity-80" style="color: var(--color-text); background-color: transparent;">{t('nav.blog')}</a>
           <a href={localePath('/tags')} class="block py-2 rounded px-3 transition-colors no-underline hover:opacity-80" style="color: var(--color-text); background-color: transparent;">{t('nav.tags')}</a>
           <a href={localePath('/categories')} class="block py-2 rounded px-3 transition-colors no-underline hover:opacity-80" style="color: var(--color-text); background-color: transparent;">{t('nav.categories')}</a>
-          <div class="px-3 pt-2">
-            <LanguageSwitcher lang={lang} translationUrls={translationUrls} />
-          </div>
+          {siteConfig.enableLanguageSwitcher && (
+            <div class="px-3 pt-2">
+              <LanguageSwitcher lang={lang} translationUrls={translationUrls} />
+            </div>
+          )}
         </div>
       </nav>
     </header>

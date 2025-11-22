@@ -33,7 +33,7 @@ const t = useTranslations(lang);
         </div>
 
         <!-- Consent Categories -->
-        <div class="grid gap-3 md:grid-cols-3">
+        <div class="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
           <!-- Essential -->
           <div class="flex items-center justify-between p-3 rounded-lg bg-[var(--color-bg-alt)] border border-[var(--color-border)]">
             <div class="flex-1">
@@ -49,6 +49,23 @@ const t = useTranslations(lang);
               />
               <div class="w-9 h-5 bg-[var(--color-primary)] rounded-full opacity-50"></div>
               <div class="absolute left-0.5 top-0.5 bg-white w-4 h-4 rounded-full transition-transform translate-x-4"></div>
+            </label>
+          </div>
+
+          <!-- Preferences -->
+          <div class="flex items-center justify-between p-3 rounded-lg bg-[var(--color-bg-alt)] border border-[var(--color-border)]">
+            <div class="flex-1">
+              <span class="text-sm font-medium text-[var(--color-text)]">{t('consent.preferences')}</span>
+              <p class="text-xs text-[var(--color-text-light)]">{t('consent.preferencesDesc')}</p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                id="consent-preferences"
+                class="sr-only peer"
+              />
+              <div class="w-9 h-5 bg-gray-300 dark:bg-gray-600 peer-checked:bg-[var(--color-primary)] rounded-full transition-colors"></div>
+              <div class="absolute left-0.5 top-0.5 bg-white w-4 h-4 rounded-full transition-transform peer-checked:translate-x-4"></div>
             </label>
           </div>
 
@@ -125,13 +142,14 @@ const t = useTranslations(lang);
 
   function initConsentBanner() {
     const banner = document.getElementById('consent-banner');
+    const preferencesCheckbox = document.getElementById('consent-preferences') as HTMLInputElement;
     const analyticsCheckbox = document.getElementById('consent-analytics') as HTMLInputElement;
     const youtubeCheckbox = document.getElementById('consent-youtube') as HTMLInputElement;
     const acceptBtn = document.getElementById('consent-accept');
     const rejectBtn = document.getElementById('consent-reject');
     const saveBtn = document.getElementById('consent-save');
 
-    if (!banner || !analyticsCheckbox || !youtubeCheckbox) return;
+    if (!banner || !preferencesCheckbox || !analyticsCheckbox || !youtubeCheckbox) return;
 
     // Show banner if no consent given yet
     if (!hasInteracted()) {
@@ -145,6 +163,7 @@ const t = useTranslations(lang);
     // Load existing preferences if any
     const consent = getConsent();
     if (consent) {
+      preferencesCheckbox.checked = consent.preferences;
       analyticsCheckbox.checked = consent.analytics;
       youtubeCheckbox.checked = consent.youtube;
     }
@@ -160,6 +179,7 @@ const t = useTranslations(lang);
     // Accept all
     acceptBtn?.addEventListener('click', () => {
       acceptAll();
+      preferencesCheckbox.checked = true;
       analyticsCheckbox.checked = true;
       youtubeCheckbox.checked = true;
       hideBanner();
@@ -168,6 +188,7 @@ const t = useTranslations(lang);
     // Reject all
     rejectBtn?.addEventListener('click', () => {
       rejectAll();
+      preferencesCheckbox.checked = false;
       analyticsCheckbox.checked = false;
       youtubeCheckbox.checked = false;
       hideBanner();
@@ -176,6 +197,7 @@ const t = useTranslations(lang);
     // Save preferences
     saveBtn?.addEventListener('click', () => {
       setConsent({
+        preferences: preferencesCheckbox.checked,
         analytics: analyticsCheckbox.checked,
         youtube: youtubeCheckbox.checked,
       });
@@ -186,6 +208,7 @@ const t = useTranslations(lang);
     window.addEventListener('open-consent-banner', () => {
       const consent = getConsent();
       if (consent) {
+        preferencesCheckbox.checked = consent.preferences;
         analyticsCheckbox.checked = consent.analytics;
         youtubeCheckbox.checked = consent.youtube;
       }

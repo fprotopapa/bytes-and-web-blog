@@ -162,8 +162,21 @@ const htmlLang = lang === 'pl' ? 'pl' : 'en';
 
     <script is:inline>
       // Theme switching logic (must run before page renders)
+      // Check if preferences consent is given
+      const hasPreferencesConsent = () => {
+        try {
+          const consent = localStorage.getItem('gdpr-consent');
+          if (!consent) return false;
+          const parsed = JSON.parse(consent);
+          return parsed.preferences === true;
+        } catch {
+          return false;
+        }
+      };
+
       const getTheme = () => {
-        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+        // Only read saved theme if preferences consent is given
+        if (typeof localStorage !== 'undefined' && hasPreferencesConsent() && localStorage.getItem('theme')) {
           return localStorage.getItem('theme');
         }
         if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -221,12 +234,27 @@ const htmlLang = lang === 'pl' ? 'pl' : 'en';
       const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
       updateThemeIcons(currentTheme);
 
+      // Check if preferences consent is given
+      const checkPreferencesConsent = () => {
+        try {
+          const consent = localStorage.getItem('gdpr-consent');
+          if (!consent) return false;
+          const parsed = JSON.parse(consent);
+          return parsed.preferences === true;
+        } catch {
+          return false;
+        }
+      };
+
       const toggleTheme = () => {
         const currentTheme = document.documentElement.getAttribute('data-theme');
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
 
         document.documentElement.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
+        // Only save to localStorage if preferences consent is given
+        if (checkPreferencesConsent()) {
+          localStorage.setItem('theme', newTheme);
+        }
         updateThemeIcons(newTheme);
       };
 

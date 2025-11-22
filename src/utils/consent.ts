@@ -2,6 +2,7 @@
 
 export interface ConsentState {
   essential: boolean;
+  preferences: boolean; // Theme and language preferences
   analytics: boolean;
   youtube: boolean;
   timestamp: number;
@@ -11,6 +12,7 @@ const CONSENT_KEY = 'gdpr-consent';
 
 export const defaultConsent: ConsentState = {
   essential: true, // Always required
+  preferences: false, // Theme and language memory
   analytics: false,
   youtube: false,
   timestamp: 0,
@@ -80,6 +82,7 @@ export function hasInteracted(): boolean {
 export function acceptAll(): void {
   setConsent({
     essential: true,
+    preferences: true,
     analytics: true,
     youtube: true,
   });
@@ -91,6 +94,7 @@ export function acceptAll(): void {
 export function rejectAll(): void {
   setConsent({
     essential: true,
+    preferences: false,
     analytics: false,
     youtube: false,
   });

@@ -1,0 +1,151 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { getCollection } from 'astro:content';
+import { getLangFromId } from '../../content/config';
+import { useTranslations, getPostCountText } from '../../i18n/utils';
+import type { GetStaticPaths, Page } from 'astro';
+import type { CollectionEntry } from 'astro:content';
+
+const lang = 'pl';
+const t = useTranslations(lang);
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const allPosts = await getCollection('blog', ({ id, data }) => {
+    return data.draft !== true && getLangFromId(id) === 'pl';
+  });
+
+  const sortedPosts = allPosts.sort((a, b) =>
+    b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+  );
+
+  return paginate(sortedPosts, { pageSize: 10 });
+}) satisfies GetStaticPaths;
+
+interface Props {
+  page: Page<CollectionEntry<'blog'>>;
+}
+
+const { page } = Astro.props;
+
+// Get unique categories and tags for the sidebar
+const categories = [...new Set(page.data.map(post => post.data.category))].sort();
+const allTags = page.data.flatMap(post => post.data.tags);
+const uniqueTags = [...new Set(allTags)].sort();
+---
+
+<Layout title={`${t('blog.allPosts')}${page.currentPage > 1 ? ` - ${lang === 'pl' ? 'Strona' : 'Page'} ${page.currentPage}` : ''} - ${t('site.title')}`} lang={lang}>
+  <div class="grid grid-cols-1 md:grid-cols-[1fr_300px] gap-6 md:gap-8">
+    <section>
+      <h1 class="text-3xl font-bold mb-6" style="color: var(--color-text);">{t('blog.allPosts')}</h1>
+      <p class="mb-6" style="color: var(--color-text-light);">
+        {getPostCountText(page.total, lang)} {t('blog.description')}.
+      </p>
+
+      <div class="space-y-6">
+        {page.data.map(post => (
+          <PostCard post={post} lang={lang} />
+        ))}
+      </div>
+
+      {/* Pagination */}
+      {page.lastPage > 1 && (
+        <nav class="mt-12 flex items-center justify-center gap-2" aria-label="Pagination">
+          {page.url.prev ? (
+            <a
+              href={page.url.prev}
+              class="px-4 py-2 rounded-lg no-underline transition-all hover:shadow-md"
+              style="background-color: var(--color-bg-alt); color: var(--color-text); border: 1px solid var(--color-border);"
+            >
+              <span class="flex items-center gap-1">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+                {lang === 'pl' ? 'Poprzednia' : 'Previous'}
+              </span>
+            </a>
+          ) : (
+            <span
+              class="px-4 py-2 rounded-lg opacity-50 cursor-not-allowed"
+              style="background-color: var(--color-bg-alt); color: var(--color-text-light); border: 1px solid var(--color-border);"
+            >
+              <span class="flex items-center gap-1">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+                {lang === 'pl' ? 'Poprzednia' : 'Previous'}
+              </span>
+            </span>
+          )}
+
+          <span class="px-4 py-2 text-sm" style="color: var(--color-text-light);">
+            {lang === 'pl' ? 'Strona' : 'Page'} {page.currentPage} {lang === 'pl' ? 'z' : 'of'} {page.lastPage}
+          </span>
+
+          {page.url.next ? (
+            <a
+              href={page.url.next}
+              class="px-4 py-2 rounded-lg no-underline transition-all hover:shadow-md"
+              style="background-color: var(--color-bg-alt); color: var(--color-text); border: 1px solid var(--color-border);"
+            >
+              <span class="flex items-center gap-1">
+                {lang === 'pl' ? 'Następna' : 'Next'}
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </span>
+            </a>
+          ) : (
+            <span
+              class="px-4 py-2 rounded-lg opacity-50 cursor-not-allowed"
+              style="background-color: var(--color-bg-alt); color: var(--color-text-light); border: 1px solid var(--color-border);"
+            >
+              <span class="flex items-center gap-1">
+                {lang === 'pl' ? 'Następna' : 'Next'}
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </span>
+            </span>
+          )}
+        </nav>
+      )}
+    </section>
+
+    <aside class="order-first md:order-last">
+      <div class="md:sticky md:top-24 space-y-6">
+        <div class="p-6 rounded-lg" style="background-color: var(--color-bg-alt);">
+          <h3 class="text-xl font-semibold mb-4" style="color: var(--color-text);">{t('blog.categories')}</h3>
+          <ul class="space-y-2">
+            {categories.map(category => (
+              <li>
+                <a
+                  href={`/categories/${category.toLowerCase().replace(/\s+/g, '-')}`}
+                  class="hover:underline hover:opacity-80 transition-opacity"
+                  style="color: var(--color-primary);"
+                >
+                  {category}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="p-6 rounded-lg" style="background-color: var(--color-bg-alt);">
+          <h3 class="text-xl font-semibold mb-4" style="color: var(--color-text);">{t('blog.popularTags')}</h3>
+          <div class="flex flex-wrap gap-2">
+            {uniqueTags.slice(0, 15).map(tag => (
+              <a
+                href={`/tags/${tag}`}
+                class="px-3 py-1 rounded-full text-sm no-underline transition-colors hover:opacity-80"
+                style="background-color: var(--color-bg); color: var(--color-text); border: 1px solid var(--color-border);"
+              >
+                #{tag}
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</Layout>

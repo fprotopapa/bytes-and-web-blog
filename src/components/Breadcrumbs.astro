@@ -1,0 +1,56 @@
+---
+import { type Lang, getLocalizedPath } from '../i18n/config';
+import { useTranslations } from '../i18n/utils';
+
+interface BreadcrumbItem {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  items: BreadcrumbItem[];
+  lang?: Lang;
+}
+
+const { items, lang = 'pl' } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<nav aria-label="Breadcrumb" class="mb-6">
+  <ol class="flex flex-wrap items-center gap-2 text-sm" style="color: var(--color-text-light);">
+    <!-- Home -->
+    <li class="flex items-center">
+      <a
+        href={getLocalizedPath('/', lang)}
+        class="hover:underline transition-colors"
+        style="color: var(--color-text-light);"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+        </svg>
+        <span class="sr-only">{t('nav.home')}</span>
+      </a>
+    </li>
+
+    {items.map((item, index) => (
+      <li class="flex items-center">
+        <svg class="w-4 h-4 mx-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: var(--color-border);">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        </svg>
+        {item.href ? (
+          <a
+            href={item.href}
+            class="hover:underline transition-colors"
+            style="color: var(--color-text-light);"
+          >
+            {item.label}
+          </a>
+        ) : (
+          <span style="color: var(--color-text);" aria-current="page">
+            {item.label}
+          </span>
+        )}
+      </li>
+    ))}
+  </ol>
+</nav>

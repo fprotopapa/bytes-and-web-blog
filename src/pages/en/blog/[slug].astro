@@ -1,6 +1,7 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import AuthorCard from '../../../components/AuthorCard.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import { getCollection, getEntry } from 'astro:content';
 import type { GetStaticPaths } from 'astro';
 import { getLangFromId, getSlugWithoutLang } from '../../../content/config';
@@ -47,6 +48,15 @@ const translationUrls: Record<Lang, string> = {
 // Get related posts (same category or tags, same language)
 const sameLangPosts = allPosts.filter(p => getLangFromId(p.id) === lang);
 
+// Sort posts by date for next/previous navigation
+const sortedPosts = sameLangPosts.sort((a, b) =>
+  b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const currentIndex = sortedPosts.findIndex(p => p.slug === post.slug);
+const prevPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentIndex + 1] : null;
+const nextPost = currentIndex > 0 ? sortedPosts[currentIndex - 1] : null;
+
 const relatedPosts = sameLangPosts
   .filter(p => p.slug !== post.slug)
   .filter(p =>
@@ -54,11 +64,21 @@ const relatedPosts = sameLangPosts
     p.data.tags.some(tag => post.data.tags.includes(tag))
   )
   .slice(0, 3);
+
+// Breadcrumb items
+const breadcrumbItems = [
+  { label: t('nav.blog'), href: '/en/blog' },
+  { label: post.data.category, href: `/en/categories/${post.data.category.toLowerCase().replace(/\s+/g, '-')}` },
+  { label: post.data.title },
+];
 ---
 
 <Layout title={`${post.data.title} - ${t('site.title')}`} description={post.data.description} lang={lang} translationUrls={translationUrls}>
   <!-- Reading Progress Bar -->
   <div id="reading-progress" class="fixed top-0 left-0 h-1 z-50 transition-all duration-150" style="width: 0%; background: linear-gradient(90deg, var(--color-primary) 0%, #9333ea 100%);"></div>
+
+  <!-- Breadcrumbs -->
+  <Breadcrumbs items={breadcrumbItems} lang={lang} />
 
   <!-- Sidebar TOC Layout -->
   <div class="max-w-7xl mx-auto flex gap-8">
@@ -170,6 +190,52 @@ const relatedPosts = sameLangPosts
           ))}
         </div>
       </section>
+    )}
+
+    {/* Next/Previous Post Navigation */}
+    {(prevPost || nextPost) && (
+      <nav class="mt-12 pt-8 border-t-2" style="border-color: var(--color-border);">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {prevPost ? (
+            <a
+              href={`/en/blog/${getSlugWithoutLang(prevPost.slug)}`}
+              class="group p-4 rounded-lg no-underline transition-all hover:shadow-md"
+              style="background-color: var(--color-bg-alt); border: 1px solid var(--color-border);"
+            >
+              <div class="flex items-center gap-2 text-sm mb-2" style="color: var(--color-text-light);">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+                Previous post
+              </div>
+              <div class="font-medium group-hover:opacity-80 transition-opacity line-clamp-2" style="color: var(--color-text);">
+                {prevPost.data.title}
+              </div>
+            </a>
+          ) : (
+            <div></div>
+          )}
+          {nextPost ? (
+            <a
+              href={`/en/blog/${getSlugWithoutLang(nextPost.slug)}`}
+              class="group p-4 rounded-lg no-underline transition-all hover:shadow-md text-right"
+              style="background-color: var(--color-bg-alt); border: 1px solid var(--color-border);"
+            >
+              <div class="flex items-center justify-end gap-2 text-sm mb-2" style="color: var(--color-text-light);">
+                Next post
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </div>
+              <div class="font-medium group-hover:opacity-80 transition-opacity line-clamp-2" style="color: var(--color-text);">
+                {nextPost.data.title}
+              </div>
+            </a>
+          ) : (
+            <div></div>
+          )}
+        </div>
+      </nav>
     )}
   </article>
 

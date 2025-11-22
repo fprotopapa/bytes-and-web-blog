@@ -41,6 +41,15 @@ const thumbnailUrl = `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
         <a href={`https://www.youtube.com/watch?v=${id}`} class="youtube-external-link" target="_blank" rel="noopener noreferrer">
           Watch on YouTube
         </a>
+        <div class="youtube-privacy-links">
+          <a href="/privacy" class="youtube-privacy-link">
+            Privacy Policy
+          </a>
+          <span class="youtube-privacy-separator">·</span>
+          <a href="https://policies.google.com/privacy" class="youtube-privacy-link" target="_blank" rel="noopener noreferrer">
+            YouTube Privacy
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -147,6 +156,29 @@ const thumbnailUrl = `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
     color: #fff;
   }
 
+  .youtube-privacy-links {
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+  }
+
+  .youtube-privacy-link {
+    color: #6b7280;
+    font-size: 0.625rem;
+    text-decoration: underline;
+  }
+
+  .youtube-privacy-link:hover {
+    color: #9ca3af;
+  }
+
+  .youtube-privacy-separator {
+    color: #6b7280;
+    font-size: 0.625rem;
+  }
+
   .youtube-iframe-container {
     position: absolute;
     top: 0;
@@ -202,24 +234,21 @@ const thumbnailUrl = `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
         videoLoaded = true;
       }
 
-      // Check if consent already given
-      if (hasConsent('youtube')) {
-        loadVideo();
-      }
+      // Double consent: Each video requires explicit click, even if banner consent was given
+      // The banner consent only enables the option to play, but user must still click on each video
+      // This ensures informed consent for each video individually
 
-      // Handle accept button click
+      // Handle accept button click - this is the only way to load a video
       acceptBtn?.addEventListener('click', () => {
-        setConsent({ youtube: true });
+        // Also update global consent when user accepts on a video
+        if (!hasConsent('youtube')) {
+          setConsent({ youtube: true });
+        }
         loadVideo();
       });
 
-      // Listen for consent updates (from banner)
-      window.addEventListener('consent-updated', (e: Event) => {
-        const detail = (e as CustomEvent).detail;
-        if (detail?.youtube) {
-          loadVideo();
-        }
-      });
+      // Note: We intentionally don't auto-load videos based on banner consent
+      // This implements "double consent" - banner consent + individual video consent
     });
   }
 

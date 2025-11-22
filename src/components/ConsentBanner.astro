@@ -81,23 +81,30 @@
         <!-- Buttons -->
         <div class="flex flex-col sm:flex-row gap-2 sm:justify-end">
           <button
-            id="consent-reject"
-            class="px-4 py-2 text-sm font-medium text-[var(--color-text)] bg-transparent border border-[var(--color-border)] rounded-lg hover:bg-[var(--color-bg-alt)] transition-colors"
-          >
-            Reject All
-          </button>
-          <button
             id="consent-save"
             class="px-4 py-2 text-sm font-medium text-[var(--color-text)] bg-transparent border border-[var(--color-border)] rounded-lg hover:bg-[var(--color-bg-alt)] transition-colors"
           >
             Save Preferences
           </button>
           <button
+            id="consent-reject"
+            class="px-4 py-2 text-sm font-medium text-[var(--color-text)] bg-[var(--color-bg-alt)] border border-[var(--color-border)] rounded-lg hover:bg-[var(--color-border)] transition-colors"
+          >
+            Reject All
+          </button>
+          <button
             id="consent-accept"
-            class="px-4 py-2 text-sm font-medium text-white bg-[var(--color-primary)] rounded-lg hover:opacity-90 transition-opacity"
+            class="px-4 py-2 text-sm font-medium text-[var(--color-text)] bg-[var(--color-bg-alt)] border border-[var(--color-border)] rounded-lg hover:bg-[var(--color-border)] transition-colors"
           >
             Accept All
           </button>
+        </div>
+
+        <!-- Privacy Policy Link -->
+        <div class="text-center sm:text-right">
+          <a href="/privacy" class="text-xs text-[var(--color-text-light)] hover:text-[var(--color-primary)] underline">
+            Privacy Policy
+          </a>
         </div>
       </div>
     </div>

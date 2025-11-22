@@ -48,7 +48,6 @@ body {
 
 /* Enhanced prose styling for blog posts */
 .prose {
-  max-width: 65ch;
   color: var(--color-text);
   counter-reset: line;
 }

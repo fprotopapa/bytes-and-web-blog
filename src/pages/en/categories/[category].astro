@@ -1,17 +1,17 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import PostCard from '../../components/PostCard.astro';
+import Layout from '../../../layouts/Layout.astro';
+import PostCard from '../../../components/PostCard.astro';
 import { getCollection } from 'astro:content';
 import type { GetStaticPaths } from 'astro';
-import { getLangFromId } from '../../content/config';
-import { useTranslations, getPostCountText } from '../../i18n/utils';
+import { getLangFromId } from '../../../content/config';
+import { useTranslations, getPostCountText } from '../../../i18n/utils';
 
-const lang = 'pl';
+const lang = 'en';
 const t = useTranslations(lang);
 
 export const getStaticPaths = (async () => {
   const allPosts = await getCollection('blog', ({ id, data }) => {
-    return data.draft !== true && getLangFromId(id) === 'pl';
+    return data.draft !== true && getLangFromId(id) === 'en';
   });
 
   const uniqueCategories = [...new Set(allPosts.map(post => post.data.category))];
@@ -35,7 +35,7 @@ const sortedPosts = posts.sort((a, b) =>
 
 <Layout title={`${category} - ${t('site.title')}`} lang={lang}>
   <div style="margin-bottom: 2rem;">
-    <a href="/categories" style="color: var(--color-text-light); text-decoration: none;">
+    <a href="/en/categories" style="color: var(--color-text-light); text-decoration: none;">
       ← {t('categories.backToAll')}
     </a>
   </div>

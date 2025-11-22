@@ -1,17 +1,17 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import AuthorCard from '../../components/AuthorCard.astro';
+import Layout from '../../../layouts/Layout.astro';
+import AuthorCard from '../../../components/AuthorCard.astro';
 import { getCollection, getEntry } from 'astro:content';
 import type { GetStaticPaths } from 'astro';
-import { getLangFromId, getSlugWithoutLang } from '../../content/config';
-import { useTranslations, formatDate } from '../../i18n/utils';
+import { getLangFromId, getSlugWithoutLang } from '../../../content/config';
+import { useTranslations, formatDate } from '../../../i18n/utils';
 
-const lang = 'pl';
+const lang = 'en';
 const t = useTranslations(lang);
 
 export const getStaticPaths = (async () => {
   const blogPosts = await getCollection('blog', ({ id, data }) => {
-    return data.draft !== true && getLangFromId(id) === 'pl';
+    return data.draft !== true && getLangFromId(id) === 'en';
   });
 
   return blogPosts.map(post => ({
@@ -50,7 +50,7 @@ const relatedPosts = allPosts
     <header class="mb-8">
       <div class="mb-4">
         <a
-          href={`/categories/${post.data.category.toLowerCase().replace(/\s+/g, '-')}`}
+          href={`/en/categories/${post.data.category.toLowerCase().replace(/\s+/g, '-')}`}
           class="font-semibold uppercase text-sm hover:underline hover:opacity-80 transition-opacity"
           style="color: var(--color-primary);"
         >
@@ -71,7 +71,7 @@ const relatedPosts = allPosts
           {formattedDate}
         </time>
         <span class="hidden sm:inline">•</span>
-        <span>{t('blog.by')} <a href={`/authors/${post.data.author.id.split('/')[1]}`} class="no-underline hover:underline transition-opacity hover:opacity-80" style="color: var(--color-primary);">{author.data.name}</a></span>
+        <span>{t('blog.by')} <a href={`/en/authors/${post.data.author.id.split('/')[1]}`} class="no-underline hover:underline transition-opacity hover:opacity-80" style="color: var(--color-primary);">{author.data.name}</a></span>
         {post.data.updatedDate && (
           <>
             <span class="hidden sm:inline">•</span>
@@ -86,7 +86,7 @@ const relatedPosts = allPosts
       <div class="flex flex-wrap gap-2">
         {post.data.tags.map(tag => (
           <a
-            href={`/tags/${tag}`}
+            href={`/en/tags/${tag}`}
             class="px-4 py-2 rounded-full text-sm no-underline transition-all hover:scale-105 hover:shadow-md"
             style="background-color: var(--color-bg-alt); color: var(--color-text); border: 1px solid var(--color-border);"
           >
@@ -120,7 +120,7 @@ const relatedPosts = allPosts
         <div class="grid gap-4">
           {relatedPosts.map(related => (
             <article class="rounded-lg p-4 sm:p-6 hover:shadow-md transition-shadow" style="border: 1px solid var(--color-border);">
-              <a href={`/blog/${getSlugWithoutLang(related.slug)}`} class="no-underline group">
+              <a href={`/en/blog/${getSlugWithoutLang(related.slug)}`} class="no-underline group">
                 <h3 class="text-lg sm:text-xl font-semibold mb-2 hover:opacity-80 transition-opacity" style="color: var(--color-primary);">
                   {related.data.title}
                 </h3>

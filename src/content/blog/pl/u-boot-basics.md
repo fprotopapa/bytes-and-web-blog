@@ -2,7 +2,7 @@
 title: "U-Boot Bootloader Fundamentals"
 description: "Understanding U-Boot, the universal bootloader for embedded systems and how to configure it for your platform."
 pubDate: 2024-11-18
-author: alex-chen
+author: pl/alex-chen
 coverImage: "/images/posts/u-boot.jpg"
 tags: ["bootloader", "u-boot", "firmware"]
 category: "Bootloaders"

@@ -1,14 +1,14 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import PostCard from '../../components/PostCard.astro';
+import Layout from '../../../layouts/Layout.astro';
+import PostCard from '../../../components/PostCard.astro';
 import { getCollection } from 'astro:content';
-import { getLangFromId } from '../../content/config';
-import { useTranslations, getPostCountText } from '../../i18n/utils';
+import { getLangFromId } from '../../../content/config';
+import { useTranslations, getPostCountText } from '../../../i18n/utils';
 
-const lang = 'pl';
+const lang = 'en';
 const t = useTranslations(lang);
 
-// Get all published blog posts for Polish, sorted by date (newest first)
+// Get all published blog posts for English, sorted by date (newest first)
 const allPosts = await getCollection('blog', ({ id, data }) => {
   return data.draft !== true && getLangFromId(id) === lang;
 });
@@ -32,9 +32,13 @@ const uniqueTags = [...new Set(allTags)].sort();
       </p>
 
       <div class="space-y-6">
-        {sortedPosts.map(post => (
-          <PostCard post={post} lang={lang} />
-        ))}
+        {sortedPosts.length > 0 ? (
+          sortedPosts.map(post => (
+            <PostCard post={post} lang={lang} />
+          ))
+        ) : (
+          <p style="color: var(--color-text-light);">No posts available in English yet.</p>
+        )}
       </div>
     </section>
 
@@ -48,7 +52,7 @@ const uniqueTags = [...new Set(allTags)].sort();
               return (
                 <li>
                   <a
-                    href={`/categories/${category.toLowerCase().replace(/\s+/g, '-')}`}
+                    href={`/en/categories/${category.toLowerCase().replace(/\s+/g, '-')}`}
                     class="hover:underline hover:opacity-80 transition-opacity"
                     style="color: var(--color-primary);"
                   >
@@ -65,7 +69,7 @@ const uniqueTags = [...new Set(allTags)].sort();
           <div class="flex flex-wrap gap-2">
             {uniqueTags.slice(0, 15).map(tag => (
               <a
-                href={`/tags/${tag}`}
+                href={`/en/tags/${tag}`}
                 class="px-3 py-1 rounded-full text-sm no-underline transition-colors hover:opacity-80"
                 style="background-color: var(--color-bg); color: var(--color-text); border: 1px solid var(--color-border);"
               >

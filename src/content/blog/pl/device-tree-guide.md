@@ -2,7 +2,7 @@
 title: "Understanding Device Trees in Linux"
 description: "A practical guide to device trees - how they describe hardware to the Linux kernel without hardcoding."
 pubDate: 2024-11-05
-author: john-doe
+author: pl/john-doe
 coverImage: "/images/posts/device-tree.jpg"
 tags: ["device-tree", "kernel", "hardware"]
 category: "Kernel Development"

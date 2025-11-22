@@ -1,0 +1,203 @@
+// UI Translations
+export const ui = {
+  pl: {
+    // Site
+    'site.title': 'Blog o Embedded Linux',
+    'site.description': 'Blog o embedded Linux, rozwoju kernela i systemach budowania',
+
+    // Navigation
+    'nav.home': 'Strona główna',
+    'nav.blog': 'Blog',
+    'nav.tags': 'Tagi',
+    'nav.categories': 'Kategorie',
+    'nav.toggleSearch': 'Przełącz wyszukiwanie',
+    'nav.toggleDarkMode': 'Przełącz tryb ciemny',
+    'nav.toggleMenu': 'Przełącz menu',
+
+    // Footer
+    'footer.privacyPolicy': 'Polityka prywatności',
+    'footer.cookieSettings': 'Ustawienia ciasteczek',
+    'footer.rssFeed': 'Kanał RSS bloga Embedded Linux',
+
+    // Home page
+    'home.welcome': 'Witaj na blogu Embedded Linux',
+    'home.subtitle': 'Twoje źródło wiedzy o embedded Linux, rozwoju kernela, systemach budowania i wszystkim pomiędzy...',
+    'home.writtenBy': 'Pisane przez doświadczonych inżynierów dla społeczności embedded',
+    'home.latestPosts': 'Najnowsze wpisy',
+    'home.viewAllPosts': 'Zobacz wszystkie wpisy',
+    'home.topicsTitle': 'Tematy, które omawiamy',
+    'home.topic.kernel': 'Rozwój kernela',
+    'home.topic.kernelDesc': 'Dogłębne artykuły o wewnętrznych mechanizmach kernela Linux, modułach i sterownikach urządzeń.',
+    'home.topic.buildSystems': 'Systemy budowania',
+    'home.topic.buildSystemsDesc': 'Opanuj Yocto, Buildroot i inne narzędzia do tworzenia niestandardowych dystrybucji.',
+    'home.topic.bootloaders': 'Bootloadery',
+    'home.topic.bootloadersDesc': 'Przewodniki po U-Boot, GRUB i procesie uruchamiania systemów embedded.',
+    'home.topic.hardware': 'Integracja sprzętowa',
+    'home.topic.hardwareDesc': 'Podstawy Device Tree, mapowanie pamięci i programowanie peryferiów.',
+
+    // Blog listing
+    'blog.allPosts': 'Wszystkie wpisy',
+    'blog.description': 'o embedded Linux, rozwoju kernela i nie tylko',
+    'blog.posts': 'wpisów',
+    'blog.post': 'wpis',
+    'blog.categories': 'Kategorie',
+    'blog.popularTags': 'Popularne tagi',
+    'blog.by': 'przez',
+    'blog.readMore': 'Czytaj więcej',
+
+    // Blog post
+    'post.relatedPosts': 'Powiązane wpisy',
+    'post.tableOfContents': 'Spis treści',
+    'post.copy': 'Kopiuj',
+    'post.copied': 'Skopiowano!',
+    'post.copyError': 'Błąd',
+    'post.sharePost': 'Udostępnij ten wpis',
+    'post.linkCopied': 'Link skopiowany do schowka!',
+    'post.updated': 'Zaktualizowano',
+
+    // Categories
+    'categories.all': 'Wszystkie kategorie',
+    'categories.description': 'Przeglądaj wpisy według kategorii. Kliknij na kategorię, aby zobaczyć wszystkie powiązane wpisy.',
+    'categories.backToAll': 'Powrót do wszystkich kategorii',
+    'categories.inCategory': 'w tej kategorii',
+
+    // Tags
+    'tags.all': 'Wszystkie tagi',
+    'tags.description': 'Przeglądaj wpisy według tagów. Kliknij na tag, aby zobaczyć wszystkie powiązane wpisy.',
+    'tags.backToAll': 'Powrót do wszystkich tagów',
+    'tags.postsTaggedWith': 'Wpisy z tagiem',
+    'tags.found': 'znaleziono',
+
+    // Authors
+    'author.profile': 'Profil autora',
+    'author.postsBy': 'Wpisy autora',
+    'author.noPosts': 'Brak wpisów od tego autora.',
+
+    // Consent banner
+    'consent.title': 'Preferencje ciasteczek',
+    'consent.description': 'Używamy ciasteczek, aby poprawić Twoje doświadczenie. Możesz dostosować swoje preferencje poniżej.',
+    'consent.learnMore': 'Dowiedz się więcej',
+    'consent.essential': 'Niezbędne',
+    'consent.essentialDesc': 'Wymagane do działania strony',
+    'consent.analytics': 'Analityka',
+    'consent.analyticsDesc': 'Pomóż nam ulepszyć stronę',
+    'consent.youtube': 'YouTube',
+    'consent.youtubeDesc': 'Osadzone treści wideo',
+    'consent.savePreferences': 'Zapisz preferencje',
+    'consent.rejectAll': 'Odrzuć wszystkie',
+    'consent.acceptAll': 'Akceptuj wszystkie',
+    'consent.privacyPolicy': 'Polityka prywatności',
+
+    // YouTube component
+    'youtube.hostedOn': 'Ten film jest hostowany na YouTube',
+    'youtube.privacyNotice': 'Odtworzenie tego filmu spowoduje ustawienie ciasteczek i wysłanie danych do YouTube/Google.',
+    'youtube.acceptPlay': 'Akceptuj i odtwórz',
+    'youtube.watchOnYoutube': 'Oglądaj na YouTube',
+    'youtube.youtubePrivacy': 'Prywatność YouTube',
+
+    // Common
+    'common.posts': 'wpisów',
+    'common.post': 'wpis',
+  },
+  en: {
+    // Site
+    'site.title': 'Embedded Linux Blog',
+    'site.description': 'A blog about embedded Linux, kernel development, and build systems',
+
+    // Navigation
+    'nav.home': 'Home',
+    'nav.blog': 'Blog',
+    'nav.tags': 'Tags',
+    'nav.categories': 'Categories',
+    'nav.toggleSearch': 'Toggle search',
+    'nav.toggleDarkMode': 'Toggle dark mode',
+    'nav.toggleMenu': 'Toggle menu',
+
+    // Footer
+    'footer.privacyPolicy': 'Privacy Policy',
+    'footer.cookieSettings': 'Cookie Settings',
+    'footer.rssFeed': 'Embedded Linux Blog RSS Feed',
+
+    // Home page
+    'home.welcome': 'Welcome to Embedded Linux Blog',
+    'home.subtitle': 'Your source for embedded Linux, kernel development, build systems, and everything in between...',
+    'home.writtenBy': 'Written by experienced engineers for the embedded community',
+    'home.latestPosts': 'Latest Posts',
+    'home.viewAllPosts': 'View All Posts',
+    'home.topicsTitle': 'Topics We Cover',
+    'home.topic.kernel': 'Kernel Development',
+    'home.topic.kernelDesc': 'Deep-dive articles on Linux kernel internals, modules, and device drivers.',
+    'home.topic.buildSystems': 'Build Systems',
+    'home.topic.buildSystemsDesc': 'Master Yocto, Buildroot, and other tools for custom distribution building.',
+    'home.topic.bootloaders': 'Bootloaders',
+    'home.topic.bootloadersDesc': 'Guides on U-Boot, GRUB, and the embedded boot process.',
+    'home.topic.hardware': 'Hardware Integration',
+    'home.topic.hardwareDesc': 'Device Tree fundamentals, memory mapping, and peripheral programming.',
+
+    // Blog listing
+    'blog.allPosts': 'All Blog Posts',
+    'blog.description': 'about embedded Linux, kernel development, and more',
+    'blog.posts': 'posts',
+    'blog.post': 'post',
+    'blog.categories': 'Categories',
+    'blog.popularTags': 'Popular Tags',
+    'blog.by': 'by',
+    'blog.readMore': 'Read more',
+
+    // Blog post
+    'post.relatedPosts': 'Related Posts',
+    'post.tableOfContents': 'Table of Contents',
+    'post.copy': 'Copy',
+    'post.copied': 'Copied!',
+    'post.copyError': 'Error',
+    'post.sharePost': 'Share this post',
+    'post.linkCopied': 'Link copied to clipboard!',
+    'post.updated': 'Updated',
+
+    // Categories
+    'categories.all': 'All Categories',
+    'categories.description': 'Browse posts by category. Click on any category to see all related posts.',
+    'categories.backToAll': 'Back to all categories',
+    'categories.inCategory': 'in this category',
+
+    // Tags
+    'tags.all': 'All Tags',
+    'tags.description': 'Browse posts by tag. Click on any tag to see all related posts.',
+    'tags.backToAll': 'Back to all tags',
+    'tags.postsTaggedWith': 'Posts tagged with',
+    'tags.found': 'found',
+
+    // Authors
+    'author.profile': 'Author Profile',
+    'author.postsBy': 'Posts by',
+    'author.noPosts': 'No posts yet from this author.',
+
+    // Consent banner
+    'consent.title': 'Cookie Preferences',
+    'consent.description': 'We use cookies to enhance your experience. You can customize your preferences below.',
+    'consent.learnMore': 'Learn more',
+    'consent.essential': 'Essential',
+    'consent.essentialDesc': 'Required for site functionality',
+    'consent.analytics': 'Analytics',
+    'consent.analyticsDesc': 'Help us improve our site',
+    'consent.youtube': 'YouTube',
+    'consent.youtubeDesc': 'Embedded video content',
+    'consent.savePreferences': 'Save Preferences',
+    'consent.rejectAll': 'Reject All',
+    'consent.acceptAll': 'Accept All',
+    'consent.privacyPolicy': 'Privacy Policy',
+
+    // YouTube component
+    'youtube.hostedOn': 'This video is hosted on YouTube',
+    'youtube.privacyNotice': 'Playing this video will set cookies and send data to YouTube/Google.',
+    'youtube.acceptPlay': 'Accept & Play Video',
+    'youtube.watchOnYoutube': 'Watch on YouTube',
+    'youtube.youtubePrivacy': 'YouTube Privacy',
+
+    // Common
+    'common.posts': 'posts',
+    'common.post': 'post',
+  },
+} as const;
+
+export type UIKey = keyof typeof ui.pl;

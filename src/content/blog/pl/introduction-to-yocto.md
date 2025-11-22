@@ -2,7 +2,7 @@
 title: "Getting Started with Yocto Project"
 description: "A comprehensive guide to building custom Linux distributions with Yocto Project for embedded systems."
 pubDate: 2024-11-15
-author: jane-smith
+author: pl/jane-smith
 coverImage: "/images/posts/yocto-intro.jpg"
 tags: ["yocto", "build-systems", "embedded-linux"]
 category: "Build Systems"

@@ -1,5 +1,14 @@
 ---
 // GDPR Cookie Consent Banner Component
+import { defaultLang, type Lang, getLocalizedPath } from '../i18n/config';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = defaultLang } = Astro.props;
+const t = useTranslations(lang);
 ---
 
 <div
@@ -15,11 +24,11 @@
         <!-- Header -->
         <div>
           <h2 id="consent-title" class="text-lg font-semibold text-[var(--color-text)]">
-            Cookie Preferences
+            {t('consent.title')}
           </h2>
           <p id="consent-description" class="text-sm text-[var(--color-text-light)] mt-1">
-            We use cookies to enhance your experience. You can customize your preferences below.
-            <a href="/privacy" class="text-[var(--color-primary)] hover:underline">Learn more</a>
+            {t('consent.description')}
+            <a href={getLocalizedPath('/privacy', lang)} class="text-[var(--color-primary)] hover:underline">{t('consent.learnMore')}</a>
           </p>
         </div>
 
@@ -28,8 +37,8 @@
           <!-- Essential -->
           <div class="flex items-center justify-between p-3 rounded-lg bg-[var(--color-bg-alt)] border border-[var(--color-border)]">
             <div class="flex-1">
-              <span class="text-sm font-medium text-[var(--color-text)]">Essential</span>
-              <p class="text-xs text-[var(--color-text-light)]">Required for site functionality</p>
+              <span class="text-sm font-medium text-[var(--color-text)]">{t('consent.essential')}</span>
+              <p class="text-xs text-[var(--color-text-light)]">{t('consent.essentialDesc')}</p>
             </div>
             <label class="relative inline-flex items-center cursor-not-allowed">
               <input
@@ -46,8 +55,8 @@
           <!-- Analytics -->
           <div class="flex items-center justify-between p-3 rounded-lg bg-[var(--color-bg-alt)] border border-[var(--color-border)]">
             <div class="flex-1">
-              <span class="text-sm font-medium text-[var(--color-text)]">Analytics</span>
-              <p class="text-xs text-[var(--color-text-light)]">Help us improve our site</p>
+              <span class="text-sm font-medium text-[var(--color-text)]">{t('consent.analytics')}</span>
+              <p class="text-xs text-[var(--color-text-light)]">{t('consent.analyticsDesc')}</p>
             </div>
             <label class="relative inline-flex items-center cursor-pointer">
               <input
@@ -63,8 +72,8 @@
           <!-- YouTube -->
           <div class="flex items-center justify-between p-3 rounded-lg bg-[var(--color-bg-alt)] border border-[var(--color-border)]">
             <div class="flex-1">
-              <span class="text-sm font-medium text-[var(--color-text)]">YouTube</span>
-              <p class="text-xs text-[var(--color-text-light)]">Embedded video content</p>
+              <span class="text-sm font-medium text-[var(--color-text)]">{t('consent.youtube')}</span>
+              <p class="text-xs text-[var(--color-text-light)]">{t('consent.youtubeDesc')}</p>
             </div>
             <label class="relative inline-flex items-center cursor-pointer">
               <input
@@ -84,26 +93,26 @@
             id="consent-save"
             class="px-4 py-2 text-sm font-medium text-[var(--color-text)] bg-transparent border border-[var(--color-border)] rounded-lg hover:bg-[var(--color-bg-alt)] transition-colors"
           >
-            Save Preferences
+            {t('consent.savePreferences')}
           </button>
           <button
             id="consent-reject"
             class="px-4 py-2 text-sm font-medium text-[var(--color-text)] bg-[var(--color-bg-alt)] border border-[var(--color-border)] rounded-lg hover:bg-[var(--color-border)] transition-colors"
           >
-            Reject All
+            {t('consent.rejectAll')}
           </button>
           <button
             id="consent-accept"
             class="px-4 py-2 text-sm font-medium text-[var(--color-text)] bg-[var(--color-bg-alt)] border border-[var(--color-border)] rounded-lg hover:bg-[var(--color-border)] transition-colors"
           >
-            Accept All
+            {t('consent.acceptAll')}
           </button>
         </div>
 
         <!-- Privacy Policy Link -->
         <div class="text-center sm:text-right">
-          <a href="/privacy" class="text-xs text-[var(--color-text-light)] hover:text-[var(--color-primary)] underline">
-            Privacy Policy
+          <a href={getLocalizedPath('/privacy', lang)} class="text-xs text-[var(--color-text-light)] hover:text-[var(--color-primary)] underline">
+            {t('footer.privacyPolicy')}
           </a>
         </div>
       </div>

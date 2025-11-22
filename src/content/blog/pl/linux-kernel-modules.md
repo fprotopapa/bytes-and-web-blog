@@ -2,7 +2,7 @@
 title: "Writing Your First Linux Kernel Module"
 description: "Learn how to write, compile, and load a simple Linux kernel module for embedded systems."
 pubDate: 2024-11-10
-author: john-doe
+author: pl/john-doe
 coverImage: "/images/posts/kernel-module.jpg"
 tags: ["kernel", "drivers", "c-programming"]
 category: "Kernel Development"

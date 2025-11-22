@@ -2,7 +2,7 @@
 title: "Buildroot vs Yocto: Choosing the Right Build System"
 description: "A comprehensive comparison of Buildroot and Yocto Project to help you choose the best build system for your embedded Linux project."
 pubDate: 2024-11-12
-author: jane-smith
+author: pl/jane-smith
 coverImage: "/images/posts/buildroot-yocto.jpg"
 tags: ["buildroot", "yocto", "build-systems"]
 category: "Build Systems"

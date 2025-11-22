@@ -1,28 +1,28 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import AuthorCard from '../../components/AuthorCard.astro';
-import PostCard from '../../components/PostCard.astro';
+import Layout from '../../../layouts/Layout.astro';
+import AuthorCard from '../../../components/AuthorCard.astro';
+import PostCard from '../../../components/PostCard.astro';
 import { getCollection } from 'astro:content';
 import type { GetStaticPaths } from 'astro';
-import { getLangFromId } from '../../content/config';
-import { useTranslations } from '../../i18n/utils';
+import { getLangFromId } from '../../../content/config';
+import { useTranslations } from '../../../i18n/utils';
 
-const lang = 'pl';
+const lang = 'en';
 const t = useTranslations(lang);
 
 export const getStaticPaths = (async () => {
   const authors = await getCollection('authors');
-  // Only Polish authors
-  const plAuthors = authors.filter(a => a.id.startsWith('pl/'));
-  return plAuthors.map(author => ({
-    params: { slug: author.id.replace('pl/', '') },
+  // Only English authors
+  const enAuthors = authors.filter(a => a.id.startsWith('en/'));
+  return enAuthors.map(author => ({
+    params: { slug: author.id.replace('en/', '') },
     props: { author },
   }));
 }) satisfies GetStaticPaths;
 
 const { author } = Astro.props;
 
-// Get all posts by this author (Polish only)
+// Get all posts by this author (English only)
 const allPosts = await getCollection('blog', ({ id, data }) => {
   return data.draft !== true && data.author.id === author.id && getLangFromId(id) === lang;
 });

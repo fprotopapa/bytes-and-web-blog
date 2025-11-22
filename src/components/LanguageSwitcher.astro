@@ -1,0 +1,33 @@
+---
+import { languages, type Lang, getLocalizedPath, getPathWithoutLang } from '../i18n/config';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const currentPath = Astro.url.pathname;
+const pathWithoutLang = getPathWithoutLang(currentPath);
+---
+
+<div class="language-switcher flex items-center gap-1">
+  {Object.entries(languages).map(([code, name]) => {
+    const isActive = code === lang;
+    const href = getLocalizedPath(pathWithoutLang, code as Lang);
+
+    return (
+      <a
+        href={href}
+        class:list={[
+          'px-2 py-1 text-xs font-medium rounded transition-colors no-underline',
+          isActive
+            ? 'bg-[var(--color-primary)] text-white'
+            : 'text-[var(--color-text-light)] hover:text-[var(--color-text)] hover:bg-[var(--color-bg-alt)]'
+        ]}
+        aria-current={isActive ? 'page' : undefined}
+      >
+        {code.toUpperCase()}
+      </a>
+    );
+  })}
+</div>

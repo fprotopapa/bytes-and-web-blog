@@ -1,12 +1,17 @@
 ---
+import { defaultLang, type Lang, getLocalizedPath } from '../i18n/config';
+import { useTranslations } from '../i18n/utils';
+
 interface Props {
   id: string;
   title?: string;
   start?: number;
   thumbnail?: string;
+  lang?: Lang;
 }
 
-const { id, title = "YouTube video player", start, thumbnail } = Astro.props;
+const { id, title = "YouTube video player", start, thumbnail, lang = defaultLang } = Astro.props;
+const t = useTranslations(lang);
 
 // Build the embed URL with optional start time
 let embedUrl = `https://www.youtube-nocookie.com/embed/${id}`;
@@ -32,23 +37,23 @@ const thumbnailUrl = thumbnail || '/images/video-thumbnail-default.jpg';
         <svg class="youtube-icon" viewBox="0 0 24 24" fill="currentColor">
           <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
         </svg>
-        <p class="youtube-notice">This video is hosted on YouTube</p>
+        <p class="youtube-notice">{t('youtube.hostedOn')}</p>
         <p class="youtube-privacy-text">
-          Playing this video will set cookies and send data to YouTube/Google.
+          {t('youtube.privacyNotice')}
         </p>
         <button class="youtube-accept-btn" type="button">
-          Accept & Play Video
+          {t('youtube.acceptPlay')}
         </button>
         <a href={`https://www.youtube.com/watch?v=${id}`} class="youtube-external-link" target="_blank" rel="noopener noreferrer">
-          Watch on YouTube
+          {t('youtube.watchOnYoutube')}
         </a>
         <div class="youtube-privacy-links">
-          <a href="/privacy" class="youtube-privacy-link">
-            Privacy Policy
+          <a href={getLocalizedPath('/privacy', lang)} class="youtube-privacy-link">
+            {t('footer.privacyPolicy')}
           </a>
           <span class="youtube-privacy-separator">·</span>
           <a href="https://policies.google.com/privacy" class="youtube-privacy-link" target="_blank" rel="noopener noreferrer">
-            YouTube Privacy
+            {t('youtube.youtubePrivacy')}
           </a>
         </div>
       </div>

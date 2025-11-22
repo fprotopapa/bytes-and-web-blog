@@ -1,7 +1,7 @@
 ---
 title: "TFTP & NFS for Embedded Linux Development"
 pubDate: 2024-10-02
-author: jane-smith
+author: pl/jane-smith
 description: 'In this article, we’re going to set up a TFTP (Trivial File Transfer Protocol) and NFS (Network File System) server and use it to boot a Raspberry Pi 4 (RPI). To make our lives easier, we’ll use U-Boot as our bootloader. Why would we need it? In the early (and beyond) stages of development, we [&hellip;]'
 tags: ["yocto", "build-systems", "embedded-linux"]
 category: "Systemy wbudowane"

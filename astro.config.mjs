@@ -11,7 +11,27 @@ export default defineConfig({
   // Replace with your actual domain
   site: 'https://example.com',
 
-  integrations: [mdx(), sitemap(), pagefind()],
+  i18n: {
+    defaultLocale: 'pl',
+    locales: ['pl', 'en'],
+    routing: {
+      prefixDefaultLocale: false,
+    },
+  },
+
+  integrations: [
+    mdx(),
+    sitemap({
+      i18n: {
+        defaultLocale: 'pl',
+        locales: {
+          pl: 'pl-PL',
+          en: 'en-US',
+        },
+      },
+    }),
+    pagefind(),
+  ],
 
   markdown: {
     shikiConfig: {

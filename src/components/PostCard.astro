@@ -1,22 +1,27 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { getEntry } from 'astro:content';
+import { getSlugWithoutLang } from '../content/config';
+import { useTranslations, formatDate } from '../i18n/utils';
+import { defaultLang, type Lang, getLocalizedPath } from '../i18n/config';
 
 interface Props {
   post: CollectionEntry<'blog'>;
+  lang?: Lang;
 }
 
-const { post } = Astro.props;
+const { post, lang = defaultLang } = Astro.props;
+const t = useTranslations(lang);
 const author = await getEntry(post.data.author);
-const formattedDate = new Date(post.data.pubDate).toLocaleDateString('en-US', {
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric'
-});
+const formattedDate = formatDate(post.data.pubDate, lang);
+
+// Get slug without language prefix for URL
+const postSlug = getSlugWithoutLang(post.slug);
+const localePath = (path: string) => getLocalizedPath(path, lang);
 ---
 
 <article class="rounded-lg p-4 sm:p-6 mb-4 sm:mb-6 hover:shadow-lg transition-shadow duration-200" style="background-color: var(--color-bg); border: 1px solid var(--color-border);">
-  <a href={`/blog/${post.slug}`} class="no-underline group">
+  <a href={localePath(`/blog/${postSlug}`)} class="no-underline group">
     <h2 class="text-xl sm:text-2xl font-bold mb-2 leading-tight hover:opacity-80 transition-opacity" style="color: var(--color-primary);">
       {post.data.title}
     </h2>
@@ -27,7 +32,7 @@ const formattedDate = new Date(post.data.pubDate).toLocaleDateString('en-US', {
       {formattedDate}
     </time>
     <span class="hidden sm:inline">•</span>
-    <span class="flex items-center">by <a href={`/authors/${post.data.author.id}`} class="no-underline hover:underline transition-opacity hover:opacity-80 ml-1" style="color: var(--color-primary);">{author.data.name}</a></span>
+    <span class="flex items-center">{t('blog.by')} <a href={localePath(`/authors/${post.data.author.id.split('/')[1]}`)} class="no-underline hover:underline transition-opacity hover:opacity-80 ml-1" style="color: var(--color-primary);">{author.data.name}</a></span>
     <span class="hidden sm:inline">•</span>
     <span class="flex items-center font-medium" style="color: var(--color-text);">{post.data.category}</span>
   </div>
@@ -39,7 +44,7 @@ const formattedDate = new Date(post.data.pubDate).toLocaleDateString('en-US', {
   <div class="flex flex-wrap gap-2 mb-4">
     {post.data.tags.map(tag => (
       <a
-        href={`/tags/${tag}`}
+        href={localePath(`/tags/${tag}`)}
         class="px-3 py-1 rounded-full text-xs sm:text-sm no-underline transition-colors hover:opacity-80"
         style="background-color: var(--color-bg-alt); color: var(--color-text); border: 1px solid var(--color-border);"
       >
@@ -48,8 +53,8 @@ const formattedDate = new Date(post.data.pubDate).toLocaleDateString('en-US', {
     ))}
   </div>
 
-  <a href={`/blog/${post.slug}`} class="inline-flex items-center font-medium no-underline group hover:opacity-80 transition-opacity" style="color: var(--color-primary);">
-    Read more
+  <a href={localePath(`/blog/${postSlug}`)} class="inline-flex items-center font-medium no-underline group hover:opacity-80 transition-opacity" style="color: var(--color-primary);">
+    {t('blog.readMore')}
     <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
     </svg>

@@ -1,7 +1,7 @@
 ---
 title: "Embedded Linux from Scratch — Quick & Easy on QEMU"
 pubDate: 2024-10-02
-author: jane-smith
+author: pl/jane-smith
 description: 'In this article, we’re going to create an embedded Linux system from scratch, emulate an ARM-based board, and run our system on it. What do we need? Five main elements are needed to successfully run embedded Linux on a target of our choice. Because we’re going to emulate our board with QEMU, we can omit [&hellip;]'
 tags: ["yocto", "build-systems", "embedded-linux"]
 category: "Systemy wbudowane"

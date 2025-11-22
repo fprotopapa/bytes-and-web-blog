@@ -1,10 +1,10 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import Layout from '../../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
-import { getLangFromId } from '../../content/config';
-import { useTranslations, getPostCountText } from '../../i18n/utils';
+import { getLangFromId } from '../../../content/config';
+import { useTranslations, getPostCountText } from '../../../i18n/utils';
 
-const lang = 'pl';
+const lang = 'en';
 const t = useTranslations(lang);
 
 const allPosts = await getCollection('blog', ({ id, data }) => {
@@ -35,7 +35,7 @@ const sortedCategories = Array.from(categoryCounts.entries())
       const slug = category.toLowerCase().replace(/\s+/g, '-');
       return (
         <a
-          href={`/categories/${slug}`}
+          href={`/en/categories/${slug}`}
           style="padding: 1.5rem; background-color: var(--color-bg-alt); border: 2px solid var(--color-border); border-radius: 0.5rem; text-decoration: none; color: var(--color-text); transition: all 0.2s;"
           onmouseover="this.style.borderColor='var(--color-primary)'; this.style.transform='translateY(-2px)';"
           onmouseout="this.style.borderColor='var(--color-border)'; this.style.transform='translateY(0)';"

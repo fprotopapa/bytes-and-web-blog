@@ -1,5 +1,6 @@
 import { defineCollection, reference, z } from 'astro:content';
 
+// Authors collection - nested by language (pl/, en/)
 const authors = defineCollection({
   type: 'data',
   schema: z.object({
@@ -13,6 +14,7 @@ const authors = defineCollection({
   }),
 });
 
+// Blog collection - nested by language (pl/, en/)
 const blog = defineCollection({
   type: 'content',
   schema: z.object({
@@ -29,3 +31,15 @@ const blog = defineCollection({
 });
 
 export const collections = { authors, blog };
+
+// Helper to extract language from content id (e.g., "pl/my-post" -> "pl")
+export function getLangFromId(id: string): 'pl' | 'en' {
+  const lang = id.split('/')[0];
+  return lang === 'en' ? 'en' : 'pl';
+}
+
+// Helper to get slug without language prefix (e.g., "pl/my-post" -> "my-post")
+export function getSlugWithoutLang(slug: string): string {
+  const parts = slug.split('/');
+  return parts.length > 1 ? parts.slice(1).join('/') : slug;
+}

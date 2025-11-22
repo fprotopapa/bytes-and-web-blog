@@ -1,0 +1,172 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import { getCollection, getEntry } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import { getLangFromId } from '../../../content/config';
+import { useTranslations, formatDate } from '../../../i18n/utils';
+
+const lang = 'en';
+const t = useTranslations(lang);
+
+export const getStaticPaths = (async () => {
+  const courses = await getCollection('courses', ({ id, data }) => {
+    return data.draft !== true && getLangFromId(id) === 'en';
+  });
+
+  return courses.map(course => {
+    const slug = course.id.split('/').slice(1).join('/').replace('.json', '');
+    return {
+      params: { slug },
+      props: { course },
+    };
+  });
+}) satisfies GetStaticPaths;
+
+const { course } = Astro.props;
+const courseSlug = Astro.params.slug;
+
+// Get author
+const author = await getEntry(course.data.author);
+
+// Get all lessons for this course
+const allLessons = await getCollection('lessons', ({ id, data }) => {
+  return data.draft !== true && getLangFromId(id) === lang;
+});
+
+// Filter lessons for this course and sort by order
+const courseLessons = allLessons
+  .filter(lesson => lesson.data.course.id === course.id)
+  .sort((a, b) => a.data.order - b.data.order);
+
+// Difficulty badge colors
+const difficultyColors = {
+  beginner: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+  intermediate: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
+  advanced: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
+};
+
+const difficultyLabel = t(`courses.${course.data.difficulty}` as any);
+
+// Breadcrumb items
+const breadcrumbItems = [
+  { label: t('nav.courses'), href: '/en/courses' },
+  { label: course.data.title },
+];
+---
+
+<Layout title={`${course.data.title} - ${t('site.title')}`} description={course.data.description} lang={lang}>
+  <Breadcrumbs items={breadcrumbItems} lang={lang} />
+
+  <div class="max-w-4xl mx-auto">
+    <!-- Course Header -->
+    <header class="mb-8">
+      {course.data.coverImage && (
+        <img
+          src={course.data.coverImage}
+          alt={course.data.title}
+          class="w-full h-64 object-cover rounded-lg mb-6"
+        />
+      )}
+
+      <div class="flex flex-wrap items-center gap-3 mb-4">
+        <span class={`px-3 py-1 rounded-full text-sm font-medium ${difficultyColors[course.data.difficulty]}`}>
+          {difficultyLabel}
+        </span>
+        {course.data.estimatedTime && (
+          <span class="text-sm" style="color: var(--color-text-light);">
+            {t('courses.estimatedTime')}: {course.data.estimatedTime}
+          </span>
+        )}
+        <span class="text-sm" style="color: var(--color-text-light);">
+          {courseLessons.length} {courseLessons.length === 1 ? t('courses.lesson') : t('courses.lessons')}
+        </span>
+      </div>
+
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4" style="color: var(--color-text);">
+        {course.data.title}
+      </h1>
+
+      <p class="text-lg mb-6" style="color: var(--color-text-light);">
+        {course.data.description}
+      </p>
+
+      <div class="flex items-center gap-4 pb-6 border-b" style="border-color: var(--color-border);">
+        <span class="text-sm" style="color: var(--color-text-light);">
+          {t('blog.by')} <a href={`/en/authors/${course.data.author.id.split('/')[1]}`} class="no-underline hover:underline" style="color: var(--color-primary);">{author.data.name}</a>
+        </span>
+        <span class="text-sm" style="color: var(--color-text-light);">
+          {formatDate(course.data.pubDate, lang)}
+        </span>
+      </div>
+
+      {course.data.tags.length > 0 && (
+        <div class="flex flex-wrap gap-2 mt-4">
+          {course.data.tags.map(tag => (
+            <span class="text-xs px-3 py-1 rounded-full" style="background-color: var(--color-bg-alt); color: var(--color-text-light); border: 1px solid var(--color-border);">
+              #{tag}
+            </span>
+          ))}
+        </div>
+      )}
+    </header>
+
+    <!-- Course Content / Lesson List -->
+    <section>
+      <h2 class="text-2xl font-bold mb-6" style="color: var(--color-text);">
+        {t('courses.courseContent')}
+      </h2>
+
+      {courseLessons.length > 0 ? (
+        <div class="space-y-3">
+          {courseLessons.map((lesson, index) => {
+            const lessonSlug = lesson.id.split('/').pop()?.replace('.mdx', '').replace('.md', '');
+            return (
+              <a
+                href={`/en/courses/${courseSlug}/${lessonSlug}`}
+                class="flex items-center gap-4 p-4 rounded-lg no-underline transition-all hover:shadow-md group"
+                style="background-color: var(--color-bg-alt); border: 1px solid var(--color-border);"
+              >
+                <span class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold" style="background-color: var(--color-primary); color: white;">
+                  {index + 1}
+                </span>
+                <div class="flex-1 min-w-0">
+                  <h3 class="font-medium group-hover:opacity-80 transition-opacity" style="color: var(--color-text);">
+                    {lesson.data.title}
+                  </h3>
+                  <p class="text-sm truncate" style="color: var(--color-text-light);">
+                    {lesson.data.description}
+                  </p>
+                </div>
+                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: var(--color-text-light);">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </a>
+            );
+          })}
+        </div>
+      ) : (
+        <div class="text-center py-8 rounded-lg" style="background-color: var(--color-bg-alt); border: 1px solid var(--color-border);">
+          <p style="color: var(--color-text-light);">
+            No lessons in this course yet.
+          </p>
+        </div>
+      )}
+
+      {courseLessons.length > 0 && (
+        <div class="mt-8 text-center">
+          <a
+            href={`/en/courses/${courseSlug}/${courseLessons[0].id.split('/').pop()?.replace('.mdx', '').replace('.md', '')}`}
+            class="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-medium no-underline transition-colors"
+            style="background-color: var(--color-primary); color: white;"
+          >
+            {t('courses.startCourse')}
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+            </svg>
+          </a>
+        </div>
+      )}
+    </section>
+  </div>
+</Layout>

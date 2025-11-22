@@ -1,0 +1,13 @@
+{
+  "title": "Podstawy Yocto Project",
+  "description": "Kompleksowy kurs wprowadzający do Yocto Project. Naucz się budować własne dystrybucje Linux dla systemów embedded od podstaw.",
+  "coverImage": "/images/courses/yocto-fundamentals.jpg",
+  "author": "pl/john-doe",
+  "category": "Build Systems",
+  "tags": ["yocto", "embedded-linux", "build-system", "bitbake"],
+  "difficulty": "beginner",
+  "estimatedTime": "8 godzin",
+  "pubDate": "2024-11-20",
+  "draft": false,
+  "translationId": "yocto-fundamentals"
+}

@@ -52,6 +52,7 @@ const htmlLang = lang === 'pl' ? 'pl' : 'en';
           <div class="hidden md:flex items-center gap-6">
             <a href={localePath('/')} class="hover:text-blue-600 transition-colors no-underline" style="color: var(--color-text-light);">{t('nav.home')}</a>
             <a href={localePath('/blog')} class="hover:text-blue-600 transition-colors no-underline" style="color: var(--color-text-light);">{t('nav.blog')}</a>
+            {siteConfig.enableCourses && <a href={localePath('/courses')} class="hover:text-blue-600 transition-colors no-underline" style="color: var(--color-text-light);">{t('nav.courses')}</a>}
             <a href={localePath('/tags')} class="hover:text-blue-600 transition-colors no-underline" style="color: var(--color-text-light);">{t('nav.tags')}</a>
             <a href={localePath('/categories')} class="hover:text-blue-600 transition-colors no-underline" style="color: var(--color-text-light);">{t('nav.categories')}</a>
             {siteConfig.enableLanguageSwitcher && <LanguageSwitcher lang={lang} translationUrls={translationUrls} />}
@@ -126,6 +127,7 @@ const htmlLang = lang === 'pl' ? 'pl' : 'en';
         <div id="mobile-menu" class="hidden md:hidden pb-4 space-y-2">
           <a href={localePath('/')} class="block py-2 rounded px-3 transition-colors no-underline hover:opacity-80" style="color: var(--color-text); background-color: transparent;">{t('nav.home')}</a>
           <a href={localePath('/blog')} class="block py-2 rounded px-3 transition-colors no-underline hover:opacity-80" style="color: var(--color-text); background-color: transparent;">{t('nav.blog')}</a>
+          {siteConfig.enableCourses && <a href={localePath('/courses')} class="block py-2 rounded px-3 transition-colors no-underline hover:opacity-80" style="color: var(--color-text); background-color: transparent;">{t('nav.courses')}</a>}
           <a href={localePath('/tags')} class="block py-2 rounded px-3 transition-colors no-underline hover:opacity-80" style="color: var(--color-text); background-color: transparent;">{t('nav.tags')}</a>
           <a href={localePath('/categories')} class="block py-2 rounded px-3 transition-colors no-underline hover:opacity-80" style="color: var(--color-text); background-color: transparent;">{t('nav.categories')}</a>
           {siteConfig.enableLanguageSwitcher && (

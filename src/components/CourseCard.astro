@@ -1,0 +1,99 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+import { useTranslations } from '../i18n/utils';
+import type { Lang } from '../i18n/config';
+import { getLangFromId } from '../content/config';
+
+interface Props {
+  course: CollectionEntry<'courses'>;
+  lang: Lang;
+}
+
+const { course, lang } = Astro.props;
+const t = useTranslations(lang);
+
+// Get lesson count for this course
+const allLessons = await getCollection('lessons', ({ data }) => {
+  return data.draft !== true;
+});
+
+const courseLessons = allLessons.filter(lesson => {
+  const lessonLang = getLangFromId(lesson.id);
+  return lesson.data.course.id === course.id && lessonLang === lang;
+});
+
+const lessonCount = courseLessons.length;
+
+// Get course slug without language prefix
+const courseSlug = course.id.split('/').slice(1).join('/').replace('.json', '');
+
+// Difficulty badge colors
+const difficultyColors = {
+  beginner: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+  intermediate: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
+  advanced: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
+};
+
+const difficultyLabel = t(`courses.${course.data.difficulty}` as any);
+const courseUrl = lang === 'pl' ? `/courses/${courseSlug}` : `/en/courses/${courseSlug}`;
+---
+
+<article class="rounded-lg overflow-hidden transition-all hover:shadow-lg" style="background-color: var(--color-bg-alt); border: 1px solid var(--color-border);">
+  {course.data.coverImage && (
+    <a href={courseUrl} class="block">
+      <img
+        src={course.data.coverImage}
+        alt={course.data.title}
+        class="w-full h-48 object-cover"
+      />
+    </a>
+  )}
+
+  <div class="p-6">
+    <div class="flex items-center gap-2 mb-3">
+      <span class={`px-2 py-1 rounded-full text-xs font-medium ${difficultyColors[course.data.difficulty]}`}>
+        {difficultyLabel}
+      </span>
+      {course.data.estimatedTime && (
+        <span class="text-xs" style="color: var(--color-text-light);">
+          {course.data.estimatedTime}
+        </span>
+      )}
+    </div>
+
+    <a href={courseUrl} class="no-underline group">
+      <h3 class="text-xl font-bold mb-2 group-hover:opacity-80 transition-opacity" style="color: var(--color-text);">
+        {course.data.title}
+      </h3>
+    </a>
+
+    <p class="text-sm mb-4 line-clamp-3" style="color: var(--color-text-light);">
+      {course.data.description}
+    </p>
+
+    <div class="flex items-center justify-between">
+      <span class="text-sm" style="color: var(--color-text-light);">
+        {lessonCount} {lessonCount === 1 ? t('courses.lesson') : t('courses.lessons')}
+      </span>
+
+      <a
+        href={courseUrl}
+        class="px-4 py-2 rounded-lg text-sm font-medium no-underline transition-colors"
+        style="background-color: var(--color-primary); color: white;"
+      >
+        {t('courses.startCourse')}
+      </a>
+    </div>
+
+    {course.data.tags.length > 0 && (
+      <div class="flex flex-wrap gap-2 mt-4 pt-4 border-t" style="border-color: var(--color-border);">
+        {course.data.tags.slice(0, 3).map(tag => (
+          <span class="text-xs px-2 py-1 rounded" style="background-color: var(--color-bg); color: var(--color-text-light);">
+            #{tag}
+          </span>
+        ))}
+      </div>
+    )}
+  </div>
+</article>

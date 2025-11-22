@@ -1,0 +1,83 @@
+---
+title: "Konfiguracja środowiska"
+description: "Pobieranie źródeł Yocto i konfiguracja środowiska budowania."
+course: pl/yocto-fundamentals
+order: 2
+pubDate: 2024-11-20
+draft: false
+---
+
+# Konfiguracja środowiska Yocto
+
+W tej lekcji skonfigurujemy kompletne środowisko do pracy z Yocto Project.
+
+## Pobieranie Poky
+
+Poky to referencyjna dystrybucja Yocto Project. Zacznijmy od jej pobrania:
+
+```bash
+# Utwórz katalog roboczy
+mkdir -p ~/yocto
+cd ~/yocto
+
+# Sklonuj repozytorium Poky
+git clone git://git.yoctoproject.org/poky
+cd poky
+
+# Przełącz na stabilną gałąź (kirkstone LTS)
+git checkout -t origin/kirkstone -b my-kirkstone
+```
+
+## Inicjalizacja środowiska
+
+Yocto wymaga inicjalizacji środowiska przed każdą sesją budowania:
+
+```bash
+# Inicjalizacja środowiska
+source oe-init-build-env
+```
+
+Ta komenda:
+- Tworzy katalog `build/`
+- Ustawia zmienne środowiskowe
+- Dodaje BitBake do PATH
+
+## Struktura katalogów
+
+Po inicjalizacji powstanie następująca struktura:
+
+```
+poky/
+├── bitbake/          # Silnik budowania
+├── meta/             # Warstwa podstawowa
+├── meta-poky/        # Warstwa Poky
+├── meta-yocto-bsp/   # BSP dla referencyjnych platform
+└── build/            # Twój katalog budowania
+    ├── conf/
+    │   ├── local.conf    # Lokalna konfiguracja
+    │   └── babelrc.conf  # Konfiguracja warstw
+    └── tmp/              # Pliki tymczasowe budowania
+```
+
+## Podstawowa konfiguracja
+
+Edytuj `conf/local.conf`:
+
+```bash
+# Maszyna docelowa (np. qemux86-64, raspberrypi4)
+MACHINE = "qemux86-64"
+
+# Liczba równoległych zadań
+BB_NUMBER_THREADS = "8"
+PARALLEL_MAKE = "-j 8"
+
+# Katalog pobierania
+DL_DIR = "${TOPDIR}/../downloads"
+
+# Katalog współdzielony
+SSTATE_DIR = "${TOPDIR}/../sstate-cache"
+```
+
+## Następne kroki
+
+W następnej lekcji zbudujemy nasz pierwszy obraz Linux!

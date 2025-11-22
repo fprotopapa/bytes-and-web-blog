@@ -31,7 +31,39 @@ const blog = defineCollection({
   }),
 });
 
-export const collections = { authors, blog };
+// Courses collection - nested by language (pl/, en/)
+const courses = defineCollection({
+  type: 'data',
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    coverImage: z.string().optional(),
+    author: reference('authors'),
+    category: z.string(),
+    tags: z.array(z.string()),
+    difficulty: z.enum(['beginner', 'intermediate', 'advanced']),
+    estimatedTime: z.string().optional(), // e.g., "4 hours", "2 weeks"
+    pubDate: z.coerce.date(),
+    draft: z.boolean().default(false),
+    translationId: z.string().optional(), // Links translations of the same course
+  }),
+});
+
+// Lessons collection - nested by language and course (pl/course-slug/, en/course-slug/)
+const lessons = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    course: reference('courses'),
+    order: z.number(), // Lesson order within course (1, 2, 3...)
+    pubDate: z.coerce.date(),
+    updatedDate: z.coerce.date().optional(),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { authors, blog, courses, lessons };
 
 // Helper to extract language from content id (e.g., "pl/my-post" -> "pl")
 export function getLangFromId(id: string): 'pl' | 'en' {

@@ -1,0 +1,86 @@
+---
+title: "Pierwszy build"
+description: "Budowanie pierwszego obrazu Linux z Yocto Project."
+course: pl/yocto-fundamentals
+order: 3
+pubDate: 2024-11-20
+draft: false
+---
+
+# Twój pierwszy build z Yocto
+
+Czas zbudować nasz pierwszy obraz Linux! W tej lekcji przejdziemy przez cały proces budowania.
+
+## Wybór obrazu
+
+Yocto oferuje kilka predefiniowanych obrazów:
+
+| Obraz | Opis |
+|-------|------|
+| `core-image-minimal` | Minimalny obraz do bootowania |
+| `core-image-base` | Podstawowy obraz z konsolą |
+| `core-image-full-cmdline` | Pełne narzędzia wiersza poleceń |
+| `core-image-sato` | Obraz z interfejsem graficznym |
+
+## Uruchomienie budowania
+
+```bash
+# Upewnij się, że środowisko jest zainicjalizowane
+cd ~/yocto/poky
+source oe-init-build-env
+
+# Zbuduj minimalny obraz
+bitbake core-image-minimal
+```
+
+> **Uwaga:** Pierwszy build może trwać kilka godzin w zależności od sprzętu!
+
+## Co się dzieje podczas budowania?
+
+BitBake wykonuje następujące kroki dla każdego pakietu:
+
+1. **fetch** - pobieranie źródeł
+2. **unpack** - rozpakowywanie
+3. **patch** - aplikowanie łatek
+4. **configure** - konfiguracja
+5. **compile** - kompilacja
+6. **install** - instalacja do sysroot
+7. **package** - tworzenie pakietów
+
+## Wyniki budowania
+
+Po zakończeniu znajdziesz obrazy w:
+
+```bash
+ls tmp/deploy/images/qemux86-64/
+```
+
+Główne pliki:
+- `core-image-minimal-qemux86-64.rootfs.ext4` - system plików
+- `bzImage` - kernel Linux
+
+## Testowanie w QEMU
+
+```bash
+# Uruchom obraz w QEMU
+runqemu qemux86-64
+```
+
+Zaloguj się jako `root` (bez hasła).
+
+## Gratulacje!
+
+Właśnie zbudowałeś swoją pierwszą dystrybucję Linux! W następnych lekcjach nauczymy się dostosowywać obraz do naszych potrzeb.
+
+## Przydatne komendy
+
+```bash
+# Sprawdź status zadań
+bitbake -c listtasks core-image-minimal
+
+# Wyczyść build pakietu
+bitbake -c cleanall busybox
+
+# Uruchom devshell
+bitbake -c devshell busybox
+```

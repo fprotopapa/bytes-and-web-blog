@@ -1,0 +1,55 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import CourseCard from '../../../components/CourseCard.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import { getCollection } from 'astro:content';
+import { getLangFromId } from '../../../content/config';
+import { useTranslations } from '../../../i18n/utils';
+
+const lang = 'en';
+const t = useTranslations(lang);
+
+// Get all English courses
+const courses = await getCollection('courses', ({ id, data }) => {
+  return data.draft !== true && getLangFromId(id) === lang;
+});
+
+// Sort courses by publication date (newest first)
+const sortedCourses = courses.sort((a, b) =>
+  b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+// Breadcrumb items
+const breadcrumbItems = [
+  { label: t('nav.courses') },
+];
+---
+
+<Layout title={`${t('courses.all')} - ${t('site.title')}`} description={t('courses.description')} lang={lang}>
+  <Breadcrumbs items={breadcrumbItems} lang={lang} />
+
+  <div class="max-w-7xl mx-auto">
+    <header class="mb-12">
+      <h1 class="text-4xl sm:text-5xl font-bold mb-4" style="color: var(--color-text);">
+        {t('courses.all')}
+      </h1>
+      <p class="text-lg" style="color: var(--color-text-light);">
+        {t('courses.description')}
+      </p>
+    </header>
+
+    {sortedCourses.length > 0 ? (
+      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {sortedCourses.map(course => (
+          <CourseCard course={course} lang={lang} />
+        ))}
+      </div>
+    ) : (
+      <div class="text-center py-12">
+        <p style="color: var(--color-text-light);">
+          No courses available.
+        </p>
+      </div>
+    )}
+  </div>
+</Layout>

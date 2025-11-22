@@ -1,0 +1,48 @@
+---
+title: "Wprowadzenie do Yocto"
+description: "Czym jest Yocto Project i dlaczego warto go używać do budowania systemów embedded Linux."
+course: pl/yocto-fundamentals
+order: 1
+pubDate: 2024-11-20
+draft: false
+---
+
+# Wprowadzenie do Yocto Project
+
+Yocto Project to projekt open-source, który dostarcza narzędzia i metadane do tworzenia niestandardowych dystrybucji Linux dla systemów embedded.
+
+## Czym jest Yocto?
+
+Yocto Project to nie dystrybucja Linux sama w sobie - to zestaw narzędzi, które pozwalają stworzyć własną dystrybucję dostosowaną do konkretnego sprzętu i wymagań.
+
+### Główne komponenty
+
+1. **BitBake** - silnik budowania
+2. **OpenEmbedded-Core** - warstwa podstawowa z przepisami
+3. **Poky** - referencyjna dystrybucja
+
+## Dlaczego Yocto?
+
+- **Elastyczność** - pełna kontrola nad tym, co trafia do obrazu
+- **Powtarzalność** - te same źródła = ten sam wynik
+- **Skalowalność** - od małych urządzeń IoT po złożone systemy
+
+## Wymagania wstępne
+
+Zanim rozpoczniesz, upewnij się, że masz:
+
+- System Linux (Ubuntu 20.04+ zalecany)
+- Minimum 50GB wolnego miejsca
+- 8GB+ RAM
+
+```bash
+# Instalacja wymaganych pakietów na Ubuntu
+sudo apt-get install gawk wget git diffstat unzip texinfo gcc build-essential \
+  chrpath socat cpio python3 python3-pip python3-pexpect xz-utils debianutils \
+  iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev \
+  python3-subunit mesa-common-dev zstd liblz4-tool file locales
+```
+
+## Następne kroki
+
+W następnej lekcji pobierzemy źródła Yocto i skonfigurujemy środowisko budowania.

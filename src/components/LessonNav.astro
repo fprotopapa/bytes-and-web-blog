@@ -1,0 +1,112 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { useTranslations } from '../i18n/utils';
+import type { Lang } from '../i18n/config';
+
+interface LessonInfo {
+  slug: string;
+  title: string;
+  order: number;
+}
+
+interface Props {
+  currentLesson: CollectionEntry<'lessons'>;
+  allLessons: LessonInfo[];
+  courseSlug: string;
+  lang: Lang;
+}
+
+const { currentLesson, allLessons, courseSlug, lang } = Astro.props;
+const t = useTranslations(lang);
+
+// Sort lessons by order
+const sortedLessons = [...allLessons].sort((a, b) => a.order - b.order);
+
+// Find current lesson index
+const currentIndex = sortedLessons.findIndex(l => l.slug === currentLesson.id.split('/').pop()?.replace('.mdx', '').replace('.md', ''));
+const prevLesson = currentIndex > 0 ? sortedLessons[currentIndex - 1] : null;
+const nextLesson = currentIndex < sortedLessons.length - 1 ? sortedLessons[currentIndex + 1] : null;
+
+// Build URLs
+const baseUrl = lang === 'pl' ? `/courses/${courseSlug}` : `/en/courses/${courseSlug}`;
+const prevUrl = prevLesson ? `${baseUrl}/${prevLesson.slug}` : null;
+const nextUrl = nextLesson ? `${baseUrl}/${nextLesson.slug}` : null;
+
+// Progress
+const progress = ((currentIndex + 1) / sortedLessons.length) * 100;
+---
+
+<nav class="mt-12 pt-8 border-t-2" style="border-color: var(--color-border);">
+  <!-- Progress indicator -->
+  <div class="mb-6">
+    <div class="flex items-center justify-between text-sm mb-2" style="color: var(--color-text-light);">
+      <span>{t('courses.progress')}</span>
+      <span>
+        {t('courses.lessonOf').replace('{current}', String(currentIndex + 1)).replace('{total}', String(sortedLessons.length))}
+      </span>
+    </div>
+    <div class="w-full h-2 rounded-full" style="background-color: var(--color-border);">
+      <div
+        class="h-2 rounded-full transition-all"
+        style={`width: ${progress}%; background: linear-gradient(90deg, var(--color-primary) 0%, #9333ea 100%);`}
+      ></div>
+    </div>
+  </div>
+
+  <!-- Navigation buttons -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    {prevUrl ? (
+      <a
+        href={prevUrl}
+        class="group p-4 rounded-lg no-underline transition-all hover:shadow-md"
+        style="background-color: var(--color-bg-alt); border: 1px solid var(--color-border);"
+      >
+        <div class="flex items-center gap-2 text-sm mb-2" style="color: var(--color-text-light);">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          {t('courses.lesson.previous')}
+        </div>
+        <div class="font-medium group-hover:opacity-80 transition-opacity line-clamp-2" style="color: var(--color-text);">
+          {prevLesson.title}
+        </div>
+      </a>
+    ) : (
+      <div></div>
+    )}
+
+    {nextUrl ? (
+      <a
+        href={nextUrl}
+        class="group p-4 rounded-lg no-underline transition-all hover:shadow-md text-right"
+        style="background-color: var(--color-bg-alt); border: 1px solid var(--color-border);"
+      >
+        <div class="flex items-center justify-end gap-2 text-sm mb-2" style="color: var(--color-text-light);">
+          {t('courses.lesson.next')}
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </div>
+        <div class="font-medium group-hover:opacity-80 transition-opacity line-clamp-2" style="color: var(--color-text);">
+          {nextLesson.title}
+        </div>
+      </a>
+    ) : (
+      <div></div>
+    )}
+  </div>
+
+  <!-- Back to course link -->
+  <div class="mt-6 text-center">
+    <a
+      href={baseUrl}
+      class="inline-flex items-center gap-2 text-sm no-underline hover:underline"
+      style="color: var(--color-primary);"
+    >
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+      </svg>
+      {t('courses.lesson.backToCourse')}
+    </a>
+  </div>
+</nav>

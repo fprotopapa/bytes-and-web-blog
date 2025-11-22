@@ -100,6 +100,26 @@ export const ui = {
     // Common
     'common.posts': 'wpisów',
     'common.post': 'wpis',
+
+    // Courses
+    'nav.courses': 'Kursy',
+    'courses.all': 'Wszystkie kursy',
+    'courses.description': 'Kompleksowe kursy o embedded Linux i systemach wbudowanych',
+    'courses.lessons': 'lekcji',
+    'courses.lesson': 'lekcja',
+    'courses.difficulty': 'Poziom trudności',
+    'courses.beginner': 'Początkujący',
+    'courses.intermediate': 'Średniozaawansowany',
+    'courses.advanced': 'Zaawansowany',
+    'courses.estimatedTime': 'Szacowany czas',
+    'courses.startCourse': 'Rozpocznij kurs',
+    'courses.continueCourse': 'Kontynuuj kurs',
+    'courses.courseContent': 'Zawartość kursu',
+    'courses.lesson.previous': 'Poprzednia lekcja',
+    'courses.lesson.next': 'Następna lekcja',
+    'courses.lesson.backToCourse': 'Powrót do kursu',
+    'courses.progress': 'Postęp',
+    'courses.lessonOf': 'Lekcja {current} z {total}',
   },
   en: {
     // Site
@@ -201,6 +221,26 @@ export const ui = {
     // Common
     'common.posts': 'posts',
     'common.post': 'post',
+
+    // Courses
+    'nav.courses': 'Courses',
+    'courses.all': 'All Courses',
+    'courses.description': 'Comprehensive courses on embedded Linux and embedded systems',
+    'courses.lessons': 'lessons',
+    'courses.lesson': 'lesson',
+    'courses.difficulty': 'Difficulty',
+    'courses.beginner': 'Beginner',
+    'courses.intermediate': 'Intermediate',
+    'courses.advanced': 'Advanced',
+    'courses.estimatedTime': 'Estimated time',
+    'courses.startCourse': 'Start Course',
+    'courses.continueCourse': 'Continue Course',
+    'courses.courseContent': 'Course Content',
+    'courses.lesson.previous': 'Previous Lesson',
+    'courses.lesson.next': 'Next Lesson',
+    'courses.lesson.backToCourse': 'Back to Course',
+    'courses.progress': 'Progress',
+    'courses.lessonOf': 'Lesson {current} of {total}',
   },
 } as const;
 

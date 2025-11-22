@@ -8,6 +8,9 @@ export const siteConfig = {
   // Enable or disable language switcher on blog posts (for translations)
   enablePostTranslationLinks: true,
 
+  // Enable or disable courses feature
+  enableCourses: true,
+
   // Site metadata
   site: {
     url: 'https://example.com',

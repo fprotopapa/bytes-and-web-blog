@@ -1,0 +1,161 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import LessonNav from '../../../components/LessonNav.astro';
+import { getCollection, getEntry } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import { getLangFromId } from '../../../content/config';
+import { useTranslations } from '../../../i18n/utils';
+
+const lang = 'pl';
+const t = useTranslations(lang);
+
+export const getStaticPaths = (async () => {
+  const lessons = await getCollection('lessons', ({ id, data }) => {
+    return data.draft !== true && getLangFromId(id) === 'pl';
+  });
+
+  const courses = await getCollection('courses', ({ id, data }) => {
+    return data.draft !== true && getLangFromId(id) === 'pl';
+  });
+
+  return lessons.map(lesson => {
+    // Extract course slug from lesson id (e.g., "pl/yocto-fundamentals/01-introduction" -> "yocto-fundamentals")
+    const parts = lesson.id.split('/');
+    const courseSlug = parts[1]; // After language prefix
+    const lessonSlug = parts[2]?.replace('.mdx', '').replace('.md', '');
+
+    // Find the course
+    const course = courses.find(c => c.id === `pl/${courseSlug}.json`);
+
+    return {
+      params: { course: courseSlug, lesson: lessonSlug },
+      props: { lesson, course },
+    };
+  });
+}) satisfies GetStaticPaths;
+
+const { lesson, course } = Astro.props;
+const courseSlug = Astro.params.course;
+
+if (!course) {
+  return Astro.redirect('/404');
+}
+
+const { Content } = await lesson.render();
+
+// Get all lessons for this course for navigation
+const allLessons = await getCollection('lessons', ({ id, data }) => {
+  return data.draft !== true && getLangFromId(id) === lang;
+});
+
+const courseLessons = allLessons
+  .filter(l => l.data.course.id === course.id)
+  .sort((a, b) => a.data.order - b.data.order)
+  .map(l => ({
+    slug: l.id.split('/').pop()?.replace('.mdx', '').replace('.md', '') || '',
+    title: l.data.title,
+    order: l.data.order,
+  }));
+
+// Breadcrumb items
+const breadcrumbItems = [
+  { label: t('nav.courses'), href: '/courses' },
+  { label: course.data.title, href: `/courses/${courseSlug}` },
+  { label: lesson.data.title },
+];
+---
+
+<Layout title={`${lesson.data.title} - ${course.data.title} - ${t('site.title')}`} description={lesson.data.description} lang={lang}>
+  <!-- Reading Progress Bar -->
+  <div id="reading-progress" class="fixed top-0 left-0 h-1 z-50 transition-all duration-150" style="width: 0%; background: linear-gradient(90deg, var(--color-primary) 0%, #9333ea 100%);"></div>
+
+  <Breadcrumbs items={breadcrumbItems} lang={lang} />
+
+  <div class="max-w-7xl mx-auto flex gap-8">
+    <article class="flex-1">
+      <header class="mb-8">
+        <div class="mb-4">
+          <a
+            href={`/courses/${courseSlug}`}
+            class="font-semibold uppercase text-sm hover:underline hover:opacity-80 transition-opacity"
+            style="color: var(--color-primary);"
+          >
+            {course.data.title}
+          </a>
+        </div>
+
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight" style="color: var(--color-text);">
+          {lesson.data.title}
+        </h1>
+
+        <p class="text-lg sm:text-xl mb-6 leading-relaxed" style="color: var(--color-text-light);">
+          {lesson.data.description}
+        </p>
+      </header>
+
+      <div class="prose prose-lg max-w-none mb-12">
+        <Content />
+      </div>
+
+      <LessonNav
+        currentLesson={lesson}
+        allLessons={courseLessons}
+        courseSlug={courseSlug}
+        lang={lang}
+      />
+    </article>
+
+    <!-- Sticky Lesson List Sidebar -->
+    <aside class="hidden lg:block w-64 flex-shrink-0">
+      <div class="sticky top-24 p-4 rounded-lg" style="background-color: var(--color-bg-alt); border: 1px solid var(--color-border);">
+        <h3 class="font-bold mb-4 text-sm uppercase" style="color: var(--color-text);">
+          {t('courses.courseContent')}
+        </h3>
+        <nav class="space-y-2">
+          {courseLessons.map((l, index) => {
+            const isActive = l.slug === Astro.params.lesson;
+            return (
+              <a
+                href={`/courses/${courseSlug}/${l.slug}`}
+                class={`flex items-center gap-2 text-sm no-underline transition-opacity ${isActive ? 'font-medium' : 'hover:opacity-80'}`}
+                style={`color: ${isActive ? 'var(--color-primary)' : 'var(--color-text-light)'};`}
+              >
+                <span class="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-xs" style={`background-color: ${isActive ? 'var(--color-primary)' : 'var(--color-border)'}; color: ${isActive ? 'white' : 'var(--color-text-light)'};`}>
+                  {index + 1}
+                </span>
+                <span class="truncate">{l.title}</span>
+              </a>
+            );
+          })}
+        </nav>
+      </div>
+    </aside>
+  </div>
+
+  <script>
+    // Reading progress indicator
+    function updateReadingProgress() {
+      const article = document.querySelector('article');
+      const progressBar = document.getElementById('reading-progress');
+
+      if (!article || !progressBar) return;
+
+      const articleTop = article.offsetTop;
+      const articleHeight = article.offsetHeight;
+      const windowHeight = window.innerHeight;
+      const scrollTop = window.scrollY;
+
+      const progress = Math.min(
+        100,
+        Math.max(0, ((scrollTop - articleTop + windowHeight) / articleHeight) * 100)
+      );
+
+      progressBar.style.width = `${progress}%`;
+    }
+
+    window.addEventListener('scroll', updateReadingProgress);
+    window.addEventListener('resize', updateReadingProgress);
+    updateReadingProgress();
+  </script>
+</Layout>

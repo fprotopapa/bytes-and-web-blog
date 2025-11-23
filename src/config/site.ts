@@ -43,7 +43,7 @@ export const siteConfig = {
   site: {
     url: 'https://bytesandweb.pl',
     name: 'Bytes & Web',
-    defaultImage: '/images/default-og.png', // Default image for social sharing
+    defaultImage: '/images/default-og.webp', // Default image for social sharing
     defaultImageAlt: 'Bytes & Web logo',
   },
 

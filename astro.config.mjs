@@ -9,7 +9,7 @@ import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 export default defineConfig({
   // Replace with your actual domain
-  site: 'https://example.com',
+  site: 'https://bytesandweb.pl',
 
   i18n: {
     defaultLocale: 'pl',

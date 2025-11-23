@@ -2,8 +2,8 @@
 export const ui = {
   pl: {
     // Site
-    'site.title': 'Blog o Embedded Linux',
-    'site.description': 'Blog o embedded Linux, rozwoju kernela i systemach budowania',
+    'site.title': 'Bytes & Web',
+    'site.description': 'Praktyczna wiedza o IT w pigułce — od prostych porad po zaawansowane przewodniki i tutoriale.',
 
     // Navigation
     'nav.home': 'Strona główna',
@@ -17,27 +17,27 @@ export const ui = {
     // Footer
     'footer.privacyPolicy': 'Polityka prywatności',
     'footer.cookieSettings': 'Ustawienia ciasteczek',
-    'footer.rssFeed': 'Kanał RSS bloga Embedded Linux',
+    'footer.rssFeed': 'Kanał RSS bloga Bytes & Web',
 
     // Home page
-    'home.welcome': 'Witaj na blogu Embedded Linux',
-    'home.subtitle': 'Twoje źródło wiedzy o embedded Linux, rozwoju kernela, systemach budowania i wszystkim pomiędzy...',
-    'home.writtenBy': 'Pisane przez doświadczonych inżynierów dla społeczności embedded',
+    'home.welcome': 'Witaj na Bytes & Web',
+    'home.subtitle': 'Blog o wszystkim, co w IT najciekawsze — prosto, lekko i z humorem o IT.',
+    'home.writtenBy': 'Tworzone przez specjalistów dla profesjonalistów i pasjonatów nowych technologii.',
     'home.latestPosts': 'Najnowsze wpisy',
     'home.viewAllPosts': 'Zobacz wszystkie wpisy',
     'home.topicsTitle': 'Tematy, które omawiamy',
-    'home.topic.kernel': 'Rozwój kernela',
-    'home.topic.kernelDesc': 'Dogłębne artykuły o wewnętrznych mechanizmach kernela Linux, modułach i sterownikach urządzeń.',
-    'home.topic.buildSystems': 'Systemy budowania',
-    'home.topic.buildSystemsDesc': 'Opanuj Yocto, Buildroot i inne narzędzia do tworzenia niestandardowych dystrybucji.',
-    'home.topic.bootloaders': 'Bootloadery',
-    'home.topic.bootloadersDesc': 'Przewodniki po U-Boot, GRUB i procesie uruchamiania systemów embedded.',
-    'home.topic.hardware': 'Integracja sprzętowa',
-    'home.topic.hardwareDesc': 'Podstawy Device Tree, mapowanie pamięci i programowanie peryferiów.',
+    'home.topic.kernel': 'Oprogramowanie',
+    'home.topic.kernelDesc': 'Praktyczne porady, tutoriale i nowinki ze świata aplikacji, systemów i programowania.',
+    'home.topic.buildSystems': 'Narzędzia deweloperskie',
+    'home.topic.buildSystemsDesc': 'Przewodniki po IDE, CI/CD, Git, konteneryzacji i wszystkim, co ułatwia pracę w IT.',
+    'home.topic.bootloaders': 'Chmura i serwery',
+    'home.topic.bootloadersDesc': 'Podstawy i praktyka w pracy z serwerami, wirtualizacją oraz usługami w chmurze.',
+    'home.topic.hardware': 'Sprzęt i integracja',
+    'home.topic.hardwareDesc': 'Wprowadzenie do komputerów, peryferiów, IoT i projektów DIY dla entuzjastów technologii.',
 
     // Blog listing
     'blog.allPosts': 'Wszystkie wpisy',
-    'blog.description': 'o embedded Linux, rozwoju kernela i nie tylko',
+    'blog.description': '..',
     'blog.posts': 'wpisów',
     'blog.post': 'wpis',
     'blog.categories': 'Kategorie',
@@ -106,7 +106,7 @@ export const ui = {
     // Courses
     'nav.courses': 'Kursy',
     'courses.all': 'Wszystkie kursy',
-    'courses.description': 'Kompleksowe kursy o embedded Linux i systemach wbudowanych',
+    'courses.description': 'Kompleksowe kursy o oprogramowaniu, devOpsu, i bezpieczenstwu',
     'courses.lessons': 'lekcji',
     'courses.lesson': 'lekcja',
     'courses.difficulty': 'Poziom trudności',
@@ -125,8 +125,8 @@ export const ui = {
   },
   en: {
     // Site
-    'site.title': 'Embedded Linux Blog',
-    'site.description': 'A blog about embedded Linux, kernel development, and build systems',
+    'site.title': 'Bytes & Web',
+    'site.description': 'Insights, tutorials, and tools for navigating the world of IT — from daily tech tips to in-depth guides.',
 
     // Navigation
     'nav.home': 'Home',
@@ -140,27 +140,27 @@ export const ui = {
     // Footer
     'footer.privacyPolicy': 'Privacy Policy',
     'footer.cookieSettings': 'Cookie Settings',
-    'footer.rssFeed': 'Embedded Linux Blog RSS Feed',
+    'footer.rssFeed': 'Bytes & Web Blog RSS Feed',
 
     // Home page
-    'home.welcome': 'Welcome to Embedded Linux Blog',
-    'home.subtitle': 'Your source for embedded Linux, kernel development, build systems, and everything in between...',
-    'home.writtenBy': 'Written by experienced engineers for the embedded community',
+    'home.welcome': 'Welcome to  Bytes & Web',
+    'home.subtitle': 'A blog about all things IT — simple, light, and with a touch of humor.',
+    'home.writtenBy': 'Created by specialists for professionals and tech enthusiasts.',
     'home.latestPosts': 'Latest Posts',
     'home.viewAllPosts': 'View All Posts',
     'home.topicsTitle': 'Topics We Cover',
-    'home.topic.kernel': 'Kernel Development',
-    'home.topic.kernelDesc': 'Deep-dive articles on Linux kernel internals, modules, and device drivers.',
-    'home.topic.buildSystems': 'Build Systems',
-    'home.topic.buildSystemsDesc': 'Master Yocto, Buildroot, and other tools for custom distribution building.',
-    'home.topic.bootloaders': 'Bootloaders',
-    'home.topic.bootloadersDesc': 'Guides on U-Boot, GRUB, and the embedded boot process.',
-    'home.topic.hardware': 'Hardware Integration',
-    'home.topic.hardwareDesc': 'Device Tree fundamentals, memory mapping, and peripheral programming.',
+    'home.topic.kernel': 'Software',
+    'home.topic.kernelDesc': 'Practical tips, tutorials, and updates from the world of applications, systems, and programming.',
+    'home.topic.buildSystems': 'Development Tools',
+    'home.topic.buildSystemsDesc': 'Guides on IDEs, CI/CD, Git, containers, and everything that makes IT work easier.',
+    'home.topic.bootloaders': 'Cloud & Servers',
+    'home.topic.bootloadersDesc': 'Basics and hands-on practice with servers, virtualization, and cloud services.',
+    'home.topic.hardware': 'Hardware & Integration',
+    'home.topic.hardwareDesc': 'Introduction to computers, peripherals, IoT, and DIY tech projects for enthusiasts.',
 
     // Blog listing
     'blog.allPosts': 'All Blog Posts',
-    'blog.description': 'about embedded Linux, kernel development, and more',
+    'blog.description': '..',
     'blog.posts': 'posts',
     'blog.post': 'post',
     'blog.categories': 'Categories',
@@ -229,7 +229,7 @@ export const ui = {
     // Courses
     'nav.courses': 'Courses',
     'courses.all': 'All Courses',
-    'courses.description': 'Comprehensive courses on embedded Linux and embedded systems',
+    'courses.description': 'Comprehensive courses about programming, DevOps, and security',
     'courses.lessons': 'lessons',
     'courses.lesson': 'lesson',
     'courses.difficulty': 'Difficulty',

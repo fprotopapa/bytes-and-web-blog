@@ -6,6 +6,7 @@ author: pl/alex-chen
 coverImage: "/images/posts/u-boot.jpg"
 tags: ["bootloader", "u-boot", "firmware"]
 category: "Bootloaders"
+draft: true
 ---
 
 U-Boot (Universal Boot Loader) is the most popular bootloader for embedded Linux systems. It's responsible for initializing hardware and loading the operating system.

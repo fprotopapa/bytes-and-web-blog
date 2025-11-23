@@ -1,9 +1,0 @@
-{
-  "name": "John Doe",
-  "bio": "Embedded Linux engineer with 10+ years of experience in kernel development, device drivers, and real-time systems. Passionate about open-source and IoT.",
-  "avatar": "/images/authors/john-doe.jpg",
-  "email": "john@example.com",
-  "github": "https://github.com/johndoe",
-  "linkedin": "https://linkedin.com/in/johndoe",
-  "website": "https://johndoe.dev"
-}

@@ -3,13 +3,13 @@
 
 export const siteConfig = {
   // Enable or disable the language switcher in navigation
-  enableLanguageSwitcher: true,
+  enableLanguageSwitcher: false,
 
   // Enable or disable language switcher on blog posts (for translations)
-  enablePostTranslationLinks: true,
+  enablePostTranslationLinks: false,
 
   // Enable or disable courses feature
-  enableCourses: true,
+  enableCourses: false,
 
   // Enable or disable RSS feeds
   enableRss: true,
@@ -41,10 +41,10 @@ export const siteConfig = {
 
   // Site metadata
   site: {
-    url: 'https://example.com',
-    name: 'Your Blog Name',
+    url: 'https://bytesandweb.pl',
+    name: 'Bytes & Web',
     defaultImage: '/images/default-og.png', // Default image for social sharing
-    defaultImageAlt: 'Blog logo',
+    defaultImageAlt: 'Bytes & Web logo',
   },
 
   // Social media accounts (all optional - leave empty if not used)

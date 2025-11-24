@@ -32,7 +32,7 @@ const localePath = (path: string) => getLocalizedPath(path, lang);
       {formattedDate}
     </time>
     <span class="hidden sm:inline">•</span>
-    <span class="flex items-center">{t('blog.by')} <a href={localePath(`/authors/${post.data.author.id.split('/')[1]}`)} class="no-underline hover:underline transition-opacity hover:opacity-80 ml-1" style="color: var(--color-primary);">{author.data.name}</a></span>
+    <span class="flex items-center">{t('blog.by')} <a href={localePath(`/authors/${post.data.author.id.split('/')[1]}`)} class="no-underline hover:underline transition-opacity hover:opacity-80 ml-1" style="color: var(--color-primary);">{post.data.author.name}</a></span>
     <span class="hidden sm:inline">•</span>
     <span class="flex items-center font-medium" style="color: var(--color-text);">{post.data.category}</span>
   </div>

@@ -5,6 +5,8 @@
 
 import Parser from 'rss-parser';
 import TurndownService from 'turndown';
+import { writeFileSync, mkdirSync, existsSync } from 'fs';
+import { join, dirname } from 'path';
 
 export interface RSSItem {
   title: string;
@@ -37,6 +39,8 @@ export interface ImportOptions {
   defaultAuthor?: string; // Local author reference (e.g., "pl/john-doe") - optional
   lang: 'pl' | 'en';
   maxPosts?: number;
+  downloadImages?: boolean; // Whether to download images from the source
+  imageOutputDir?: string; // Directory to save images (relative to project root)
 }
 
 /**
@@ -120,6 +124,105 @@ export function extractSourceName(url: string): string {
   } catch {
     return 'External';
   }
+}
+
+/**
+ * Extract image URLs from markdown content
+ */
+export function extractImageUrls(markdown: string): string[] {
+  const imageRegex = /!\[.*?\]\((.*?)\)/g;
+  const urls: string[] = [];
+  let match;
+
+  while ((match = imageRegex.exec(markdown)) !== null) {
+    urls.push(match[1]);
+  }
+
+  return urls;
+}
+
+/**
+ * Download an image from a URL
+ */
+export async function downloadImage(
+  imageUrl: string,
+  sourceUrl: string,
+  outputPath: string
+): Promise<boolean> {
+  try {
+    // Convert relative URLs to absolute
+    const absoluteUrl = imageUrl.startsWith('http')
+      ? imageUrl
+      : new URL(imageUrl, sourceUrl).href;
+
+    const response = await fetch(absoluteUrl);
+
+    if (!response.ok) {
+      console.warn(`  Failed to download image: ${absoluteUrl} (${response.status})`);
+      return false;
+    }
+
+    const arrayBuffer = await response.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+
+    // Ensure directory exists
+    const dir = dirname(outputPath);
+    if (!existsSync(dir)) {
+      mkdirSync(dir, { recursive: true });
+    }
+
+    writeFileSync(outputPath, buffer);
+    return true;
+  } catch (error) {
+    console.warn(`  Error downloading image ${imageUrl}:`, error);
+    return false;
+  }
+}
+
+/**
+ * Download images from a post and update image paths
+ */
+export async function downloadPostImages(
+  content: string,
+  sourceUrl: string,
+  slug: string,
+  imageOutputDir: string
+): Promise<{ content: string; downloadedCount: number; failedCount: number }> {
+  const imageUrls = extractImageUrls(content);
+
+  if (imageUrls.length === 0) {
+    return { content, downloadedCount: 0, failedCount: 0 };
+  }
+
+  let updatedContent = content;
+  let downloadedCount = 0;
+  let failedCount = 0;
+
+  for (const imageUrl of imageUrls) {
+    // Extract filename from URL
+    const urlPath = imageUrl.split('?')[0]; // Remove query params
+    const filename = urlPath.split('/').pop() || 'image.jpg';
+
+    // Create local path: public/images/imported/{slug}/{filename}
+    const localImagePath = join('images', 'imported', slug, filename);
+    const outputPath = join(process.cwd(), imageOutputDir, localImagePath);
+
+    // Download the image
+    const success = await downloadImage(imageUrl, sourceUrl, outputPath);
+
+    if (success) {
+      // Update image path in markdown (use / prefix for public folder)
+      updatedContent = updatedContent.replace(
+        new RegExp(`!\\[([^\\]]*)\\]\\(${imageUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\)`, 'g'),
+        `![$1](/${localImagePath})`
+      );
+      downloadedCount++;
+    } else {
+      failedCount++;
+    }
+  }
+
+  return { content: updatedContent, downloadedCount, failedCount };
 }
 
 /**

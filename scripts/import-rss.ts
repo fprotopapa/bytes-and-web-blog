@@ -11,11 +11,13 @@
  *   --category <name>       Default category (default: Imported)
  *   --source <name>         Source blog name (default: extracted from URL)
  *   --max <number>          Maximum posts to import
+ *   --download-images       Download images from the source and save locally
  *   --dry-run               Preview without saving files
  *
  * Examples:
  *   npx tsx scripts/import-rss.ts https://myblog.com/rss.xml --lang pl
  *   npx tsx scripts/import-rss.ts https://blog.example.com/feed --lang en --max 5 --dry-run
+ *   npx tsx scripts/import-rss.ts https://blog.example.com/feed --lang en --download-images
  */
 
 import { writeFileSync, existsSync, mkdirSync } from 'fs';
@@ -24,6 +26,7 @@ import {
   importFromRSS,
   generateFrontmatter,
   extractSourceName,
+  downloadPostImages,
   type ImportOptions,
 } from '../src/utils/rss-import';
 
@@ -32,6 +35,7 @@ function parseArgs(args: string[]): {
   feedUrl: string;
   options: ImportOptions;
   dryRun: boolean;
+  downloadImages: boolean;
 } {
   const feedUrl = args[0];
 
@@ -47,6 +51,7 @@ function parseArgs(args: string[]): {
   let sourceName = '';
   let maxPosts: number | undefined;
   let dryRun = false;
+  let downloadImages = false;
 
   for (let i = 1; i < args.length; i++) {
     switch (args[i]) {
@@ -72,6 +77,9 @@ function parseArgs(args: string[]): {
       case '--dry-run':
         dryRun = true;
         break;
+      case '--download-images':
+        downloadImages = true;
+        break;
       default:
         console.warn(`Warning: Unknown option ${args[i]}`);
     }
@@ -85,8 +93,11 @@ function parseArgs(args: string[]): {
       defaultAuthor: author,
       lang,
       maxPosts,
+      downloadImages,
+      imageOutputDir: 'public',
     },
     dryRun,
+    downloadImages,
   };
 }
 
@@ -106,16 +117,18 @@ Options:
   --category <name>       Default category (default: Imported)
   --source <name>         Source blog name (default: extracted from URL)
   --max <number>          Maximum posts to import
+  --download-images       Download images from the source and save locally
   --dry-run               Preview without saving files
 
 Examples:
   npx tsx scripts/import-rss.ts https://myblog.com/rss.xml --lang pl
   npx tsx scripts/import-rss.ts https://blog.example.com/feed --lang en --max 5 --dry-run
+  npx tsx scripts/import-rss.ts https://blog.example.com/feed --lang en --download-images
 `);
     process.exit(0);
   }
 
-  const { feedUrl, options, dryRun } = parseArgs(args);
+  const { feedUrl, options, dryRun, downloadImages } = parseArgs(args);
 
   console.log(`\nImporting from: ${feedUrl}`);
   console.log(`Language: ${options.lang}`);
@@ -124,6 +137,9 @@ Examples:
   console.log(`Source: ${options.sourceName}`);
   if (options.maxPosts) {
     console.log(`Max posts: ${options.maxPosts}`);
+  }
+  if (downloadImages) {
+    console.log(`Download images: yes`);
   }
   if (dryRun) {
     console.log('\n[DRY RUN - No files will be saved]\n');
@@ -150,14 +166,34 @@ Examples:
     for (const post of posts) {
       const filename = `${post.slug}.md`;
       const filepath = join(contentDir, filename);
-      const frontmatter = generateFrontmatter(post, options.defaultAuthor);
-      const fileContent = `${frontmatter}\n\n${post.content}`;
 
       console.log(`- ${post.title}`);
       console.log(`  Slug: ${post.slug}`);
       console.log(`  Date: ${post.pubDate.toISOString().split('T')[0]}`);
       console.log(`  Tags: ${post.tags.join(', ')}`);
       console.log(`  Canonical: ${post.canonicalUrl}`);
+
+      // Download images if requested
+      let finalContent = post.content;
+      if (downloadImages && !dryRun) {
+        console.log(`  Downloading images...`);
+        const result = await downloadPostImages(
+          post.content,
+          post.canonicalUrl,
+          post.slug,
+          options.imageOutputDir || 'public'
+        );
+        finalContent = result.content;
+        if (result.downloadedCount > 0) {
+          console.log(`  Downloaded ${result.downloadedCount} image(s)`);
+        }
+        if (result.failedCount > 0) {
+          console.log(`  Failed to download ${result.failedCount} image(s)`);
+        }
+      }
+
+      const frontmatter = generateFrontmatter(post, options.defaultAuthor);
+      const fileContent = `${frontmatter}\n\n${finalContent}`;
 
       if (dryRun) {
         console.log(`  [Would save to: ${filepath}]\n`);

@@ -3,7 +3,7 @@
 
 export const siteConfig = {
   // Enable or disable the language switcher in navigation
-  enableLanguageSwitcher: false,
+  enableLanguageSwitcher: true,
 
   // Enable or disable language switcher on blog posts (for translations)
   enablePostTranslationLinks: false,

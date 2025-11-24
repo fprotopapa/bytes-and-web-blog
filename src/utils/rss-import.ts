@@ -58,7 +58,7 @@ export async function fetchRSSFeed(url: string): Promise<RSSItem[]> {
     title: item.title || 'Untitled',
     link: item.link || '',
     pubDate: item.pubDate || new Date().toISOString(),
-    content: item.content || item['content:encoded'] || item.contentSnippet || '',
+    content: item['content:encoded'] || item.content || item.contentSnippet || '',
     contentSnippet: item.contentSnippet || '',
     creator: item.creator || item['dc:creator'],
     categories: item.categories,

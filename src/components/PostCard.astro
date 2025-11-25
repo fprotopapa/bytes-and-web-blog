@@ -12,7 +12,7 @@ interface Props {
 
 const { post, lang = defaultLang } = Astro.props;
 const t = useTranslations(lang);
-const author = await getEntry(post.data.author);
+const author = post.data.author ? await getEntry(post.data.author) : null;
 const formattedDate = formatDate(post.data.pubDate, lang);
 
 // Get slug without language prefix for URL
@@ -32,7 +32,11 @@ const localePath = (path: string) => getLocalizedPath(path, lang);
       {formattedDate}
     </time>
     <span class="hidden sm:inline">•</span>
-    <span class="flex items-center">{t('blog.by')} <a href={localePath(`/authors/${post.data.author.id.split('/')[1]}`)} class="no-underline hover:underline transition-opacity hover:opacity-80 ml-1" style="color: var(--color-primary);">{post.data.author.name}</a></span>
+    {author && post.data.author ? (
+      <span class="flex items-center">{t('blog.by')} <a href={localePath(`/authors/${post.data.author.id.split('/')[1]}`)} class="no-underline hover:underline transition-opacity hover:opacity-80 ml-1" style="color: var(--color-primary);">{author.data.name}</a></span>
+    ) : post.data.originalAuthor ? (
+      <span class="flex items-center">{t('blog.by')} {post.data.originalAuthor}</span>
+    ) : null}
     <span class="hidden sm:inline">•</span>
     <span class="flex items-center font-medium" style="color: var(--color-text);">{post.data.category}</span>
   </div>

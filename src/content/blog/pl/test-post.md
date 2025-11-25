@@ -6,7 +6,7 @@ author: pl/fabbio-protopapa
 coverImage: "/images/posts/test-post/aliveandkicking.webp"
 tags: ["test-tag"]
 category: "test-kategoria"
-draft: false
+draft: true
 ---
 
 

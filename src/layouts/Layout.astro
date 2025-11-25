@@ -111,8 +111,6 @@ const htmlLang = lang === 'pl' ? 'pl' : 'en';
     {siteConfig.social.twitter && (
       <meta name="twitter:site" content={siteConfig.social.twitter} />
     )}
-    
-    <script defer src="https://prov.tuxownia.pl/script.js" data-website-id="9c3d1243-88da-4928-8f7f-8489d015ba8a"></script>
 
   </head>
   <body class="min-h-screen flex flex-col font-sans leading-relaxed">
@@ -347,6 +345,55 @@ const htmlLang = lang === 'pl' ? 'pl' : 'en';
       cookieSettingsBtn?.addEventListener('click', () => {
         window.dispatchEvent(new CustomEvent('open-consent-banner'));
       });
+    </script>
+
+    <script>
+      import { hasConsent, getConsent } from '../utils/consent';
+
+      function initUmamiAnalytics() {
+        const UMAMI_SCRIPT_ID = 'umami-analytics-script';
+        const UMAMI_SRC = 'https://prov.tuxownia.pl/script.js';
+        const UMAMI_WEBSITE_ID = '9c3d1243-88da-4928-8f7f-8489d015ba8a';
+
+        // Prevent duplicate loading
+        if (document.getElementById(UMAMI_SCRIPT_ID)) {
+          return;
+        }
+
+        // Load only if analytics consent granted
+        if (hasConsent('analytics')) {
+          const script = document.createElement('script');
+          script.id = UMAMI_SCRIPT_ID;
+          script.src = UMAMI_SRC;
+          script.setAttribute('data-website-id', UMAMI_WEBSITE_ID);
+          script.defer = true;
+          document.head.appendChild(script);
+        }
+      }
+
+      function handleConsentChange() {
+        const consent = getConsent();
+
+        if (consent?.analytics) {
+          initUmamiAnalytics();
+        } else {
+          // Remove script and cleanup on consent revocation
+          const existingScript = document.getElementById('umami-analytics-script');
+          if (existingScript) {
+            existingScript.remove();
+          }
+          if (typeof window !== 'undefined' && (window as any).umami) {
+            delete (window as any).umami;
+          }
+        }
+      }
+
+      // Initialize on page load and transitions
+      document.addEventListener('DOMContentLoaded', initUmamiAnalytics);
+      document.addEventListener('astro:page-load', initUmamiAnalytics);
+
+      // React to consent changes
+      window.addEventListener('consent-updated', handleConsentChange);
     </script>
   </body>
 </html>

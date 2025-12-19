@@ -143,7 +143,7 @@ $  ct-ng arm-unknown-linux-gnueabi
 $ ct-ng menuconfig
 ```
 
-![okno terminała menuconfig](/images/posts/embedded-linux-from-scratch/menuconfig.webp)
+![okno terminała menuconfig](/images/imported/posts/embedded-linux-od-podstaw-szybko-i-latwo-z-qemu/menuconfig.webp)
 
 Czas go zbudować.
 
@@ -161,7 +161,7 @@ $ ct-ng build
 
 O nie!
 
-![muppet stoi w ogniu](/images/posts/embedded-linux-from-scratch/hell.webp)
+![muppet stoi w ogniu](/images/imported/posts/embedded-linux-od-podstaw-szybko-i-latwo-z-qemu/hell.webp)
 
 Spokojnie. Crosstool-NG nie może pobrać *zlib-1.2.12*. Archiwa są zapisywane w ~/src. Umieścimy je tam ręcznie.
 
@@ -401,7 +401,7 @@ $ make
 $ make install
 ```
 
-![Ustaw ścieżke rootfsa w menuconfig](/images/posts/embedded-linux-from-scratch/rootfs.webp)
+![Ustaw ścieżke rootfsa w menuconfig](/images/imported/posts/embedded-linux-od-podstaw-szybko-i-latwo-z-qemu/rootfs.webp)
 
 Co to zrobiło? Jak wygląda główny system plików?
 

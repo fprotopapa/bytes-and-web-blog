@@ -207,7 +207,7 @@ General setup -> Initial RAM filesystem and RAM disk (initramfs/initrd) support:
 File systems -> Network File Systems -> ...
 ```
 
-![ustawienia NFS w menuconfigu](/images/posts/tftp_nfs_for_embedded_linux_development/nfs.webp)
+![ustawienia NFS w menuconfigu](/images/imported/posts/tftp-i-nfs-w-rozwoju-embedded-linux/nfs.webp)
 
 Usuńmy obsługę NFS wersji 2.
 
@@ -597,7 +597,7 @@ Dlatego sprawdź swoje pliki i jeśli to nie pasuje, po prostu skopiuj.
 
 Piny UART to GPIO (14/15) 8/10 i 6 dla masy. Podłączając konwerter USB-UART, musimy skrzyżować TX i RX. Musimy też podłączyć Ethernet i zasilanie.
 
-![Konektor GPIO dla RPIa](/images/posts/tftp_nfs_for_embedded_linux_development/rpi_gpio.webp)
+![Konektor GPIO dla RPIa](/images/imported/posts/tftp-i-nfs-w-rozwoju-embedded-linux/rpi_gpio.webp)
 
 Jedna rzecz, która nie jest uwzględniona w tym artykule, to separacja między platformą docelową a ogólną siecią. Można to osiągnąć osobnym interfejsem sieciowym lub siecią wirtualną.
 

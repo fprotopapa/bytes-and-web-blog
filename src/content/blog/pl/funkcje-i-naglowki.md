@@ -199,4 +199,5 @@ extern int globalna;
 ```
 
 ## Podsumowanie
-Funkcje i nagłówki to fundament każdego większego programu w C. Funkcje dzielą kod na logiczne, wielokrotnego użytku fragmenty, zwiększają czytelność i ułatwiają debugowanie. Nagłówki porządkują interfejsy między plikami i pozwalają współdzielić deklaracje funkcji oraz stałe. Stosowanie tych elementów sprawia, że kod staje się czytelny, modularny i łatwy do utrzymania, nawet przy dużych projektach.
+Funkcje i nagłówki to fundament każdego większego programu w C. Funkcje dzielą kod na logiczne, wielokrotnego użytku fragmenty, zwiększają czytelność i ułatwiają debugowanie. Nagłówki porządkują interfejsy między plikami i pozwalają współdzielić deklaracje funkcji oraz stałe. Zakres zmiennych, static, extern pozwalają kontrolować widoczność i czas życia danych. Makra i rekurencja oferują wygodne sposoby na automatyzację powtarzalnych operacji. Przekazywanie argumentów w C domyślnie przez wartość, modyfikacja oryginału wymaga wskaźników.  
+Dzięki przemyślanemu stosowaniu tych elementów Twój kod staje się czytelny, modularny i łatwy do utrzymania, nawet przy dużych projektach.

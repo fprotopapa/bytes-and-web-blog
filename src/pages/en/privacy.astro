@@ -5,7 +5,7 @@ import { formatDate } from '../../i18n/utils';
 const lang = 'en';
 
 const title = "Privacy Policy";
-const description = "Privacy policy and cookie information for the Embedded Linux blog";
+const description = "Privacy policy and cookie information for the Bytes&Web blog";
 ---
 
 <Layout title={title} description={description} lang={lang}>
@@ -23,7 +23,7 @@ const description = "Privacy policy and cookie information for the Embedded Linu
 
     <h2>Data Controller</h2>
     <p>
-      The data controller responsible for your personal data is the owner of this blog.
+      The data controller responsible for your personal data is Fabbio Protopapa, the owner of this blog.
       For privacy inquiries, please contact us using the information provided at the bottom of this page.
     </p>
 
@@ -32,7 +32,6 @@ const description = "Privacy policy and cookie information for the Embedded Linu
     <h3>Essential Data (Required)</h3>
     <p>We store the following data locally in your browser (localStorage):</p>
     <ul>
-      <li><strong>Theme preferences</strong> - Your choice of light or dark mode</li>
       <li><strong>Cookie consent preferences</strong> - Your choices regarding cookies and tracking</li>
     </ul>
     <p>
@@ -40,18 +39,41 @@ const description = "Privacy policy and cookie information for the Embedded Linu
       It is necessary for basic website functionality.
     </p>
 
+    <h3>Preferences (Optional)</h3>
+    <p>We store the following preference data locally in your browser (localStorage):</p>
+    <ul>
+      <li><strong>Theme preferences</strong> - Your choice of light or dark mode</li>
+    </ul>
+    <p>
+      This data is stored only in your browser and is never transmitted to our servers.
+    </p>
+
     <h3>Analytics Data (Optional)</h3>
     <p>
-      If you consent to analytics cookies, we may collect anonymized usage data to help us understand
-      how visitors use our site and improve our content. This may include:
+      If you consent to analytics, we collect anonymized usage data using a self-hosted instance
+      of <a href="https://umami.is/" target="_blank" rel="noopener noreferrer">Umami</a> analytics
+      at <code>prov.tuxownia.pl</code>. Umami is a privacy-respecting analytics tool:
     </p>
     <ul>
+      <li><strong>No cookies</strong> - Umami does not use any cookies</li>
+      <li><strong>IP addresses are hashed</strong> - Your IP address is hashed and never stored in plain text</li>
+      <li><strong>No tracking</strong> - It is not possible to track visitors across third-party websites or identify individual users</li>
+      <li><strong>Data is anonymous</strong> - All collected data is fully anonymized</li>
+    </ul>
+    <p>Only aggregated statistics are collected, such as:</p>
+    <ul>
       <li>Pages visited</li>
-      <li>Time spent on pages</li>
       <li>Referring pages</li>
       <li>Browser type and device information</li>
-      <li>Geographic location (country/region level)</li>
+      <li>Approximate geographic location (country/region and city level)</li>
     </ul>
+
+    <h3>Server Access Logs</h3>
+    <p>
+      Our server automatically records access logs for security and diagnostic purposes.
+      These logs are fully anonymized - IP addresses are truncated, making it impossible to identify individual users.
+      Anonymized logs are used solely for security monitoring and troubleshooting technical issues.
+    </p>
 
     <h3>YouTube Embedded Content (Optional)</h3>
     <p>
@@ -73,11 +95,69 @@ const description = "Privacy policy and cookie information for the Embedded Linu
       </a>
     </p>
 
+    <h3 id="comments-system">Remark42 Comment System (Optional)</h3>
+    <p>
+      Our website uses the Remark42 comment system, which is self-hosted on our server
+      (<code>remark.bytesandweb.pl</code>). When you post a comment, we collect the following data:
+    </p>
+    <ul>
+      <li><strong>Display name</strong> - freely chosen by the user, publicly visible</li>
+      <li><strong>Comment content</strong> - publicly visible on the site</li>
+      <li><strong>IP address</strong> - stored as a hash, used to prevent abuse (also for anonymous users)</li>
+      <li><strong>Verification email</strong> - if you verify your account via email, it is stored as a hash</li>
+      <li><strong>Notification email</strong> - if you want to receive reply notifications, we store your email in plain text</li>
+    </ul>
+
+    <h4>Data Stored in Your Browser (localStorage)</h4>
+    <p>The comment system stores the following data locally in your browser:</p>
+    <ul>
+      <li><strong>Login state</strong> - to maintain your login session</li>
+      <li><strong>Comment drafts</strong> - to preserve unfinished comments</li>
+    </ul>
+    <p>This data is stored in your browser's localStorage and can be deleted by the user in browser settings.</p>
+
+    <h4>Comment Data Stored on Server</h4>
+    <ul>
+      <li>Comments and associated metadata are stored as long as the comment exists</li>
+      <li>Notification email is stored as long as the user is subscribed to comment threads</li>
+      <li>IP addresses are hashed and never stored in plain text</li>
+    </ul>
+
+    <h4>Your Rights Regarding Comments</h4>
+    <p>
+      You can view your stored data and request its deletion:
+    </p>
+    <ol>
+      <li>Verify yourself using the email address you used to comment</li>
+      <li>Click on your avatar to open the user panel</li>
+      <li>In the same window, you can view your data and request its deletion</li>
+      <li>To delete your data, send the generated email to our contact address</li>
+    </ol>
+
+    <h4>Email Notifications</h4>
+    <p>
+      For sending reply notifications and email verification, we use <a href="https://www.zoho.com/mail/" target="_blank" rel="noopener noreferrer">Zoho Mail</a>.
+      Zoho processes data in compliance with GDPR.
+      <a href="https://www.zoho.com/privacy.html" target="_blank" rel="noopener noreferrer">Zoho Privacy Policy</a>.
+    </p>
+    <p>
+      Sent messages and related information are retained for moderation purposes and deleted after three days.
+    </p>
+
+    <p>
+      All data is transferred securely and encrypted.
+    </p>
+    <p>
+      <a href="https://remark42.com/" target="_blank" rel="noopener noreferrer">
+        Learn more about Remark42
+      </a>
+    </p>
+
     <h2>Legal Basis for Processing</h2>
     <p>We process your personal data on the following legal bases:</p>
     <ul>
-      <li><strong>Consent</strong> - For analytics and YouTube cookies, which you can grant or withdraw at any time</li>
-      <li><strong>Legitimate interest</strong> - For essential functionality like theme preferences</li>
+      <li><strong>Consent</strong> - For preferences, analytics, YouTube, and the comment system, which you can grant or withdraw at any time</li>
+      <li><strong>Legitimate interest</strong> - For essential functionality</li>
     </ul>
 
     <h2>Your Rights under GDPR</h2>
@@ -94,13 +174,15 @@ const description = "Privacy policy and cookie information for the Embedded Linu
 
     <h2>Managing Consent</h2>
     <p>
-      You can manage your cookie preferences at any time by clicking the "Cookie Settings" link
+      You can manage your privacy preferences at any time by clicking the "Cookie Settings" link
       in the footer of any page. This will allow you to:
     </p>
     <ul>
       <li>View your current consent choices</li>
-      <li>Enable or disable analytics cookies</li>
+      <li>Enable or disable preferences (e.g., theme)</li>
+      <li>Enable or disable analytics (no cookies)</li>
       <li>Enable or disable YouTube video loading</li>
+      <li>Enable or disable the comment system</li>
     </ul>
     <p>
       To completely remove all stored data, you can clear your browser's localStorage
@@ -113,8 +195,12 @@ const description = "Privacy policy and cookie information for the Embedded Linu
       We do not store this data on our servers.
     </p>
     <p>
-      If analytics are enabled, anonymized analytics data may be retained for up to 26 months
-      in accordance with standard analytics practices.
+      Analytics data is fully anonymized and aggregated - we do not store any data that would allow
+      identification of individual visitors. IP addresses are hashed and never stored in plain text.
+    </p>
+    <p>
+      Our servers are located in Europe. We use best practices to restrict access to data.
+      All data is transferred to and from our servers using secure, encrypted protocols.
     </p>
 
     <h2>Data Security</h2>
@@ -128,10 +214,37 @@ const description = "Privacy policy and cookie information for the Embedded Linu
     <p>We may use the following third-party services:</p>
     <ul>
       <li>
+        <strong>Umami Analytics</strong> - Privacy-respecting analytics (self-hosted)
+        <br />
+        Hosted on: <code>prov.tuxownia.pl</code>
+        <br />
+        No cookies, IP addresses hashed, data fully anonymized
+        <br />
+        <a href="https://umami.is/" target="_blank" rel="noopener noreferrer">
+          Learn more about Umami
+        </a>
+      </li>
+      <li>
         <strong>YouTube (Google)</strong> - For embedded video content
         <br />
         <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">
           YouTube Privacy Policy
+        </a>
+      </li>
+      <li>
+        <strong>Remark42</strong> - Self-hosted comment system
+        <br />
+        Hosted on: <code>remark.bytesandweb.pl</code>
+        <br />
+        <a href="https://remark42.com/" target="_blank" rel="noopener noreferrer">
+          Learn more about Remark42
+        </a>
+      </li>
+      <li>
+        <strong>Zoho Mail</strong> - Email service for comment notifications and verification
+        <br />
+        <a href="https://www.zoho.com/privacy.html" target="_blank" rel="noopener noreferrer">
+          Zoho Privacy Policy
         </a>
       </li>
     </ul>
@@ -156,7 +269,7 @@ const description = "Privacy policy and cookie information for the Embedded Linu
       please contact us:
     </p>
     <ul>
-      <li>Email: [Your email address]</li>
+      <li>Email: fprotopapa@bytesandweb.pl</li>
     </ul>
 
     <h2>Supervisory Authority</h2>

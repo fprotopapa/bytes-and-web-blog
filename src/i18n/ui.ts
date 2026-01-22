@@ -87,6 +87,8 @@ export const ui = {
     'consent.analyticsDesc': 'Pomóż nam ulepszyć stronę',
     'consent.youtube': 'YouTube',
     'consent.youtubeDesc': 'Osadzone treści wideo',
+    'consent.comments': 'Komentarze',
+    'consent.commentsDesc': 'Włącz komentarze',
     'consent.savePreferences': 'Zapisz preferencje',
     'consent.rejectAll': 'Odrzuć wszystkie',
     'consent.acceptAll': 'Akceptuj wszystkie',
@@ -102,6 +104,15 @@ export const ui = {
     // Common
     'common.posts': 'wpisów',
     'common.post': 'wpis',
+    
+    // Comments section
+    'comments.title': 'Komentarze',
+    'comments.privacyNotice': 'Wysyłając formularz, wyrażasz zgodę na przetwarzanie danych osobowych zgodnie z naszą',
+    'comments.privacyPolicy': 'Polityką prywatności',
+    'comments.consentNotice': 'Włączenie komentarzy spowoduje załadowanie skryptów z naszego serwera.',
+    'comments.enableComments': 'Włącz komentarze',
+    'comments.acceptTerms': 'Akceptuję politykę prywatności dla komentarzy',
+    'comments.acceptRequired': 'Proszę zaakceptować politykę prywatności, aby skomentować',
 
     // Courses
     'nav.courses': 'Kursy',
@@ -210,6 +221,8 @@ export const ui = {
     'consent.analyticsDesc': 'Help us improve our site',
     'consent.youtube': 'YouTube',
     'consent.youtubeDesc': 'Embedded video content',
+    'consent.comments': 'Comments',
+    'consent.commentsDesc': 'Enable comments',
     'consent.savePreferences': 'Save Preferences',
     'consent.rejectAll': 'Reject All',
     'consent.acceptAll': 'Accept All',
@@ -225,6 +238,15 @@ export const ui = {
     // Common
     'common.posts': 'posts',
     'common.post': 'post',
+    
+    // Comments section
+    'comments.title': 'Comments',
+    'comments.privacyNotice': 'By submitting this form, you agree to the processing of your personal data in accordance with our ',
+    'comments.privacyPolicy': 'Privacy Policy',
+    'comments.consentNotice': 'Enabling comments will load scripts from our server.',
+    'comments.enableComments': 'Enable Comments',
+    'comments.acceptTerms': 'I accept the privacy policy for comments',
+    'comments.acceptRequired': 'Please accept the privacy policy to comment',
 
     // Courses
     'nav.courses': 'Courses',

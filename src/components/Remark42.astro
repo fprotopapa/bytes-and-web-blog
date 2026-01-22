@@ -1,0 +1,331 @@
+---
+import { siteConfig } from '../config/site';
+import { useTranslations } from '../i18n/utils';
+import { getLocalizedPath } from '../i18n/config';
+
+interface Props {
+  url: string;
+  pageTitle?: string;
+  lang?: 'pl' | 'en';
+  host?: string;
+  siteId?: string;
+}
+
+const { 
+  url,
+  pageTitle,
+  lang = 'en',
+  host = siteConfig.remark42.host,
+  siteId = siteConfig.remark42.siteId
+} = Astro.props;
+
+const t = useTranslations(lang);
+const privacyUrl = getLocalizedPath('/privacy', lang) + '#comments-system';
+---
+
+<div class="comments-section" data-host={host} data-site-id={siteId} data-url={url} data-page-title={pageTitle} data-lang={lang}>
+  <h2 class="comments-title">{t('comments.title')}</h2>
+
+  <!-- Consent checkbox -->
+  <div class="comments-consent-checkbox">
+    <label class="consent-label">
+      <input type="checkbox" class="consent-input" />
+      <span class="consent-text">
+        {t('comments.acceptTerms')} - <a href={privacyUrl} class="privacy-link">{t('comments.privacyPolicy')}</a>
+      </span>
+    </label>
+    <span class="consent-error">{t('comments.acceptRequired')}</span>
+  </div>
+
+  <!-- Comments container (blocked until consent checkbox is checked) -->
+  <div class="comments-wrapper">
+    <div class="comments-overlay"></div>
+    <div class="comments-container comments-blocked">
+      <div id="remark42"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { hasConsent, setConsent } from '../utils/consent';
+
+  function initComments() {
+    const sections = document.querySelectorAll('.comments-section');
+
+    sections.forEach((section) => {
+      const container = section.querySelector('.comments-container') as HTMLElement;
+      const overlay = section.querySelector('.comments-overlay') as HTMLElement;
+      const checkbox = section.querySelector('.consent-input') as HTMLInputElement;
+      const checkboxWrapper = section.querySelector('.comments-consent-checkbox') as HTMLElement;
+      const errorEl = section.querySelector('.consent-error') as HTMLElement;
+
+      if (!container || !checkbox || !overlay) return;
+
+      const host = section.getAttribute('data-host') || '';
+      const siteId = section.getAttribute('data-site-id') || '';
+      const url = section.getAttribute('data-url') || '';
+      const pageTitle = section.getAttribute('data-page-title') || '';
+      const lang = section.getAttribute('data-lang') || 'en';
+
+      let commentsLoaded = false;
+
+      // Get current theme
+      const getCurrentTheme = () => {
+        const dataTheme = document.documentElement.getAttribute('data-theme');
+        if (dataTheme) {
+          return dataTheme === 'dark' ? 'dark' : 'light';
+        }
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          return 'dark';
+        }
+        return 'light';
+      };
+
+      // Load Remark42
+      function loadComments() {
+        if (commentsLoaded) return;
+
+        // Load Remark42 script
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = `${host}/web/embed.js`;
+
+        // Set Remark42 configuration
+        (window as any).remark_config = {
+          host: host,
+          site_id: siteId,
+          url: url,
+          page_title: pageTitle,
+          theme: getCurrentTheme(),
+          locale: lang,
+          components: ['embed'],
+          max_shown_comments: 10,
+          show_email_subscription: true,
+          no_footer: true,
+          show_rss_subscription: false,
+        };
+
+        document.head.appendChild(script);
+
+        // Watch for theme changes
+        const observer = new MutationObserver((mutations) => {
+          mutations.forEach((mutation) => {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+              const newTheme = getCurrentTheme();
+              if ((window as any).REMARK42 && (window as any).REMARK42.changeTheme) {
+                (window as any).REMARK42.changeTheme(newTheme);
+              }
+            }
+          });
+        });
+
+        observer.observe(document.documentElement, {
+          attributes: true,
+          attributeFilter: ['data-theme']
+        });
+
+        // Clean up on navigation
+        document.addEventListener('astro:before-swap', () => {
+          observer.disconnect();
+          if ((window as any).REMARK42) {
+            (window as any).REMARK42.destroy();
+          }
+        });
+
+        commentsLoaded = true;
+      }
+
+      // Handle checkbox change
+      checkbox.addEventListener('change', () => {
+        if (checkbox.checked) {
+          container.classList.remove('comments-blocked');
+          overlay.classList.remove('active');
+          errorEl.classList.remove('show');
+          // Update consent state
+          setConsent({ comments: true });
+        } else {
+          container.classList.add('comments-blocked');
+          overlay.classList.add('active');
+          setConsent({ comments: false });
+        }
+      });
+
+      // Show error and highlight checkbox when clicking on overlay
+      overlay.addEventListener('click', () => {
+        errorEl.classList.add('show');
+
+        // Add highlight animation to checkbox wrapper
+        checkboxWrapper?.classList.add('highlight');
+        setTimeout(() => {
+          checkboxWrapper?.classList.remove('highlight');
+        }, 800);
+
+        // Add blink animation to checkbox
+        checkbox.classList.add('blink');
+        setTimeout(() => {
+          checkbox.classList.remove('blink');
+        }, 800);
+
+        checkbox.focus();
+      });
+
+      // Initially show overlay
+      overlay.classList.add('active');
+
+      // Check if consent was already given via banner
+      if (hasConsent('comments')) {
+        checkbox.checked = true;
+        container.classList.remove('comments-blocked');
+        overlay.classList.remove('active');
+      }
+
+      // Listen for consent changes from banner
+      window.addEventListener('consent-updated', () => {
+        if (hasConsent('comments')) {
+          checkbox.checked = true;
+          container.classList.remove('comments-blocked');
+          overlay.classList.remove('active');
+          errorEl.classList.remove('show');
+        } else {
+          checkbox.checked = false;
+          container.classList.add('comments-blocked');
+          overlay.classList.add('active');
+        }
+      });
+
+      // Load comments immediately
+      loadComments();
+    });
+  }
+
+  // Initialize on page load
+  document.addEventListener('DOMContentLoaded', initComments);
+
+  // Re-initialize on Astro page transitions
+  document.addEventListener('astro:page-load', initComments);
+</script>
+
+<style>
+  .comments-section {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--color-border);
+  }
+
+  .comments-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--color-text);
+  }
+
+  /* Consent checkbox styles */
+  .comments-consent-checkbox {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: var(--color-bg-alt);
+    border: 2px solid var(--color-border);
+    border-radius: 0.5rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .comments-consent-checkbox.highlight {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb, 59, 130, 246), 0.3);
+    animation: pulse 0.6s ease;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.02);
+    }
+  }
+
+  .consent-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    color: var(--color-text);
+  }
+
+  .consent-input {
+    margin-top: 0.125rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    cursor: pointer;
+    accent-color: var(--color-primary);
+  }
+
+  .consent-input.blink {
+    animation: checkbox-blink 0.2s ease-in-out 4;
+  }
+
+  @keyframes checkbox-blink {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.3;
+      transform: scale(1.2);
+    }
+  }
+
+  .consent-text {
+    line-height: 1.4;
+  }
+
+  .privacy-link {
+    color: var(--color-primary);
+    text-decoration: underline;
+  }
+
+  .privacy-link:hover {
+    opacity: 0.8;
+  }
+
+  .consent-error {
+    display: none;
+    color: var(--color-error, #dc2626);
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+    padding-left: 1.5rem;
+  }
+
+  .consent-error.show {
+    display: block;
+  }
+
+  /* Comments container styles */
+  .comments-wrapper {
+    position: relative;
+  }
+
+  .comments-overlay {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    cursor: not-allowed;
+  }
+
+  .comments-overlay.active {
+    display: block;
+  }
+
+  .comments-container {
+    transition: opacity 0.2s ease;
+  }
+
+  .comments-blocked {
+    opacity: 0.5;
+  }
+</style>

@@ -20,6 +20,11 @@ export const siteConfig = {
   // Show "external" badge on imported posts
   showExternalBadge: true,
 
+  // Remark42 comments configuration
+  remark42: {
+    host: 'https://remark.bytesandweb.pl',
+    siteId: 'bytesandweb',
+  },
   // RSS sync sources for importing external blog posts
   // Used by the RSS import script and GitHub Actions
   rssSources: [

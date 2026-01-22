@@ -5,6 +5,7 @@ export interface ConsentState {
   preferences: boolean; // Theme and language preferences
   analytics: boolean;
   youtube: boolean;
+  comments: boolean; // Remark42 comment system
   timestamp: number;
 }
 
@@ -15,6 +16,7 @@ export const defaultConsent: ConsentState = {
   preferences: false, // Theme and language memory
   analytics: false,
   youtube: false,
+  comments: false,
   timestamp: 0,
 };
 
@@ -85,6 +87,7 @@ export function acceptAll(): void {
     preferences: true,
     analytics: true,
     youtube: true,
+    comments: true,
   });
 }
 
@@ -97,6 +100,7 @@ export function rejectAll(): void {
     preferences: false,
     analytics: false,
     youtube: false,
+    comments: false,
   });
 }
 

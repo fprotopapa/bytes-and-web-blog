@@ -5,7 +5,7 @@ import { formatDate } from '../i18n/utils';
 const lang = 'pl';
 
 const title = "Polityka Prywatności";
-const description = "Polityka prywatności i informacje o plikach cookie dla bloga Bytes & Web";
+const description = "Polityka prywatności i informacje o plikach cookie dla bloga Bytes&Web";
 ---
 
 <Layout title={title} description={description} lang={lang}>
@@ -23,7 +23,7 @@ const description = "Polityka prywatności i informacje o plikach cookie dla blo
 
     <h2>Administrator Danych</h2>
     <p>
-      Administratorem danych osobowych odpowiedzialnym za Twoje dane osobowe jest właściciel tego bloga.
+      Administratorem danych osobowych odpowiedzialnym za Twoje dane osobowe jest Fabbio Protopapa, właściciel tego bloga.
       W przypadku pytań dotyczących prywatności prosimy o kontakt przy użyciu informacji podanych na dole tej strony.
     </p>
 
@@ -32,7 +32,6 @@ const description = "Polityka prywatności i informacje o plikach cookie dla blo
     <h3>Dane Niezbędne (Wymagane)</h3>
     <p>Przechowujemy następujące dane lokalnie w Twojej przeglądarce (localStorage):</p>
     <ul>
-      <li><strong>Preferencje motywu</strong> - Twój wybór trybu jasnego lub ciemnego</li>
       <li><strong>Preferencje zgody na pliki cookie</strong> - Twoje wybory dotyczące plików cookie i śledzenia</li>
     </ul>
     <p>
@@ -40,18 +39,41 @@ const description = "Polityka prywatności i informacje o plikach cookie dla blo
       Są one niezbędne do podstawowej funkcjonalności strony internetowej.
     </p>
 
+    <h3>Preferencje (Opcjonalne)</h3>
+    <p>Przechowujemy następujące dane preferencji lokalnie w Twojej przeglądarce (localStorage):</p>
+    <ul>
+      <li><strong>Preferencje motywu</strong> - Twój wybór trybu jasnego lub ciemnego</li>
+    </ul>
+    <p>
+      Te dane są przechowywane tylko w Twojej przeglądarce i nigdy nie są przesyłane na nasze serwery.
+    </p>
+
     <h3>Dane Analityczne (Opcjonalne)</h3>
     <p>
-      Jeśli wyrazisz zgodę na pliki cookie analityczne, możemy zbierać zanonimizowane dane o użytkowaniu, aby pomóc nam zrozumieć,
-      jak odwiedzający korzystają z naszej strony i poprawić nasze treści. Może to obejmować:
+      Jeśli wyrazisz zgodę na analitykę, zbieramy zanonimizowane dane o użytkowaniu za pomocą
+      samodzielnie hostowanej instancji <a href="https://umami.is/" target="_blank" rel="noopener noreferrer">Umami</a>
+      pod adresem <code>prov.tuxownia.pl</code>. Umami jest narzędziem analitycznym respektującym prywatność:
     </p>
     <ul>
+      <li><strong>Bez plików cookie</strong> - Umami nie używa żadnych plików cookie</li>
+      <li><strong>Adresy IP są hashowane</strong> - Twój adres IP jest hashowany i nigdy nie jest przechowywany w postaci jawnej</li>
+      <li><strong>Brak śledzenia</strong> - Nie jest możliwe śledzenie odwiedzających na stronach trzecich ani identyfikacja poszczególnych użytkowników</li>
+      <li><strong>Dane są anonimowe</strong> - Wszystkie zebrane dane są w pełni zanonimizowane</li>
+    </ul>
+    <p>Zbierane są wyłącznie zagregowane statystyki, takie jak:</p>
+    <ul>
       <li>Odwiedzone strony</li>
-      <li>Czas spędzony na stronach</li>
       <li>Strony odsyłające</li>
       <li>Typ przeglądarki i informacje o urządzeniu</li>
-      <li>Lokalizacja geograficzna (poziom kraju/regionu)</li>
+      <li>Przybliżona lokalizacja geograficzna (poziom kraju/regionu i miasta)</li>
     </ul>
+
+    <h3>Logi Dostępu do Serwera</h3>
+    <p>
+      Nasz serwer automatycznie zapisuje logi dostępu w celach bezpieczeństwa i diagnostyki.
+      Logi te są w pełni zanonimizowane - adresy IP są obcinane, co uniemożliwia identyfikację poszczególnych użytkowników.
+      Zanonimizowane logi są wykorzystywane wyłącznie do monitorowania bezpieczeństwa i rozwiązywania problemów technicznych.
+    </p>
 
     <h3>Osadzone Treści YouTube (Opcjonalne)</h3>
     <p>
@@ -73,11 +95,69 @@ const description = "Polityka prywatności i informacje o plikach cookie dla blo
       </a>
     </p>
 
+    <h3 id="comments-system">System Komentarzy Remark42 (Opcjonalny)</h3>
+    <p>
+      Nasza strona korzysta z systemu komentarzy Remark42, który jest hostowany na naszym własnym serwerze
+      (<code>remark.bytesandweb.pl</code>). Gdy dodajesz komentarz, zbieramy następujące dane:
+    </p>
+    <ul>
+      <li><strong>Nazwa wyświetlana</strong> - dowolnie wybrana przez użytkownika, widoczna publicznie</li>
+      <li><strong>Treść komentarza</strong> - widoczna publicznie na stronie</li>
+      <li><strong>Adres IP</strong> - przechowywany jako hash, używany do zapobiegania nadużyciom (również dla anonimowych użytkowników)</li>
+      <li><strong>Email weryfikacyjny</strong> - jeśli zweryfikujesz konto przez email, jest on przechowywany jako hash</li>
+      <li><strong>Email do powiadomień</strong> - jeśli chcesz otrzymywać powiadomienia o odpowiedziach, przechowujemy Twój email w postaci jawnej</li>
+    </ul>
+
+    <h4>Dane przechowywane w przeglądarce (localStorage)</h4>
+    <p>System komentarzy przechowuje następujące dane lokalnie w Twojej przeglądarce:</p>
+    <ul>
+      <li><strong>Stan logowania</strong> - do utrzymania sesji logowania</li>
+      <li><strong>Szkice komentarzy</strong> - do zachowania niedokończonych komentarzy</li>
+    </ul>
+    <p>Te dane są przechowywane w localStorage przeglądarki i mogą być usunięte przez użytkownika w ustawieniach przeglądarki.</p>
+
+    <h4>Przechowywanie danych komentarzy na serwerze</h4>
+    <ul>
+      <li>Komentarze i powiązane metadane są przechowywane tak długo, jak istnieje komentarz</li>
+      <li>Email do powiadomień jest przechowywany tak długo, jak użytkownik jest zapisany do wątków komentarzy</li>
+      <li>Adresy IP są hashowane i nigdy nie są przechowywane w postaci jawnej</li>
+    </ul>
+
+    <h4>Twoje prawa dotyczące komentarzy</h4>
+    <p>
+      Możesz przeglądać swoje przechowywane dane oraz zażądać ich usunięcia:
+    </p>
+    <ol>
+      <li>Zweryfikuj się przy użyciu adresu email, którym komentowałeś</li>
+      <li>Kliknij na swój awatar, aby otworzyć panel użytkownika</li>
+      <li>W tym samym oknie możesz zobaczyć swoje dane oraz zażądać ich usunięcia</li>
+      <li>Aby usunąć dane, wyślij wygenerowany email na nasz adres kontaktowy</li>
+    </ol>
+
+    <h4>Powiadomienia email</h4>
+    <p>
+      Do wysyłania powiadomień o odpowiedziach i weryfikacji email używamy usługi <a href="https://www.zoho.com/mail/" target="_blank" rel="noopener noreferrer">Zoho Mail</a>.
+      Zoho przetwarza dane zgodnie z RODO.
+      <a href="https://www.zoho.com/privacy.html" target="_blank" rel="noopener noreferrer">Polityka prywatności Zoho</a>.
+    </p>
+    <p>
+      Wysłane wiadomości oraz powiązane informacje są przechowywane w celach moderacji i usuwane po trzech dniach.
+    </p>
+
+    <p>
+      Wszystkie dane są przesyłane w sposób bezpieczny i szyfrowany.
+    </p>
+    <p>
+      <a href="https://remark42.com/" target="_blank" rel="noopener noreferrer">
+        Więcej informacji o Remark42
+      </a>
+    </p>
+
     <h2>Podstawa Prawna Przetwarzania</h2>
     <p>Przetwarzamy Twoje dane osobowe na podstawie:</p>
     <ul>
-      <li><strong>Zgoda</strong> - Dla plików cookie analitycznych i YouTube, którą możesz udzielić lub wycofać w dowolnym momencie</li>
-      <li><strong>Prawnie uzasadniony interes</strong> - Dla niezbędnych funkcjonalności, takich jak preferencje motywu</li>
+      <li><strong>Zgoda</strong> - Dla preferencji, analityki, YouTube i systemu komentarzy, którą możesz udzielić lub wycofać w dowolnym momencie</li>
+      <li><strong>Prawnie uzasadniony interes</strong> - Dla niezbędnych funkcjonalności</li>
     </ul>
 
     <h2>Twoje Prawa zgodnie z RODO</h2>
@@ -94,13 +174,15 @@ const description = "Polityka prywatności i informacje o plikach cookie dla blo
 
     <h2>Zarządzanie Zgodą</h2>
     <p>
-      Możesz zarządzać swoimi preferencjami dotyczącymi plików cookie w dowolnym momencie, klikając link "Ustawienia ciasteczek"
+      Możesz zarządzać swoimi preferencjami dotyczącymi prywatności w dowolnym momencie, klikając link "Ustawienia ciasteczek"
       w stopce dowolnej strony. Pozwoli Ci to:
     </p>
     <ul>
       <li>Przeglądać aktualne wybory zgody</li>
-      <li>Włączać lub wyłączać pliki cookie analityczne</li>
+      <li>Włączać lub wyłączać preferencje (np. motyw)</li>
+      <li>Włączać lub wyłączać analitykę (bez plików cookie)</li>
       <li>Włączać lub wyłączać ładowanie filmów YouTube</li>
+      <li>Włączać lub wyłączać system komentarzy</li>
     </ul>
     <p>
       Aby całkowicie usunąć wszystkie przechowywane dane, możesz wyczyścić localStorage przeglądarki
@@ -113,8 +195,12 @@ const description = "Polityka prywatności i informacje o plikach cookie dla blo
       Nie przechowujemy tych danych na naszych serwerach.
     </p>
     <p>
-      Jeśli analityka jest włączona, zanonimizowane dane analityczne mogą być przechowywane przez okres do 26 miesięcy
-      zgodnie ze standardowymi praktykami analitycznymi.
+      Dane analityczne są w pełni zanonimizowane i zagregowane - nie przechowujemy żadnych danych umożliwiających
+      identyfikację poszczególnych odwiedzających. Adresy IP są hashowane i nigdy nie są przechowywane w postaci jawnej.
+    </p>
+    <p>
+      Nasze serwery znajdują się w Europie. Stosujemy najlepsze praktyki w celu ograniczenia dostępu do danych.
+      Wszystkie dane są przesyłane do i z naszych serwerów przy użyciu bezpiecznych, szyfrowanych protokołów.
     </p>
 
     <h2>Bezpieczeństwo Danych</h2>
@@ -128,10 +214,37 @@ const description = "Polityka prywatności i informacje o plikach cookie dla blo
     <p>Możemy korzystać z następujących usług stron trzecich:</p>
     <ul>
       <li>
+        <strong>Umami Analytics</strong> - Analityka respektująca prywatność (self-hosted)
+        <br />
+        Hostowany na: <code>prov.tuxownia.pl</code>
+        <br />
+        Bez plików cookie, adresy IP hashowane, dane w pełni zanonimizowane
+        <br />
+        <a href="https://umami.is/" target="_blank" rel="noopener noreferrer">
+          Więcej informacji o Umami
+        </a>
+      </li>
+      <li>
         <strong>YouTube (Google)</strong> - Dla osadzonych treści wideo
         <br />
         <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">
           Polityka Prywatności YouTube
+        </a>
+      </li>
+      <li>
+        <strong>Remark42</strong> - System komentarzy (self-hosted)
+        <br />
+        Hostowany na: <code>remark.bytesandweb.pl</code>
+        <br />
+        <a href="https://remark42.com/" target="_blank" rel="noopener noreferrer">
+          Więcej informacji o Remark42
+        </a>
+      </li>
+      <li>
+        <strong>Zoho Mail</strong> - Usługa email do powiadomień i weryfikacji komentarzy
+        <br />
+        <a href="https://www.zoho.com/privacy.html" target="_blank" rel="noopener noreferrer">
+          Polityka prywatności Zoho
         </a>
       </li>
     </ul>

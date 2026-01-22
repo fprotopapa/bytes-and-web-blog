@@ -3,6 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import AuthorCard from '../../components/AuthorCard.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import SchemaOrg from '../../components/SchemaOrg.astro';
+import Remark42 from '../../components/Remark42.astro';
 import { getCollection, getEntry } from 'astro:content';
 import type { GetStaticPaths } from 'astro';
 import { getLangFromId, getSlugWithoutLang } from '../../content/config';
@@ -300,6 +301,15 @@ const schemaBreadcrumbs = [
         </div>
       </nav>
     )}
+
+    {/* Comments Section */}
+    <section class="mt-12">
+      <Remark42
+        url={`/blog/${getSlugWithoutLang(post.slug)}`}
+        pageTitle={post.data.title}
+        lang={lang}
+      />
+    </section>
   </article>
 
   <!-- Sticky Table of Contents Sidebar -->

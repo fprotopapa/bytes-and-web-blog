@@ -55,25 +55,41 @@ body {
 .prose h1 {
   color: var(--color-text);
   font-weight: 800;
-  font-size: 2.25rem;
+  font-size: 1.75rem;
   line-height: 1.2;
-  margin-top: 2.5rem;
-  margin-bottom: 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 1.25rem;
   letter-spacing: -0.025em;
   border-bottom: 3px solid var(--color-primary);
   padding-bottom: 0.75rem;
 }
 
+@media (min-width: 640px) {
+  .prose h1 {
+    font-size: 2.25rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
 .prose h2 {
   color: var(--color-text);
   font-weight: 700;
-  font-size: 1.875rem;
+  font-size: 1.5rem;
   line-height: 1.3;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
+  margin-top: 1.75rem;
+  margin-bottom: 0.875rem;
   letter-spacing: -0.02em;
   position: relative;
   padding-left: 1rem;
+}
+
+@media (min-width: 640px) {
+  .prose h2 {
+    font-size: 1.875rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
 }
 
 .prose h2::before {
@@ -90,23 +106,38 @@ body {
 .prose h3 {
   color: var(--color-text);
   font-weight: 700;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   line-height: 1.4;
-  margin-top: 1.75rem;
-  margin-bottom: 0.875rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
   letter-spacing: -0.015em;
+}
+
+@media (min-width: 640px) {
+  .prose h3 {
+    font-size: 1.5rem;
+    margin-top: 1.75rem;
+    margin-bottom: 0.875rem;
+  }
 }
 
 .prose h4 {
   color: var(--color-primary);
   font-weight: 600;
-  font-size: 1.25rem;
+  font-size: 0.875rem;
   line-height: 1.5;
-  margin-top: 1.5rem;
-  margin-bottom: 0.75rem;
+  margin-top: 1.25rem;
+  margin-bottom: 0.625rem;
   text-transform: uppercase;
-  font-size: 1rem;
   letter-spacing: 0.05em;
+}
+
+@media (min-width: 640px) {
+  .prose h4 {
+    font-size: 1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
 }
 
 .prose a {
@@ -154,11 +185,18 @@ body {
   counter-increment: line;
   content: counter(line);
   display: inline-block;
-  width: 2.5rem;
-  margin-right: 1rem;
+  width: 1.5rem;
+  margin-right: 0.5rem;
   text-align: right;
   color: #6b7280;
   user-select: none;
+}
+
+@media (min-width: 640px) {
+  .prose pre code .line::before {
+    width: 2.5rem;
+    margin-right: 1rem;
+  }
 }
 
 /* Copy button for code blocks */

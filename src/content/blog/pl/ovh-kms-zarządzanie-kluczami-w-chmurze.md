@@ -30,22 +30,23 @@ W momencie pisania tego artykułu usługa jest w fazie beta, ale działa stabiln
 
 W panelu OVH przełącz się na interfejs Beta — jest czytelniejszy i bardziej logiczny (co najmniej moim zdaniem).
 
-## Utwórz instancje KMS
+## Utwórz instancję KMS
 
-W sekcji **Identity, Security & Operations** znajdziesz **Key Management Service**. Utwórz nową instancję KMS wybierając odpowiedni region (np. `eu-central-waw` dla Warszawy). Opłata jest pobierana za każdy klucz, który przecymamy w KMSu.
+W sekcji **Identity, Security & Operations** znajdziesz **Key Management Service**. Utwórz nową instancję KMS wybierając odpowiedni region (np. `eu-central-waw` dla Warszawy). Opłata jest pobierana za każdy klucz, który przechowujemy w KMS-ie.
 
-### Utwórz nowy klucz serwisowy.
+### Utwórz nowy klucz serwisowy
 
-Service Key to klucz używany do szyfrowania lub podpisania danych. Możesz utworzyć wiele kluczy dla różnych celów lub aplikacji. Wspierane są klucze asymetryczne i symetryczne.
+Service Key to klucz używany do szyfrowania lub podpisywania danych. Możesz utworzyć wiele kluczy dla różnych celów lub aplikacji. Wspierane są klucze asymetryczne i symetryczne.
 
 ## Menedżer sekretów
 
-KMS zawiera też Secret Manager do przechowywania haseł, tokeny API itd. Wspiera interfejs kompatybilny z interfejsem Hashicorp Vault V2.
+KMS zawiera też Secret Manager do przechowywania haseł, tokenów API itd. Wspiera interfejs kompatybilny z HashiCorp Vault V2.
 
 ## Dostęp przez API
 
-Jak znajdziemy sporo informacji jak ustawić i wywołać komendy za pomocą interfejsu Swagger, to nie do końca jest opisane postępowanie z poziomu zewnętrznego hosta. Co najmniej musimy do tego stworzyć nowego klienta z dostępem do naszych zasobów. Do tego możemy wykorzystać tożsamość typu serwis.
-Takiego klienta musimy stworzyć za pomocą interfejsu API REST OVH. Ale najpierw ustawimy politykę IAM, którą sobie potem dopiszemy do klienta.
+Choć znajdziemy sporo informacji o tym, jak ustawić i wywołać komendy za pomocą interfejsu Swagger [(np. tu)](https://support.us.ovhcloud.com/hc/en-us/articles/34887531180435-Using-OVHcloud-Key-Management-Service-KMS), to nie do końca jest opisane postępowanie z poziomu zewnętrznego hosta. Przynajmniej musimy stworzyć nowego klienta z dostępem do naszych zasobów. Do tego możemy wykorzystać tożsamość typu serwis.
+
+Takiego klienta musimy stworzyć za pomocą API REST OVH. Najpierw jednak ustawimy politykę IAM, którą potem przypiszemy do klienta.
 
 ## Polityka IAM
 
@@ -56,11 +57,11 @@ Musimy wybrać następujące produkty:
 - `Key Management Service/Service Keys` — klucze szyfrowania
 - `Secret Manager (OKMS)/Secret` — sekrety (opcjonalne)
 
-Nie trzeba je ręcznie ustawiać. Dodając akcję, powiązane produkty się samemu wpiszą.
+Nie trzeba ich ręcznie ustawiać. Dodając akcję, powiązane produkty same się wpiszą.
 
 ## Potrzebne akcje
 
-Niniejsze akcje możemy dodać w polu `Actions added manually`.
+Poniższe akcje możemy dodać w polu `Actions added manually`.
 
 ```
 okms:apikms:serviceKey/decrypt
@@ -72,19 +73,19 @@ okms:apikms:secret/version/getData
 okms:apiovh:resource/get
 ```
 
-W naszym utworzonym KMSu jest link do interfejsu Swagger, w opisie wywołań znajdziemy także potrzebne akcje, które trzeba dozwolić. 
+W utworzonym KMS-ie jest link do interfejsu Swagger — w opisie wywołań znajdziemy potrzebne akcje, na które trzeba zezwolić.
 
-Wpisujemy nazwą polityki i zapisujemy.
+Wpisujemy nazwę polityki i zapisujemy.
 
 ## Tworzenie tożsamości typu serwis
 
-Przez [OVHcloud API Console](https://eu.api.ovh.com/console) możemy znaleźć opisy wywołań REST-owych i po autentykacji, także je wykonać. 
+Przez [OVHcloud API Console](https://eu.api.ovh.com/console) możemy znaleźć opisy wywołań REST i po uwierzytelnieniu także je wykonać. 
 
 Najpierw stworzymy tożsamość.
 
 - **POST /me/api/oauth2/client** (API v1):
 
-Wpisujemy dowolną nazwę i opis, i wybieramy `CLIENT_CREDENTIALS` jako flow.
+Wpisujemy dowolną nazwę i opis, a jako flow wybieramy `CLIENT_CREDENTIALS`.
 
 ```json
 {
@@ -98,7 +99,7 @@ W odpowiedzi otrzymamy `client_id` i `client_secret`.
 
 ## Zarządzanie tożsamością
 
-Tak jak nie można stworzyć tożsamość typu serwis w interfejsu graficznym, także nie jest ona do wyboru w zakładce polityki (Albo nie wiem jak). Jednak możemy ją zarządzać przez API.
+Tak jak nie można stworzyć tożsamości typu serwis w interfejsie graficznym, tak też nie jest ona do wyboru w zakładce polityki (albo nie wiem jak). Możemy ją jednak zarządzać przez API.
 
 Pobierz listę dostępnych polityk i znajdź naszą:
 
@@ -139,29 +140,29 @@ Więcej szczegółów w dokumentacji: [Managing OVHcloud service accounts via th
 
 ## Certyfikat dostępu
 
-Z gotową tożsamością i przypisanymi uprawnieniami, możemy teraz wygenerować certyfikat.
-W panelu KMS utwórz **Access Certificate** i przypisz do niego serwis. Pobierz i zapisz klucz prywatny i certyfikat.
+Z gotową tożsamością i przypisanymi uprawnieniami możemy teraz wygenerować certyfikat.
+W panelu KMS utwórz **Access Certificate** i przypisz do niego utworzony serwis. Pobierz i zapisz klucz prywatny oraz certyfikat.
 
-Te pliki są potrzebne do autoryzacji requestów do API KMS.
+Te pliki są potrzebne do autoryzacji żądań do API KMS.
 
 ## Szyfrowanie i deszyfrowanie
 
-Za pomocą KMSu możemy teraz wykonać operacje kryptograficzne bez udostępniania tajemnego klucza.
+Za pomocą KMS-u możemy teraz wykonywać operacje kryptograficzne bez udostępniania tajnego klucza.
 
 ### Szyfrowanie
 
-Dane muszą być zakodowane w Base64 inaczej dostaniemy kryptyczne błedy. Ten fakt nie jest (co najmniej pod czas pisania tego artykułu) dobrze opisany i nawet przykłady używają stringy.
+Dane muszą być zakodowane w Base64, inaczej dostaniemy kryptyczne błędy. Ten fakt nie jest (przynajmniej w czasie pisania tego artykułu) dobrze opisany i nawet przykłady używają zwykłych stringów.
 
 ```bash
 $ echo -n "your secret text" | base64
 eW91ciBzZWNyZXQgdGV4dA==
 ```
 
-Zapytania wygląda jak poniżej pokazane. Jak podamy `context`, to musimy tę samą wartość też użyć przy deszyfrowaniu.
+Zapytanie wygląda jak poniżej. Jeśli podamy `context`, musimy tę samą wartość użyć przy deszyfrowaniu.
 
 ```bash
 curl -X 'POST' \
-  'https://eu-central-waw.okms.ovh.net/api/<identyfikator zasobu>/v1/servicekey/<idenryfikator klucza serwisowego>/encrypt' \
+  'https://eu-central-waw.okms.ovh.net/api/<identyfikator zasobu>/v1/servicekey/<identyfikator klucza serwisowego>/encrypt' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -178,7 +179,7 @@ Odpowiedź zawiera zaszyfrowany tekst (`ciphertext`).
 
 ```bash
 curl -X 'POST' \
-  'https://eu-central-waw.okms.ovh.net/api/<identyfikator zasobu>/v1/servicekey/<idenryfikator klucza serwisowego>/decrypt' \
+  'https://eu-central-waw.okms.ovh.net/api/<identyfikator zasobu>/v1/servicekey/<identyfikator klucza serwisowego>/decrypt' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{

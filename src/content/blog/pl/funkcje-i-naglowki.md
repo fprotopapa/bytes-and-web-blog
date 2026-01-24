@@ -133,6 +133,16 @@ static void pomocnicza() {
     // kod niewidoczny poza tym plikiem
 }
 ```
+### Funkcje inline
+Każde wywołanie funkcji wiąże się z przekazaniem argumentów, skokiem do innego miejsca w kodzie oraz zapisem i odczytem ze stosu. Chcąc to zoptymalizować, można zastanowić się nad użyciem __funkcji inline__. Jest to funkcja, której kod jest wstawiany bezpośrednio w miejscu wywołania. Oznacza to, że zamiast samego wywołania funkcji pojawia się jej cała zawartość. Deklaruje się ją, dodając `inline` przed typem i nazwą funkcji.
+
+```c
+inline int dodaj(int a, int b) {
+    return a + b;
+}
+```
+`inline` stosuje się do krótkich i często wywoływanych funkcji, takich jak proste operacje matematyczne. Może to przyspieszyć wykonanie programu — może, ale nie musi. Dlaczego? Ponieważ jest to jedynie sugestia dla kompilatora i to on podejmuje ostateczną decyzję.
+Nadużywanie `inline` może zwiększyć rozmiar kodu wynikowego(tzw. code bloat), pogorszyć wykorzystanie pamięci cache, a także utrudnić debugowanie. Współczesne kompilatory, np. GCC czy Clang, są bardzo zaawansowane i często same decydują, które funkcje wstawić inline'ować, nawet jeśli nie użyto przy nich słowa kluczowego `inline`.
 
 ### Funkcje rekurencyjne
 Funkcja rekurencyjna wywołuje samą siebie. Bardzo przydatne przy problemach takich jak silnia, ciągi liczb Fibonacciego czy przeszukiwanie drzew.

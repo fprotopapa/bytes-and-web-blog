@@ -101,6 +101,33 @@ int **w2 = &w1;
 printf("%d\n", **w2); // 5
 ```
 
+### Wskaźniki na funkcje
+Funkcje, podobnie jak zmienne, mają swoje adresy w pamięci. Oznacza to, że możliwe jest tworzenie wskaźników przechowujących adresy funkcji, czyli tzw. wskaźników na funkcje. Mechanizm ten pozwala na bardziej elastyczne i dynamiczne sterowanie przebiegiem programu. Deklaracja wskaźnika na funkcję wizualnie odbiega od deklaracji funkcji, ale również musi zawierać typ zwracanej wartości oraz listę parametrów funkcji, na którą wskazuje.
+
+```c
+int (*func)(int, int);
+```
+
+Przypisanie funkcji do wskaźnika:
+```c
+int add(int a, int b) {
+    return a + b;
+}
+
+int (*func)(int, int);
+func = add;     /* równoważne: func = &add; */
+```
+
+Wywołanie funkcji przez wskaźnik:
+```c
+int result1 = func(2, 3);
+int result2 = (*func)(2, 3);
+```
+
+Jednym z najczęstszych zastosowań wskaźników na funkcje jest przekazywanie funkcji jako argumentów do innych funkcji, np. w celu realizacji mechanizmu callback. Dzięki temu ta sama funkcja może wykonywać różne operacje bez zmiany swojej implementacji. Jest to prosty przykład polimorfizmu behawioralnego - jeden interfejs wywołania, ale różne zachowania.
+Innym przykładem jest zmiana logiki działania programu poprzez przekazanie innego wskaźnika na funkcję, w zależności od wartości danego parametru.
+Wskaźniki na funkcje można również przechowywać w tablicach, co pozwala na wygodną implementację prostych mechanizmów wyboru zachowania programu, takich jak maszyna stanów lub menu.
+
 ## Wykorzystanie wskaźników
 ### Przekazywanie parametrów do funkcji
 Przekazywanie parametrów do funkcji przez wskaźniki pozwala uniknąć kopiowania dużych struktur danych, co oszczędza czas i pamięć. Brak kopiowania powoduje, że operujemy na oryginalnych zmiennych.

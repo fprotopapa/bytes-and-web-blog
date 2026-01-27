@@ -1,6 +1,6 @@
 ---
 title: "Wskaźniki i zarządzanie pamięcią"
-description: „Zajrzyjmy w głąb pamięci naszych komputerów i dowiemy się jak nią zarządzać.”
+description: Zajrzyjmy w głąb pamięci naszych komputerów i dowiemy się jak nią zarządzać.
 pubDate: 2026-01-14
 author: pl/przemyslaw-selwiak
 coverImage: "/images/posts/test-post/aliveandkicking.webp"

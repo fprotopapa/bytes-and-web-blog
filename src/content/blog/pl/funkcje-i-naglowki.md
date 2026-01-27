@@ -1,6 +1,6 @@
 ---
 title: "Funkcje i nagłówki"
-description: „Poznamy metody podziału kodu, co pozwoli łatwiej nim zarządzać oraz wyodrębniać moduły do wielokrotnego użytku.”
+description: Poznamy metody podziału kodu, co pozwoli łatwiej nim zarządzać oraz wyodrębniać moduły do wielokrotnego użytku.
 pubDate: 2026-01-06
 author: pl/przemyslaw-selwiak
 coverImage: "/images/posts/test-post/aliveandkicking.webp"

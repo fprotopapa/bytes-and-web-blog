@@ -1,6 +1,6 @@
 ---
 title: "Podstawowe typy danych, kwalifikatory i rzutowanie w C"
-description: "Typy danych w C są fundamentem każdego programu — od prostych aplikacji po systemy wbudowane. W tym wpisie poznamy wszystkie typy proste, ich rozmiary, zakresy, praktyczne zastosowania oraz kwalifikatory, które pozwalają modyfikować zachowanie zmiennych."
+description: Typy danych w C są fundamentem każdego programu — od prostych aplikacji po systemy wbudowane. W tym wpisie poznamy wszystkie typy proste, ich rozmiary, zakresy, praktyczne zastosowania oraz kwalifikatory, które pozwalają modyfikować zachowanie zmiennych.
 pubDate: 2025-12-09
 author: pl/przemyslaw-selwiak
 coverImage: "/images/posts/test-post/aliveandkicking.webp"

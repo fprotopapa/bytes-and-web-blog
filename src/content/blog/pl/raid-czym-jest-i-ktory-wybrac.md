@@ -1,6 +1,6 @@
 ---
 title: "RAID - czym jest i który wybrać"
-description: „Omówimy najważniejsze poziomy RAID ich zalety, wady oraz typowe zastosowania.”
+description: Omówimy najważniejsze poziomy RAID ich zalety, wady oraz typowe zastosowania.
 pubDate: 2026-01-27
 author: pl/przemyslaw-selwiak
 coverImage: "/images/posts/test-post/aliveandkicking.webp"

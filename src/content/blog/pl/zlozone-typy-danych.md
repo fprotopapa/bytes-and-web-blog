@@ -1,6 +1,6 @@
 ---
 title: "Złożone typy danych"
-description: "Po omówieniu typów prostych przechodzimy do złożonych. Poznamy ich składnie, dowiemy się w jaki sposób można określić ich rozmiar, a także gdzie warto je stosować."
+description: Po omówieniu typów prostych przechodzimy do złożonych. Poznamy ich składnie, dowiemy się w jaki sposób można określić ich rozmiar, a także gdzie warto je stosować.
 pubDate: 2025-12-17
 author: pl/przemyslaw-selwiak
 coverImage: "/images/posts/test-post/aliveandkicking.webp"

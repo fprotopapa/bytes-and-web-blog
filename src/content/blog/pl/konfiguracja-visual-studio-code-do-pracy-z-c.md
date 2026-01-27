@@ -1,6 +1,6 @@
 ---
 title: "Konfiguracja Visual Studio Code do pracy z C"
-description: "Przejdziemy przez proces instalacji Visual Studio Code oraz niezbędnych narzedzi do pracy z C na platfomach Windows, Linux i MacOS"
+description: Przejdziemy przez proces instalacji Visual Studio Code oraz niezbędnych narzedzi do pracy z C na platfomach Windows, Linux i MacOS
 pubDate: 2025-11-25
 author: pl/przemyslaw-selwiak
 coverImage: "/images/posts/test-post/aliveandkicking.webp"

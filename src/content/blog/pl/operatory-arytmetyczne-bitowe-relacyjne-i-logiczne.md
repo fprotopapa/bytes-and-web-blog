@@ -1,6 +1,6 @@
 ---
 title: "Operatory arytmetyczne, bitowe, relacyjne i logiczne"
-description: "Poznamy dostępne operatory w języku C i przyjrzymy się ich wykorzystaniu w praktyce."
+description: Poznamy dostępne operatory w języku C i przyjrzymy się ich wykorzystaniu w praktyce.
 pubDate: 2025-12-27
 author: pl/przemyslaw-selwiak
 coverImage: "/images/posts/test-post/aliveandkicking.webp"

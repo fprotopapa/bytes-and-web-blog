@@ -1,6 +1,6 @@
 ---
 title: "Pętle i instrukcje warunkowe"
-description: „Pętle oraz instrukcje warunkowe to podstawowe elementy sterujące przebiegiem programu w języku C.”
+description: Pętle oraz instrukcje warunkowe to podstawowe elementy sterujące przebiegiem programu w języku C.
 pubDate: 2025-12-31
 author: pl/przemyslaw-selwiak
 coverImage: "/images/posts/test-post/aliveandkicking.webp"

@@ -1,6 +1,6 @@
 ---
 title: "Etapy kompilacji kodu w C"
-description: "Po napisaniu programu w języku C zanim będziemy mogli go uruchomić musimy przejść proces kompilacji składający się z 4 etapów. Zrozumienie tych etapów pomaga w debugowaniu i optymalizacji kodu."
+description: Po napisaniu programu w języku C zanim będziemy mogli go uruchomić musimy przejść proces kompilacji składający się z 4 etapów. Zrozumienie tych etapów pomaga w debugowaniu i optymalizacji kodu.
 pubDate: 2025-12-03
 author: pl/przemyslaw-selwiak
 coverImage: "/images/posts/test-post/aliveandkicking.webp"

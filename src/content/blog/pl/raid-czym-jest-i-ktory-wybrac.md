@@ -5,7 +5,7 @@ pubDate: 2026-01-27
 author: pl/przemyslaw-selwiak
 coverImage: "/images/posts/test-post/aliveandkicking.webp"
 tags: ["storage", "RAID"]
-category: "storage
+category: "storage"
 draft: false
 ---
 
